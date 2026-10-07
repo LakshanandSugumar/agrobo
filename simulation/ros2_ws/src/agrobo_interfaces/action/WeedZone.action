@@ -1,0 +1,19 @@
+# Targets are Field Ledger weed tracks (geo-referenced, from UAV perception).
+string robot_id
+float64[] xs
+float64[] ys
+float64[] sizes_cm
+string method             # "laser" | "mechanical"
+---
+uint32 killed
+uint32 missed
+uint32 false_targets_rejected
+uint32 crop_damage
+uint32 opportunistic_kills    # weeds the onboard camera found next to a target
+float64[] cleared_x           # targets resolved (killed or verified absent) for twin update
+float64[] cleared_y
+float64 herbicide_l           # always 0 for laser/mechanical; kept for baseline comparison
+float64 distance_m
+float64 duration_h
+---
+float64 progress

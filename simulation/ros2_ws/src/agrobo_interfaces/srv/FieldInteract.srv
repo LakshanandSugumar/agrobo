@@ -1,0 +1,17 @@
+# Physical effect of a robot on the world (ground-truth side of the sim).
+uint8 OP_TILL=0
+uint8 OP_DEPLOY_IRRIGATION=1
+uint8 OP_TRANSPLANT=2
+uint8 OP_KILL_WEED=3
+uint8 OP_DOSE_NITROGEN=4
+uint8 OP_PICK_FRUIT=5
+uint8 OP_CLEAR=6
+uint8 OP_LASER_MISFIRE=7   # values = [x, y] of a shot fired at a false-positive target
+uint8 op
+uint32[] target_ids
+float64[] values       # op-specific: laser energy (J), dose (g N), grip force (N)
+---
+uint32[] succeeded_ids
+uint32[] collateral_ids   # e.g. crop plants damaged by a misfired laser
+float64[] out_values      # e.g. picked fruit ripeness / mass / bruise flag
+string message

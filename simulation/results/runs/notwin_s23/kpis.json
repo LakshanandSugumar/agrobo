@@ -1,0 +1,190 @@
+{
+  "run": "notwin_s23",
+  "twin_guided": false,
+  "season_days": 125,
+  "area_ha": 0.036,
+  "kpi_1_chemical_elimination": {
+    "herbicide_l": 0.0,
+    "baseline_herbicide_l_per_ha": 5.5,
+    "herbicide_reduction_pct": 100.0,
+    "weeds_killed": 479,
+    "weeds_alive_end": 19,
+    "weeds_reached_seed": 0,
+    "weed_control_efficacy_pct": 96.18,
+    "crop_damage_events": 2,
+    "crop_damage_rate_pct": 0.42,
+    "mean_weed_competition_index": 0.004,
+    "nitrogen_kg_per_ha": 53.0,
+    "baseline_n_kg_per_ha": 220.0,
+    "nitrogen_reduction_pct": 75.9
+  },
+  "kpi_2_harvest_capture_and_quality": {
+    "harvested_kg": 2009.8,
+    "yield_t_per_ha": 55.8,
+    "field_loss_kg": 0.9,
+    "left_on_plant_ripe_kg": 81.5,
+    "capture_rate_pct": 96.06,
+    "grade_a_pct": 84.94,
+    "grade_mix_kg": {
+      "A": 1707.1,
+      "B": 241.0,
+      "C": 61.7,
+      "reject": 0.0
+    },
+    "bruise_rate_pct": 1.15,
+    "fruit_picked": 14483,
+    "seconds_per_fruit": 13.09,
+    "picker_kg_per_robot_h": 38.2,
+    "mean_pick_to_cool_h": 1.25,
+    "max_pick_to_cool_h": 1.68
+  },
+  "kpi_3_unit_economics": {
+    "agrobo_opex": {
+      "lines": {
+        "energy": 8.77,
+        "maintenance": 80.35,
+        "supervision": 14.26,
+        "fleet_amortisation": 407.25,
+        "nitrogen": 4.58,
+        "herbicide": 0.0
+      },
+      "total_usd": 515.21,
+      "usd_per_kg": 0.2563
+    },
+    "conventional_opex": {
+      "lines": {
+        "labour": 852.83,
+        "machinery": 93.6,
+        "nitrogen": 19.01,
+        "herbicide": 5.54
+      },
+      "total_usd": 970.98,
+      "labour_h": 38.8,
+      "usd_per_kg": 0.4831
+    },
+    "fleet_sizing": {
+      "peak_7d_ugv_hours_per_day": 1.23,
+      "peak_ugv_hours_per_day_per_ha": 34.1,
+      "ugv_per_ha": 1.892,
+      "parts": {
+        "ugv": 104065,
+        "uav": 60,
+        "hauler": 3750,
+        "hub": 3750,
+        "prep": 1500
+      },
+      "total_usd_ha": 113125
+    },
+    "opex_reduction_pct": 46.9,
+    "labour_hours_conventional": 38.8,
+    "labour_hours_agrobo": 0.6,
+    "revenue_usd": 2758.12,
+    "baseline_revenue_usd": 2050.66,
+    "revenue_uplift_pct": 34.5,
+    "revenue_per_kg": 1.372,
+    "spoiled_kg": 0.0,
+    "contract_penalties_usd": 13.69
+  },
+  "autonomy": {
+    "human_interventions": 0,
+    "robot_hours": 73.0,
+    "energy_kwh": 54.8,
+    "battery_swaps": 3,
+    "tool_changes": 84,
+    "cloud_outage_days": 12,
+    "events_buffered_offline": 68,
+    "field_ops_completed_during_outage": 12,
+    "per_robot": {
+      "prep_ugv": {
+        "type": "ugv_prep",
+        "hours": 2.7,
+        "kwh": 10.4,
+        "km": 1.25
+      },
+      "scout_uav": {
+        "type": "uav_scout",
+        "hours": 0.4,
+        "kwh": 0.2,
+        "km": 5.07
+      },
+      "ugv_beta": {
+        "type": "ugv_modular",
+        "hours": 30.3,
+        "kwh": 18.9,
+        "km": 7.08
+      },
+      "ugv_alpha": {
+        "type": "ugv_modular",
+        "hours": 38.6,
+        "kwh": 24.5,
+        "km": 14.09
+      },
+      "hauler_ugv": {
+        "type": "ugv_hauler",
+        "hours": 1.1,
+        "kwh": 0.8,
+        "km": 1.18
+      }
+    }
+  },
+  "phases": {
+    "sourcing": {
+      "phase": "sourcing",
+      "parcel": "P-026-020",
+      "crop": "tomato",
+      "suitability": 0.9398807531881432,
+      "npv_usd": 4100902.3158553606,
+      "type": "phase",
+      "node": "mission_orchestrator"
+    },
+    "prep": {
+      "phase": "prep",
+      "duration_h": 2.3832884234350487,
+      "area_ha": 0.036,
+      "distance_m": 1080.1443029090524,
+      "type": "phase",
+      "node": "mission_orchestrator"
+    },
+    "establish": {
+      "phase": "establish",
+      "planted": 480,
+      "duration_h": 0.3254256977032234,
+      "type": "phase",
+      "node": "mission_orchestrator"
+    }
+  },
+  "orchestrator": {
+    "scout_passes": 63,
+    "harvest_runs": 56,
+    "weed_runs": 37,
+    "dose_runs": 50,
+    "picked": 14483,
+    "predicted": 0,
+    "edge_only_days": 12
+  },
+  "assumptions": {
+    "labour_usd_h": 22.0,
+    "electricity_usd_kwh": 0.16,
+    "robot_maint_usd_h": 1.1,
+    "supervision_h_per_ha_season": 18.0,
+    "amort_seasons": 10,
+    "ugv_modular_usd": 55000.0,
+    "ugv_hours_per_day": 18.0,
+    "uav_usd": 12000.0,
+    "uav_ha": 200.0,
+    "hauler_usd": 30000.0,
+    "hauler_ha": 8.0,
+    "hub_usd": 150000.0,
+    "hub_ha": 40.0,
+    "prep_ugv_usd": 90000.0,
+    "prep_ha": 60.0,
+    "herbicide_usd_l": 28.0,
+    "n_fert_usd_kg": 2.4,
+    "conv_harvest_kg_per_h": 85.0,
+    "conv_weeding_h_ha": 160.0,
+    "conv_herbicide_l_ha": 5.5,
+    "conv_n_kg_ha": 220.0,
+    "conv_other_labour_h_ha": 260.0,
+    "conv_machinery_usd_ha": 2600.0
+  }
+}

@@ -1,0 +1,4 @@
+bool include_fruit
+---
+FieldState state
+Fruit[] fruit

@@ -1,0 +1,9 @@
+string robot_id
+uint32[] plant_ids
+float64[] dose_g_n
+---
+uint32 dosed
+float64 total_n_g
+float64 duration_h
+---
+float64 progress

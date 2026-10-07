@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f7f6f1;
+  --card: #ffffff;
+  --ink: #0e1a14;
+  --ink-2: #3c4842;
+  --muted: #66716b;
+  --line: #e2e0d6;
+  --line-2: #d3d0c4;
+  --brand: #1f7a4d;
+  --brand-ink: #0b3d2a;
+  --brand-soft: #e5f1e9;
+  --lime: #d7f36b;
+  --tomato: #c2410c;
+  --tomato-soft: #fbeee6;
+  --night: #0b1611;
+  --night-2: #13221b;
+  --night-line: #24372d;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-soft: var(--brand-soft);
+  --color-lime: var(--lime);
+  --color-tomato: var(--tomato);
+  --color-tomato-soft: var(--tomato-soft);
+  --color-night: var(--night);
+  --color-night-2: var(--night-2);
+  --color-night-line: var(--night-line);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-serif);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--lime);
+  color: var(--ink);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.container-x {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+@media (min-width: 768px) {
+  .container-x {
+    padding-inline: 32px;
+  }
+}
+
+.eyebrow {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.grid-bg {
+  background-image: linear-gradient(var(--night-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--night-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 75%);
+}
+
+.rows-bg {
+  background-image: repeating-linear-gradient(
+    100deg,
+    transparent 0 38px,
+    rgba(215, 243, 107, 0.06) 38px 40px
+  );
+}
+
+input[type="range"] {
+  accent-color: var(--brand);
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .pulse-dot { animation: none; }
+}
+
+/* grid items may shrink below their content width so wide tables/code scroll inside, not the page */
+.grid > * {
+  min-width: 0;
+}

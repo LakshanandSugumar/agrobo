@@ -1,0 +1,18 @@
+string robot_id
+uint32[] fruit_ids        # twin-predicted ripe fruit
+bool twin_guided          # predict-then-pick: use prior pose/ripeness to skip search
+uint32[] plant_ids        # plants to visit (twin-guided: only predicted-ripe; else every fruiting plant)
+float64 start_hour
+float64 min_ripeness      # onboard pick threshold (twin targets market-optimal ripeness)
+uint32 day
+---
+uint32 attempted
+uint32 picked
+uint32 bruised
+float64 mass_kg
+float64 mean_cycle_s
+float64 duration_h
+string lot_id
+uint32[] picked_ids
+---
+uint32 picked_so_far

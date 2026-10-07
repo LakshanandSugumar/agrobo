@@ -1,0 +1,7 @@
+uint32 day
+---
+MarketTrade[] trades
+float64 revenue_usd
+float64 spoiled_kg
+---
+string stage

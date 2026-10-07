@@ -1,0 +1,12 @@
+# /fleet_path_planner: boustrophedon or waypoint-TSP route over a set of points.
+string robot_id
+string mode               # "boustrophedon" | "tsp"
+float64[] xs
+float64[] ys
+float64 start_x
+float64 start_y
+---
+uint32[] order               # tsp: visiting order as indices into xs/ys
+float64[] path_x
+float64[] path_y
+float64 length_m

@@ -1,0 +1,239 @@
+{
+  "seeds": [
+    "twin_s11",
+    "twin_s23",
+    "twin_s7"
+  ],
+  "metrics": {
+    "Herbicide used (L/ha)": {
+      "twin": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "no_twin": {
+        "mean": 0.0,
+        "sd": 0.0
+      }
+    },
+    "Weed-control efficacy (%)": {
+      "twin": {
+        "mean": 97.57666666666667,
+        "sd": 0.6153318887668123
+      },
+      "no_twin": {
+        "mean": 97.33,
+        "sd": 1.0256217626396174
+      }
+    },
+    "Weeds that reached seed (count)": {
+      "twin": {
+        "mean": 0,
+        "sd": 0.0
+      },
+      "no_twin": {
+        "mean": 0,
+        "sd": 0.0
+      }
+    },
+    "Crop-damage events (% of plants)": {
+      "twin": {
+        "mean": 0.6233333333333333,
+        "sd": 0.41501004003919395
+      },
+      "no_twin": {
+        "mean": 0.6933333333333334,
+        "sd": 0.3164385143014885
+      }
+    },
+    "Nitrogen applied (kg/ha)": {
+      "twin": {
+        "mean": 58.46666666666667,
+        "sd": 30.434246061523083
+      },
+      "no_twin": {
+        "mean": 58.36666666666667,
+        "sd": 30.209656292869894
+      }
+    },
+    "Harvested yield (t/ha)": {
+      "twin": {
+        "mean": 54.0,
+        "sd": 1.8193405398660265
+      },
+      "no_twin": {
+        "mean": 55.63333333333333,
+        "sd": 0.20816659994661338
+      }
+    },
+    "Harvest capture rate (%)": {
+      "twin": {
+        "mean": 93.22666666666667,
+        "sd": 0.24193663082165157
+      },
+      "no_twin": {
+        "mean": 96.12333333333333,
+        "sd": 1.2262272763779638
+      }
+    },
+    "Picker seconds per fruit": {
+      "twin": {
+        "mean": 8.0,
+        "sd": 0.16093476939431092
+      },
+      "no_twin": {
+        "mean": 13.206666666666667,
+        "sd": 0.10214368964029694
+      }
+    },
+    "Picker kg per robot-hour": {
+      "twin": {
+        "mean": 62.56666666666666,
+        "sd": 1.5502687938977953
+      },
+      "no_twin": {
+        "mean": 37.93333333333334,
+        "sd": 0.2516611478423586
+      }
+    },
+    "Grade A share (%)": {
+      "twin": {
+        "mean": 92.24666666666667,
+        "sd": 0.5404936015655785
+      },
+      "no_twin": {
+        "mean": 85.35,
+        "sd": 0.39585350825779264
+      }
+    },
+    "Bruise rate (%)": {
+      "twin": {
+        "mean": 0.9600000000000001,
+        "sd": 0.14177446878757824
+      },
+      "no_twin": {
+        "mean": 0.9866666666666667,
+        "sd": 0.14364307617610156
+      }
+    },
+    "Mean pick-to-cool (h)": {
+      "twin": {
+        "mean": 0.46,
+        "sd": 0.01999999999999999
+      },
+      "no_twin": {
+        "mean": 1.2833333333333334,
+        "sd": 0.03511884584284249
+      }
+    },
+    "Agrobo OpEx ($/kg)": {
+      "twin": {
+        "mean": 0.1852,
+        "sd": 0.009824459272652108
+      },
+      "no_twin": {
+        "mean": 0.2608333333333333,
+        "sd": 0.010371756521117019
+      }
+    },
+    "Conventional OpEx ($/kg)": {
+      "twin": {
+        "mean": 0.49073333333333335,
+        "sd": 0.007942501704962577
+      },
+      "no_twin": {
+        "mean": 0.48386666666666667,
+        "sd": 0.0010016652800877864
+      }
+    },
+    "OpEx reduction vs conventional (%)": {
+      "twin": {
+        "mean": 62.3,
+        "sd": 1.5716233645501665
+      },
+      "no_twin": {
+        "mean": 46.06666666666667,
+        "sd": 2.173323108360405
+      }
+    },
+    "Peak UGVs needed per ha": {
+      "twin": {
+        "mean": 1.228,
+        "sd": 0.043092922852830486
+      },
+      "no_twin": {
+        "mean": 1.926,
+        "sd": 0.08806815542521586
+      }
+    },
+    "Fleet capex ($/ha)": {
+      "twin": {
+        "mean": 76613,
+        "sd": 2364.6505027170506
+      },
+      "no_twin": {
+        "mean": 114992,
+        "sd": 4860.322931657936
+      }
+    },
+    "Revenue per kg ($)": {
+      "twin": {
+        "mean": 1.372,
+        "sd": 0.0034641016151376294
+      },
+      "no_twin": {
+        "mean": 1.3756666666666668,
+        "sd": 0.03365016097039257
+      }
+    },
+    "Revenue uplift vs ungraded wholesale (%)": {
+      "twin": {
+        "mean": 40.06666666666667,
+        "sd": 0.7234178138070215
+      },
+      "no_twin": {
+        "mean": 40.6,
+        "sd": 7.239475119095307
+      }
+    },
+    "Human interventions": {
+      "twin": {
+        "mean": 0,
+        "sd": 0.0
+      },
+      "no_twin": {
+        "mean": 0,
+        "sd": 0.0
+      }
+    },
+    "Cloud-outage days run edge-only": {
+      "twin": {
+        "mean": 12,
+        "sd": 0.0
+      },
+      "no_twin": {
+        "mean": 12,
+        "sd": 0.0
+      }
+    },
+    "Implement swaps per season": {
+      "twin": {
+        "mean": 86,
+        "sd": 6.0
+      },
+      "no_twin": {
+        "mean": 90.33333333333333,
+        "sd": 5.686240703077327
+      }
+    },
+    "Battery hot-swaps per season": {
+      "twin": {
+        "mean": 2,
+        "sd": 0.0
+      },
+      "no_twin": {
+        "mean": 3,
+        "sd": 0.0
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>agrobo_sim</name>
+  <version>0.1.0</version>
+  <description>Agrobo end-to-end autonomous farm simulation (nodes, behavior tree, Gazebo world).</description>
+  <maintainer email="dev@agrobo.local">Agrobo</maintainer>
+  <license>Proprietary</license>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>agrobo_interfaces</exec_depend>
+  <exec_depend>py_trees</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <test_depend>python3-pytest</test_depend>
+  <export><build_type>ament_python</build_type></export>
+</package>

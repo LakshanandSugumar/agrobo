@@ -1,0 +1,6 @@
+uint32[] plant_ids
+---
+uint32 planted
+float64 duration_h
+---
+float64 progress

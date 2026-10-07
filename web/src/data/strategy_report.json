@@ -1,0 +1,80 @@
+{
+ "method": "weighted-geometric FAO suitability x (demand x automation-fit) x NPV/ha",
+ "candidates": 40,
+ "viable_combinations": 128,
+ "crop_lock": "tomato",
+ "top5": [
+  {
+   "parcel": "P-026-020",
+   "crop": "strawberry",
+   "suitability": 0.94,
+   "npv_usd": 12430285,
+   "npv_per_ha": 147232
+  },
+  {
+   "parcel": "P-026-001",
+   "crop": "strawberry",
+   "suitability": 0.919,
+   "npv_usd": 5760407,
+   "npv_per_ha": 147232
+  },
+  {
+   "parcel": "P-026-025",
+   "crop": "strawberry",
+   "suitability": 0.883,
+   "npv_usd": 12544616,
+   "npv_per_ha": 147232
+  },
+  {
+   "parcel": "P-026-032",
+   "crop": "strawberry",
+   "suitability": 0.866,
+   "npv_usd": 16607305,
+   "npv_per_ha": 147232
+  },
+  {
+   "parcel": "P-026-019",
+   "crop": "strawberry",
+   "suitability": 0.863,
+   "npv_usd": 7767198,
+   "npv_per_ha": 147232
+  }
+ ],
+ "chosen": {
+  "parcel": {
+   "parcel_id": "P-026-020",
+   "lat": 35.95185293370946,
+   "lon": -119.8803887433859,
+   "area_ha": 84.42655382257252,
+   "ph": 6.054408543458986,
+   "om_pct": 2.685308829750299,
+   "n_ppm": 23.174175408867704,
+   "slope_pct": 0.6215209155071895,
+   "drainage": 0.955689254323626,
+   "well_m3_h": 47.53090535705675,
+   "ffd": 196.6463056848964,
+   "km_to_dc": 57.66386358730604,
+   "land_usd_ha": 30402.16601775959,
+   "lte_coverage": 0.6233767885302126
+  },
+  "crop": "tomato",
+  "factors": {
+   "ph": 1.0,
+   "om": 1.0,
+   "slope": 1.0,
+   "drainage": 0.956,
+   "water": 1.0,
+   "season": 1.0,
+   "logistics": 0.618,
+   "connectivity": 0.849
+  },
+  "cashflow_usd": [
+   -3478374,
+   1451757,
+   2316833,
+   2316833,
+   2316833,
+   2316833
+  ]
+ }
+}

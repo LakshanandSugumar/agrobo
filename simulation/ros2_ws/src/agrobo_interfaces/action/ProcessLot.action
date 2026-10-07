@@ -1,0 +1,7 @@
+# Hub: hyperspectral grading + autonomous cold-chain packing.
+string lot_id
+---
+HarvestLot lot
+float64 duration_h
+---
+string stage

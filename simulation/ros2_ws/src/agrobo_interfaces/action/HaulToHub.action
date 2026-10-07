@@ -1,0 +1,9 @@
+string robot_id
+string[] lot_ids
+float64 start_hour
+---
+uint32 trips
+float64 distance_m
+float64 duration_h
+---
+float64 progress

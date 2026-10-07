@@ -1,0 +1,14 @@
+# Phase 1: GIS + soil + market strategy. Returns the chosen parcel and crop plan.
+uint32 n_candidates
+uint64 seed
+---
+string parcel_id
+string crop
+float64 suitability_score
+float64 soil_ph
+float64 soil_om_pct
+float64 soil_n_ppm
+float64 slope_pct
+float64 projected_npv_usd
+float64 projected_yield_t_ha
+string report_json

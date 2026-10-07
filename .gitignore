@@ -1,0 +1,12 @@
+.DS_Store
+__pycache__/
+*.pyc
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+simulation/ros2_ws/build/
+simulation/ros2_ws/install/
+simulation/ros2_ws/log/
+node_modules/
+.env
+.env.local

@@ -1,0 +1,4 @@
+uint32 days
+---
+uint32 day
+float64 gdd_today

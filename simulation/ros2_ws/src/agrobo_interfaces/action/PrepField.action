@@ -1,0 +1,14 @@
+# Phase 2: clear, grid-map, till and deploy drip irrigation.
+uint16 rows
+uint16 plants_per_row
+float64 row_spacing_m
+float64 plant_spacing_m
+---
+bool success
+float64 area_ha
+float64 distance_m
+float64 energy_kwh
+float64 duration_h
+---
+string stage
+float64 progress

@@ -1,0 +1,12 @@
+# UAV lawnmower survey. Frames go out on /scout_uav/frames; detections come from the
+# perception nodes, which close each pass with an empty DetectionArray (frame_id "eop").
+string robot_id
+float64 altitude_m
+---
+uint32 frames_published
+uint32 weeds_in_fov
+uint32 fruit_in_fov
+float64 distance_m
+float64 duration_h
+---
+float64 progress
