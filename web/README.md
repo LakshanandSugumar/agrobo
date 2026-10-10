@@ -40,6 +40,18 @@ scripts/            export_sim_data.py
 tests/              parity tests against the Python simulation
 ```
 
+## Homepage film
+
+If a visitor stays at the top of the homepage without scrolling, clicking or typing for 4 seconds, the brand film fades in over the whole window and plays muted (browsers only allow autoplay without sound). Any scroll, click or key returns to the page. It auto-plays once per browser session, never for visitors with reduced motion turned on, and the hero's "Watch the film" button replays it with sound.
+
+To swap in a new cut, drop new files into `public/film/` with the same names, or change `src/lib/film.ts`. Web encodes from a master:
+
+```bash
+ffmpeg -i master.mp4 -c:v libx264 -preset slow -crf 26 -maxrate 3M -bufsize 6M -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart public/film/agrobo-film.mp4
+ffmpeg -i master.mp4 -c:v libvpx-vp9 -crf 36 -b:v 0 -row-mt 1 -cpu-used 4 -c:a libopus -b:a 112k public/film/agrobo-film.webm
+ffmpeg -ss 6 -i master.mp4 -frames:v 1 -vf scale=1600:-2 -q:v 4 public/film/agrobo-film-poster.jpg
+```
+
 ## Notes
 
 - Parcel draws use a seeded JS RNG, so a given seed produces different parcels from the Python run; the scoring logic is identical (see the parity test).

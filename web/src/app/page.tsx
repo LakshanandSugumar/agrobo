@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LineChart } from "@/components/charts";
 import { Faq } from "@/components/Faq";
+import { IdleFilm, WatchFilmButton } from "@/components/IdleFilm";
 import { LedgerConsole } from "@/components/LedgerConsole";
 import { Lifecycle } from "@/components/Lifecycle";
 import { ButtonLink, Card, Modeled, SectionHead, Stat } from "@/components/ui";
@@ -23,6 +24,7 @@ export default function Home() {
 
   return (
     <>
+      <IdleFilm />
       {/* HERO */}
       <section className="relative overflow-hidden bg-night text-white">
         <div className="grid-bg pointer-events-none absolute inset-0 opacity-60" />
@@ -45,6 +47,7 @@ export default function Home() {
               <ButtonLink href="/early-access" variant="lime">Get early access</ButtonLink>
               <ButtonLink href="/platform" variant="ghost-dark">Try the live platform →</ButtonLink>
             </div>
+            <WatchFilmButton className="mt-6" />
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-[#8fa197]">
               <span>ROS 2 Jazzy</span>
               <span className="h-1 w-1 rounded-full bg-[#3b5246]" />
