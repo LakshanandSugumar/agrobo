@@ -47,9 +47,9 @@ If a visitor stays at the top of the homepage without scrolling, clicking or typ
 To swap in a new cut, drop new files into `public/film/` with the same names, or change `src/lib/film.ts`. Web encodes from a master:
 
 ```bash
-ffmpeg -i master.mp4 -c:v libx264 -preset slow -crf 26 -maxrate 3M -bufsize 6M -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart public/film/agrobo-film.mp4
-ffmpeg -i master.mp4 -c:v libvpx-vp9 -crf 36 -b:v 0 -row-mt 1 -cpu-used 4 -c:a libopus -b:a 112k public/film/agrobo-film.webm
-ffmpeg -ss 6 -i master.mp4 -frames:v 1 -vf scale=1600:-2 -q:v 4 public/film/agrobo-film-poster.jpg
+ffmpeg -i master.mp4 -c:v libx264 -preset slow -crf 25 -maxrate 4M -bufsize 8M -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart public/film/agrobo-film.mp4
+ffmpeg -i master.mp4 -c:v libvpx-vp9 -crf 38 -b:v 1.8M -maxrate 2.5M -row-mt 1 -cpu-used 4 -c:a libopus -b:a 112k public/film/agrobo-film.webm
+ffmpeg -ss 3 -i master.mp4 -frames:v 1 -vf scale=1600:-2 -q:v 4 public/film/agrobo-film-poster.jpg
 ```
 
 ## Notes
