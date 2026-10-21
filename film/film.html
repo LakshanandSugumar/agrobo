@@ -1,0 +1,631 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Agrobo Film</title>
+<style>
+@font-face{font-family:Corm;font-weight:300;src:url(fonts/Cormorant-Light.ttf)}
+@font-face{font-family:Corm;font-weight:300;font-style:italic;src:url(fonts/Cormorant-LightItalic.ttf)}
+@font-face{font-family:Corm;font-weight:500;src:url(fonts/Cormorant-Medium.ttf)}
+@font-face{font-family:JBM;font-weight:400;src:url(fonts/JBMono-Regular.ttf)}
+@font-face{font-family:JBM;font-weight:600;src:url(fonts/JBMono-SemiBold.ttf)}
+@font-face{font-family:Int;font-weight:300;src:url(fonts/Inter-Light.otf)}
+@font-face{font-family:Int;font-weight:400;src:url(fonts/Inter-Regular.otf)}
+@font-face{font-family:Int;font-weight:500;src:url(fonts/Inter-Medium.otf)}
+@font-face{font-family:Int;font-weight:600;src:url(fonts/Inter-SemiBold.otf)}
+html,body{margin:0;background:#000;overflow:hidden}
+canvas{display:block}
+</style>
+<script src="data.js"></script>
+</head><body><canvas id="c" width="1920" height="1080"></canvas>
+<script>
+// Agrobo film: every frame is a pure function of time t (seconds) -> render(t).
+const W = 1920, H = 1080, LB = 131, DUR = 86;
+const C = document.getElementById('c'), ctx = C.getContext('2d');
+const S = window.SIM;
+
+// ---------- helpers ----------
+function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const lerp = (a, b, t) => a + (b - a) * t;
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const eio = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const eout = t => 1 - Math.pow(1 - t, 3);
+const eback = t => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
+const fade = (u, a, b, fi = .7, fo = .6) => Math.min(seg(u, a, a + fi), 1 - seg(u, b - fo, b));
+function hx(h) { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+function mix(a, b, t, al = 1) { const A = hx(a), B = hx(b); return `rgba(${A.map((v, i) => Math.round(lerp(v, B[i], t))).join(',')},${al})`; }
+function rgba(h, a) { return `rgba(${hx(h).join(',')},${a})`; }
+const fmt = n => Math.round(n).toLocaleString('en-US');
+const P = { gold: '#d6b56d', gold2: '#f3dea4', cream: '#f2ecdf', green: '#2f8f5b', leaf: '#3d8a45', red: '#d9361f', cyan: '#8be6ff', water: '#58c4ff', ink: '#050807' };
+const SERIF = (w, s, it) => `${it ? 'italic ' : ''}${w} ${s}px Corm`;
+const MONO = (s, w = 400) => `${w} ${s}px JBM`;
+const SANS = (s, w = 400) => `${w} ${s}px Int`;
+
+function txt(s, x, y, o = {}) {
+  ctx.save(); ctx.globalAlpha *= (o.alpha ?? 1); ctx.font = o.font || SERIF(300, 64); ctx.fillStyle = o.color || P.cream;
+  ctx.textAlign = o.align || 'left'; ctx.textBaseline = o.base || 'alphabetic'; ctx.letterSpacing = (o.ls || 0) + 'px';
+  if (o.glow) { ctx.shadowBlur = o.glow; ctx.shadowColor = o.glowColor || o.color || P.cream; }
+  ctx.fillText(s, x, y); ctx.restore();
+}
+// rising, tracking-in text reveal
+function reveal(s, x, y, u, a, b, o = {}) {
+  const al = fade(u, a, b, o.fi ?? .8, o.fo ?? .6); if (al <= 0) return;
+  const k = eout(seg(u, a, a + 1.2));
+  txt(s, x, y + (1 - k) * 18, { ...o, alpha: al * (o.alpha ?? 1), ls: (o.ls || 0) + (1 - k) * 6 });
+}
+function caption(s, u, a, b, o = {}) { reveal(s, 140, 878, u, a, b, { font: SERIF(300, 58), glow: 18, glowColor: 'rgba(0,0,0,.9)', ...o }); }
+function rrect(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
+function softDot(x, y, r, col, a) { const g = ctx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, rgba(col, a)); g.addColorStop(.7, rgba(col, a * .8)); g.addColorStop(1, rgba(col, 0)); ctx.fillStyle = g; ctx.fillRect(x - r, y - r, 2 * r, 2 * r); }
+function glowDot(x, y, r, col, a) { const g = ctx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, rgba(col, a)); g.addColorStop(1, rgba(col, 0)); ctx.fillStyle = g; ctx.fillRect(x - r, y - r, 2 * r, 2 * r); }
+function bokeh(u, seed, n, cols, al = 1) {
+  const R = rng(seed);
+  for (let i = 0; i < n; i++) {
+    const x = R() * W, y = R() * H, r = 40 + R() * 150, c = cols[Math.floor(R() * cols.length)], a = (.05 + R() * .12) * al, sp = (R() - .5) * 14;
+    softDot(x + sp * u, y + Math.sin(u * .4 + i) * 10, r, c, a);
+  }
+}
+function hudRow(label, value, x, y, al, o = {}) {
+  if (al <= 0) return;
+  txt(label, x, y, { font: MONO(13), color: 'rgba(242,236,223,.55)', ls: 2.5, alpha: al, align: o.align || 'left' });
+  txt(value, x, y + 34, { font: MONO(26, 600), color: o.color || P.cream, alpha: al, align: o.align || 'left' });
+}
+function shade(top = 1, bot = 1) {
+  if (top) { const g = ctx.createLinearGradient(0, LB, 0, LB + 210); g.addColorStop(0, 'rgba(0,0,0,.72)'); g.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = g; ctx.fillRect(0, LB, W, 210); }
+  if (bot) { const g = ctx.createLinearGradient(0, H - LB - 230, 0, H - LB); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.72)'); ctx.fillStyle = g; ctx.fillRect(0, H - LB - 230, W, 230); }
+}
+function brackets(x, y, w, h, l, col, lw = 2, al = 1) {
+  ctx.save(); ctx.globalAlpha *= al; ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath();
+  const pts = [[x, y, 1, 1], [x + w, y, -1, 1], [x, y + h, 1, -1], [x + w, y + h, -1, -1]];
+  for (const [px, py, sx, sy] of pts) { ctx.moveTo(px + sx * l, py); ctx.lineTo(px, py); ctx.lineTo(px, py + sy * l); }
+  ctx.stroke(); ctx.restore();
+}
+
+// ---------- precomputed textures ----------
+function hash2(x, y, s) { let h = x * 374761393 + y * 668265263 + s * 982451653; h = (h ^ (h >>> 13)) * 1274126177; return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+function vnoise(x, y, s) { const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi; const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+  return lerp(lerp(hash2(xi, yi, s), hash2(xi + 1, yi, s), u), lerp(hash2(xi, yi + 1, s), hash2(xi + 1, yi + 1, s), u), v); }
+function fbm(x, y, s, o = 5) { let a = .5, f = 1, t = 0; for (let i = 0; i < o; i++) { t += a * vnoise(x * f, y * f, s + i); a *= .5; f *= 2; } return t; }
+function makeCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+
+let TERRAIN, WILD, TILLED, GRAIN = [], WORDMARK;
+const MAPW = 2400, MAPH = 1400;
+function buildTextures() {
+  // satellite terrain (half res)
+  TERRAIN = makeCanvas(1200, 700); { const c = TERRAIN.getContext('2d'), id = c.createImageData(1200, 700), d = id.data;
+    for (let y = 0; y < 700; y++) for (let x = 0; x < 1200; x++) {
+      const n = fbm(x / 140, y / 140, 3), m = fbm(x / 40, y / 40, 9, 3), r = fbm(x / 260 + 10, y / 260, 21, 3);
+      let col = [lerp(46, 96, n), lerp(52, 84, n), lerp(30, 50, n)];           // dry soil
+      const green = clamp((r - .45) * 4); col = col.map((v, i) => lerp(v, [36, 70, 38][i], green * .8));
+      const river = Math.abs(fbm(x / 300, y / 300, 77, 3) - .5); if (river < .012) col = [40, 70, 80];
+      col = col.map(v => v * (.85 + m * .3));
+      const i = (y * 1200 + x) * 4; d[i] = col[0]; d[i + 1] = col[1]; d[i + 2] = col[2]; d[i + 3] = 255; }
+    c.putImageData(id, 0, 0); }
+  // wild (uncleared) ground and tilled ground for prep scene
+  WILD = makeCanvas(W, H); { const c = WILD.getContext('2d'), id = c.createImageData(W / 2, H / 2), d = id.data;
+    for (let y = 0; y < H / 2; y++) for (let x = 0; x < W / 2; x++) { const n = fbm(x / 60, y / 60, 5), m = fbm(x / 8, y / 8, 6, 2), g = clamp((fbm(x / 90, y / 90, 31) - .42) * 3);
+      const col = [lerp(58, 92, n), lerp(54, 80, n), lerp(34, 46, n)].map((v, i) => lerp(v, [52, 72, 36][i], g) * (.8 + m * .35)); const i = (y * W / 2 + x) * 4; d[i] = col[0]; d[i + 1] = col[1]; d[i + 2] = col[2]; d[i + 3] = 255; }
+    const t = makeCanvas(W / 2, H / 2); t.getContext('2d').putImageData(id, 0, 0); c.drawImage(t, 0, 0, W, H);
+    const R = rng(44); for (let i = 0; i < 260; i++) { const x = R() * W, y = R() * H, r = 8 + R() * 26; for (let k = 0; k < 5; k++) { c.fillStyle = `rgba(${30 + R() * 20},${50 + R() * 30},${24 + R() * 10},.85)`; c.beginPath(); c.arc(x + (R() - .5) * r, y + (R() - .5) * r, r * (.4 + R() * .5), 0, 7); c.fill(); } }
+    for (let i = 0; i < 120; i++) { c.fillStyle = `rgba(${120 + R() * 40},${112 + R() * 30},${96 + R() * 20},.8)`; c.beginPath(); c.ellipse(R() * W, R() * H, 3 + R() * 7, 2 + R() * 5, R() * 3, 0, 7); c.fill(); } }
+  TILLED = makeCanvas(W, H); { const c = TILLED.getContext('2d'); c.fillStyle = '#3b2a1d'; c.fillRect(0, 0, W, H);
+    const R = rng(7); for (let y = 0; y < H; y += 2) { const f = Math.sin(y / 3.2) * .5 + .5; c.fillStyle = `rgba(${70 + f * 30},${50 + f * 20},${34 + f * 12},1)`; c.fillRect(0, y, W, 2); }
+    for (let i = 0; i < 12; i++) { const y = rowY(i); const g = c.createLinearGradient(0, y - 20, 0, y + 20); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(.5, 'rgba(120,88,60,.55)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(0, y - 20, W, 40); }
+    for (let i = 0; i < 9000; i++) { c.fillStyle = `rgba(${R() < .5 ? 20 : 140},${R() < .5 ? 14 : 110},${10 + R() * 40},${R() * .25})`; c.fillRect(R() * W, R() * H, 2, 2); } }
+  for (let k = 0; k < 4; k++) { const g = makeCanvas(640, 360), c = g.getContext('2d'), id = c.createImageData(640, 360), R = rng(100 + k);
+    for (let i = 0; i < id.data.length; i += 4) { const v = R() * 255; id.data[i] = id.data[i + 1] = id.data[i + 2] = v; id.data[i + 3] = 255; } c.putImageData(id, 0, 0); GRAIN.push(g); }
+}
+const rowY = i => 236 + i * 56;
+
+// ---------- scenes ----------
+// S1: dawn over the rows
+function sDawn(u, d) {
+  const rise = eout(seg(u, 0, 7.2)), hy = 560, zoom = 1 + .07 * eio(seg(u, 0, 7));
+  ctx.save(); ctx.translate(960, hy); ctx.scale(zoom, zoom); ctx.translate(-960, -hy);
+  let g = ctx.createLinearGradient(0, 0, 0, hy);
+  g.addColorStop(0, '#020308'); g.addColorStop(.55, mix('#070b16', '#1d2130', rise)); g.addColorStop(1, mix('#1a110c', '#c9783c', rise));
+  ctx.fillStyle = g; ctx.fillRect(-200, -200, W + 400, hy + 200);
+  const sy = lerp(650, 548, rise);
+  glowDot(960, sy, 900, '#e9a45a', .55 * rise); glowDot(960, sy, 260, '#ffd9a0', .7 * rise);
+  ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, hy); ctx.clip(); ctx.fillStyle = mix('#ffb468', '#fff1d6', rise, rise); ctx.beginPath(); ctx.arc(960, sy, 44, 0, 7); ctx.fill(); ctx.restore();
+  g = ctx.createLinearGradient(0, hy, 0, H); g.addColorStop(0, '#16180f'); g.addColorStop(1, '#020302');
+  ctx.fillStyle = g; ctx.fillRect(-200, hy, W + 400, H - hy + 200);
+  // perspective crop rows with a slow dolly
+  const travel = u * .9;
+  for (let i = -34; i <= 34; i++) {
+    const shine = Math.exp(-Math.abs(i) / 9) * rise;
+    ctx.strokeStyle = `rgba(${Math.round(lerp(40, 230, shine))},${Math.round(lerp(60, 170, shine))},${Math.round(lerp(40, 100, shine))},${.25 + .35 * shine})`;
+    ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(960 + i * 1.2, hy); ctx.lineTo(960 + i * 210, hy + 640); ctx.stroke();
+    for (let k = 0; k < 46; k++) {
+      const z = k + 1 - (travel % 1); if (z < .55) continue;
+      const y = hy + 640 / z / 1.0 * .55 + 0, x = 960 + i * 210 * .55 / z;
+      if (y > H + 40) continue;
+      const r = 26 / z;
+      ctx.fillStyle = `rgba(${Math.round(18 + 40 * shine)},${Math.round(38 + 40 * shine)},${Math.round(20 + 10 * shine)},${clamp(1.4 - z / 40)})`;
+      ctx.beginPath(); ctx.ellipse(x, y - r * .4, r * 1.1, r * .8, 0, 0, 7); ctx.fill();
+      if (shine > .05) { ctx.fillStyle = `rgba(255,200,130,${.35 * shine * clamp(1.4 - z / 40)})`; ctx.beginPath(); ctx.ellipse(x, y - r * .9, r * .8, r * .25, 0, 0, 7); ctx.fill(); }
+    }
+  }
+  g = ctx.createLinearGradient(0, hy - 60, 0, hy + 90); g.addColorStop(0, 'rgba(240,170,100,0)'); g.addColorStop(.5, `rgba(240,170,100,${.28 * rise})`); g.addColorStop(1, 'rgba(240,170,100,0)');
+  ctx.fillStyle = g; ctx.fillRect(-200, hy - 60, W + 400, 150);
+  const R = rng(5); for (let i = 0; i < 90; i++) { const x = R() * W, y = 150 + R() * 800, s = R(); const a = (.2 + .5 * s) * rise * (.5 + .5 * Math.sin(u * 2 + i));
+    ctx.fillStyle = `rgba(255,220,160,${a})`; ctx.beginPath(); ctx.arc(x + u * 8 * (s - .5), y - u * 6 * s, .8 + s * 1.8, 0, 7); ctx.fill(); }
+  ctx.restore();
+  reveal('Everyone wants to own land.', 960, 360, u, .9, 3.7, { align: 'center', font: SERIF(300, 82), glow: 30, glowColor: 'rgba(0,0,0,.8)' });
+  reveal('Almost no one wants to farm it.', 960, 360, u, 4.0, d, { align: 'center', font: SERIF(300, 82, 1), color: P.gold2, glow: 30, glowColor: 'rgba(0,0,0,.8)' });
+}
+
+// S2: the subscription
+function sSubscribe(u, d) {
+  ctx.fillStyle = '#060908'; ctx.fillRect(0, 0, W, H);
+  bokeh(u, 12, 22, ['#2f8f5b', '#d6b56d', '#1b4d3a'], 1);
+  const zoom = 1 + 2.2 * Math.pow(seg(u, 7.0, 8), 2);
+  const px = 560, py = 170 + (1 - eout(seg(u, 0, 1.2))) * 90, pw = 360, ph = 740;
+  ctx.save(); ctx.translate(px + pw / 2, py + ph / 2); ctx.scale(zoom, zoom); ctx.translate(-(px + pw / 2), -(py + ph / 2));
+  ctx.globalAlpha = seg(u, 0, .8);
+  ctx.save(); ctx.shadowBlur = 90; ctx.shadowColor = 'rgba(214,181,109,.25)';
+  const bg = ctx.createLinearGradient(px, py, px + pw, py + ph); bg.addColorStop(0, '#6d6250'); bg.addColorStop(.5, '#1d1b17'); bg.addColorStop(1, '#8a7a5a');
+  rrect(px, py, pw, ph, 58); ctx.fillStyle = bg; ctx.fill(); ctx.restore();
+  rrect(px + 6, py + 6, pw - 12, ph - 12, 52); ctx.fillStyle = '#050605'; ctx.fill();
+  const x0 = px + 18, y0 = py + 18, sw = pw - 36, sh = ph - 36;
+  ctx.save(); rrect(x0, y0, sw, sh, 44); ctx.clip();
+  let g = ctx.createLinearGradient(0, y0, 0, y0 + sh); g.addColorStop(0, '#0e1a14'); g.addColorStop(1, '#070b09'); ctx.fillStyle = g; ctx.fillRect(x0, y0, sw, sh);
+  rrect(x0 + sw / 2 - 55, y0 + 12, 110, 30, 15); ctx.fillStyle = '#000'; ctx.fill();
+  txt('9:41', x0 + 34, y0 + 34, { font: SANS(15, 600) });
+  const cx = x0 + sw / 2, post = seg(u, 4.9, 5.4);
+  ctx.save(); ctx.globalAlpha *= 1 - post;
+  txt('AGROBO', cx, y0 + 98, { font: SERIF(500, 26), color: P.gold, ls: 9, align: 'center' });
+  txt('Your farm.', cx, y0 + 168, { font: SERIF(300, 40), align: 'center' });
+  txt('Fully autonomous.', cx, y0 + 212, { font: SERIF(300, 40, 1), color: P.gold2, align: 'center' });
+  rrect(x0 + 18, y0 + 250, sw - 36, 330, 22); ctx.fillStyle = 'rgba(255,255,255,.04)'; ctx.fill(); ctx.strokeStyle = 'rgba(214,181,109,.35)'; ctx.lineWidth = 1; ctx.stroke();
+  txt('AUTONOMOUS FARM PLAN', x0 + 40, y0 + 288, { font: MONO(12, 600), color: P.gold, ls: 2 });
+  txt('One monthly subscription', x0 + 40, y0 + 314, { font: SANS(15), color: 'rgba(242,236,223,.6)' });
+  const items = ['Land sourcing & acquisition', 'Clearing, tilling, irrigation', 'Planting, scouting, weeding', 'Robotic harvest', 'Grading & cold chain', 'Selling & payouts'];
+  items.forEach((s, i) => { const a = seg(u, .9 + i * .28, 1.3 + i * .28); if (!a) return; const yy = y0 + 360 + i * 38;
+    ctx.save(); ctx.globalAlpha *= a; ctx.strokeStyle = P.gold; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(x0 + 50, yy - 5, 9, 0, 7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x0 + 45, yy - 5); ctx.lineTo(x0 + 49, yy - 1); ctx.lineTo(x0 + 56, yy - 10); ctx.stroke(); ctx.restore();
+    txt(s, x0 + 70 + (1 - a) * 10, yy, { font: SANS(15), alpha: a }); });
+  const tapped = u > 4.25, by = y0 + 610;
+  rrect(x0 + 18, by, sw - 36, 58, 29);
+  if (!tapped) { g = ctx.createLinearGradient(x0, by, x0 + sw, by); g.addColorStop(0, '#b8954f'); g.addColorStop(.5, '#f3dea4'); g.addColorStop(1, '#b8954f'); ctx.fillStyle = g; ctx.fill();
+    txt('Start my farm', cx, by + 36, { font: SANS(18, 600), color: '#1a1408', align: 'center' }); }
+  else { ctx.fillStyle = '#123a2a'; ctx.fill(); ctx.strokeStyle = P.gold; ctx.lineWidth = 1.5; ctx.stroke(); txt('Subscribed  ✓', cx, by + 36, { font: SANS(18, 600), color: P.gold2, align: 'center' }); }
+  ctx.restore();
+  if (post > 0) { ctx.save(); ctx.globalAlpha *= post; const ry = y0 + 250;
+    ctx.strokeStyle = 'rgba(214,181,109,.2)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(cx, ry, 54, 0, 7); ctx.stroke();
+    ctx.strokeStyle = P.gold; ctx.beginPath(); ctx.arc(cx, ry, 54, u * 4, u * 4 + 1.6); ctx.stroke();
+    txt('Agrobo is on it.', cx, ry + 120, { font: SERIF(300, 34), align: 'center' });
+    ['› Scanning 40 parcels', '› Matching soil to crop', '› Forecasting demand', '› Planning the season'].forEach((s, i) => txt(s, x0 + 50, ry + 180 + i * 30, { font: MONO(13), color: P.gold2, alpha: seg(u, 5.5 + i * .35, 5.8 + i * .35) }));
+    ctx.restore(); }
+  // finger tap
+  if (u > 3.3 && u < 5.2) { const fa = seg(u, 3.3, 4.2), fx = lerp(cx + 160, cx + 30, eout(fa)), fy = lerp(by + 210, by + 30, eout(fa));
+    if (u < 4.6) glowDot(fx, fy, 34, '#ffffff', .35 * (1 - seg(u, 4.3, 4.6)));
+    const rp = seg(u, 4.22, 5.0); if (rp > 0) { ctx.strokeStyle = `rgba(243,222,164,${1 - rp})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(cx + 30, by + 30, 10 + rp * 120, 0, 7); ctx.stroke(); } }
+  ctx.restore(); ctx.restore();
+  ctx.globalAlpha = 1 - seg(u, 6.9, 7.6);
+  reveal('One subscription.', 1050, 460, u, 1.3, d, { font: SERIF(300, 96) });
+  reveal('Everything after this,', 1052, 560, u, 5.0, d, { font: SERIF(300, 54, 1), color: 'rgba(242,236,223,.75)' });
+  reveal('Agrobo does.', 1052, 630, u, 5.6, d, { font: SERIF(300, 54, 1), color: P.gold2 });
+  ctx.globalAlpha = 1;
+}
+
+// S3: sourcing — 40 parcels scored, one acquired
+let PARCELS;
+const SPOT = S.spot.map((_, i, a) => { const w = a.slice(Math.max(0, i - 3), i + 4); return w.reduce((x, y) => x + y, 0) / w.length; });
+function buildParcels() {
+  const R = rng(26), cols = 8, rows = 5, x0 = 330, y0 = 260, cw = 222, chh = 176, pts = [];
+  for (let j = 0; j <= rows; j++) { pts.push([]); for (let i = 0; i <= cols; i++) pts[j].push([x0 + i * cw + (i && i < cols ? (R() - .5) * 70 : 0), y0 + j * chh + (j && j < rows ? (R() - .5) * 56 : 0)]); }
+  const top = {}; S.top5.forEach((t, k) => { top[parseInt(t.parcel.slice(-3)) - 1] = { s: t.suitability, rank: k + 1 }; });
+  PARCELS = [];
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+    const idx = j * cols + i, poly = [pts[j][i], pts[j][i + 1], pts[j + 1][i + 1], pts[j + 1][i]].map(([x, y], k) => [x + [1, -1, -1, 1][k] * 7, y + [1, 1, -1, -1][k] * 7]);
+    const c = poly.reduce((a, p) => [a[0] + p[0] / 4, a[1] + p[1] / 4], [0, 0]);
+    PARCELS.push({ idx, id: 'P-026-' + String(idx + 1).padStart(3, '0'), poly, c, score: top[idx] ? top[idx].s : .28 + R() * .54, rank: top[idx]?.rank, seed: R() });
+  }
+}
+function polyPath(poly) { ctx.beginPath(); poly.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath(); }
+function sSourcing(u, d) {
+  const ch = PARCELS[19], zt = eio(seg(u, 6.0, 8.0));
+  const sc = lerp(.86, 2.1, zt) * (1 + .03 * u / d), mcx = lerp(1200, ch.c[0], zt), mcy = lerp(700, ch.c[1], zt), ax = lerp(960, 700, zt), ay = lerp(540, 540, zt);
+  ctx.save(); ctx.translate(ax, ay); ctx.scale(sc, sc); ctx.translate(-mcx, -mcy);
+  ctx.drawImage(TERRAIN, 0, 0, MAPW, MAPH);
+  ctx.fillStyle = 'rgba(4,10,8,.42)'; ctx.fillRect(0, 0, MAPW, MAPH);
+  const sweep = lerp(250, 2180, eio(seg(u, .4, 4.2)));
+  const judged = seg(u, 4.4, 5.4);
+  for (const p of PARCELS) {
+    const r = clamp((sweep - p.c[0]) / 140); if (r <= 0) continue;
+    const isTop = !!p.rank, chosen = p.idx === 19;
+    let fill = `rgba(214,181,109,${.10 * r})`, stroke = `rgba(243,222,164,${.6 * r})`;
+    if (judged > 0) {
+      if (chosen) { fill = `rgba(214,181,109,${.10 + .22 * judged})`; stroke = P.gold2; }
+      else if (isTop) { fill = `rgba(47,143,91,${.1 + .2 * judged})`; stroke = `rgba(120,220,160,${.6 + .3 * judged})`; }
+      else { fill = `rgba(150,40,30,${.10 + .12 * judged})`; stroke = `rgba(220,120,100,${.6 - .4 * judged})`; }
+    }
+    polyPath(p.poly); ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = chosen && judged ? 3 : 1.4; ctx.strokeStyle = stroke; ctx.stroke();
+    const scramble = r < 1 ? (0.2 + rng(Math.floor(u * 30) * 97 + p.idx)() * .8).toFixed(2) : p.score.toFixed(2);
+    const la = r * (1 - .55 * judged * (isTop ? 0 : 1)) * (1 - zt * (chosen ? 0 : 1)) * (1 - seg(u, 7.6, 8.2) * (chosen ? 1 : 0));
+    txt(p.id, p.c[0], p.c[1] - 8, { font: MONO(13), color: 'rgba(242,236,223,.65)', align: 'center', alpha: la });
+    txt(scramble, p.c[0], p.c[1] + 22, { font: MONO(24, 600), color: isTop && judged ? (chosen ? P.gold2 : '#8fe0b0') : P.cream, align: 'center', alpha: la });
+    if (isTop && judged) txt('#' + p.rank, p.c[0], p.c[1] - 34, { font: MONO(13, 600), color: chosen ? P.gold : '#8fe0b0', align: 'center', alpha: judged * la });
+  }
+  if (u < 4.6) { const a = 1 - seg(u, 4.1, 4.6); const g = ctx.createLinearGradient(sweep - 240, 0, sweep, 0); g.addColorStop(0, 'rgba(214,181,109,0)'); g.addColorStop(1, `rgba(214,181,109,${.22 * a})`);
+    ctx.fillStyle = g; ctx.fillRect(sweep - 240, 180, 240, 1100); ctx.save(); ctx.shadowBlur = 24; ctx.shadowColor = P.gold2; ctx.fillStyle = `rgba(243,222,164,${a})`; ctx.fillRect(sweep - 1.5, 180, 3, 1100); ctx.restore(); }
+  // reticle
+  const rt = seg(u, 5.3, 6.3);
+  if (rt > 0) { const xs = ch.poly.map(p => p[0]), ys = ch.poly.map(p => p[1]); const bx = Math.min(...xs), by = Math.min(...ys), bw = Math.max(...xs) - bx, bh = Math.max(...ys) - by, k = 1 + 1.2 * (1 - eout(rt)), pad = 18;
+    brackets(ch.c[0] - (bw / 2 + pad) * k, ch.c[1] - (bh / 2 + pad) * k, (bw + 2 * pad) * k, (bh + 2 * pad) * k, 26, P.gold2, 2.5 / sc * 1.4, eout(rt)); }
+  ctx.restore();
+  shade();
+  // stamp
+  const st = seg(u, 8.2, 8.55);
+  if (st > 0) { ctx.save(); ctx.translate(700, 540); ctx.rotate(-.12); const k = lerp(1.9, 1, eout(st)); ctx.scale(k, k); ctx.globalAlpha = st;
+    rrect(-210, -56, 420, 112, 10); ctx.fillStyle = 'rgba(8,10,8,.82)'; ctx.fill(); ctx.strokeStyle = P.gold2; ctx.lineWidth = 4; rrect(-210, -56, 420, 112, 10); ctx.stroke(); ctx.lineWidth = 1.5; rrect(-198, -44, 396, 88, 6); ctx.stroke();
+    txt('ACQUIRED', 6, 20, { font: SERIF(500, 64), color: P.gold2, ls: 14, align: 'center', glow: 20, glowColor: 'rgba(214,181,109,.6)' }); ctx.restore();
+    const fl = seg(u, 8.2, 9.0); ctx.strokeStyle = `rgba(243,222,164,${.7 * (1 - fl)})`; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(700, 540, 120 + fl * 380, 0, 7); ctx.stroke(); }
+  // HUD
+  const n = Math.round(S.candidates * eio(seg(u, .4, 4.2)));
+  const ha = fade(u, .6, 6.2);
+  hudRow('PARCELS ANALYSED', `${n} / ${S.candidates}`, 140, 196, ha);
+  hudRow('CROP × PARCEL COMBINATIONS', fmt(S.combos * eio(seg(u, .6, 4.4))), 470, 196, ha);
+  hudRow('MODEL', 'SOIL × DEMAND × NPV', 900, 196, ha);
+  // data panel
+  const pa = seg(u, 6.5, 7.1);
+  if (pa > 0) { const x = 1250 + (1 - eout(pa)) * 60, y = 196, w = 540, h = 676; ctx.save(); ctx.globalAlpha = pa;
+    rrect(x, y, w, h, 18); ctx.fillStyle = 'rgba(6,12,10,.86)'; ctx.fill(); ctx.strokeStyle = 'rgba(214,181,109,.4)'; ctx.lineWidth = 1; ctx.stroke();
+    txt('PARCEL ' + S.parcel.parcel_id, x + 34, y + 52, { font: MONO(15, 600), color: P.gold, ls: 2 });
+    txt(`${S.parcel.lat.toFixed(2)}° N  ${Math.abs(S.parcel.lon).toFixed(2)}° W`, x + 34, y + 84, { font: MONO(14), color: 'rgba(242,236,223,.55)' });
+    const p = S.parcel, rows = [['Area', `${p.area_ha.toFixed(1)} ha`], ['Soil pH', p.ph.toFixed(2)], ['Organic matter', `${p.om_pct.toFixed(1)} %`], ['Slope', `${p.slope_pct.toFixed(1)} %`],
+      ['Drainage index', p.drainage.toFixed(2)], ['Well yield', `${p.well_m3_h.toFixed(1)} m³/h`], ['To distribution', `${p.km_to_dc.toFixed(1)} km`], ['Crop match', 'TOMATO'], ['Project NPV', `$${(S.npv / 1e6).toFixed(2)}M`]];
+    rows.forEach(([k, v], i) => { const a = seg(u, 6.9 + i * .11, 7.2 + i * .11); const yy = y + 140 + i * 46;
+      ctx.fillStyle = 'rgba(242,236,223,.08)'; ctx.fillRect(x + 34, yy + 14, (w - 68) * a, 1);
+      txt(k, x + 34, yy, { font: SANS(19), color: 'rgba(242,236,223,.65)', alpha: a }); txt(v, x + w - 34, yy, { font: MONO(19, 600), align: 'right', alpha: a, color: k === 'Crop match' ? '#ff8a6a' : P.cream }); });
+    const sa = seg(u, 8.0, 8.4); txt('SUITABILITY', x + 34, y + 584, { font: MONO(13), color: 'rgba(242,236,223,.55)', ls: 2.5, alpha: sa });
+    txt((S.suitability * eout(sa)).toFixed(2), x + 34, y + 646, { font: SERIF(500, 68), color: P.gold2, alpha: sa });
+    txt('rank 1 of ' + S.candidates, x + w - 34, y + 640, { font: MONO(15), color: 'rgba(242,236,223,.55)', align: 'right', alpha: sa });
+    ctx.restore(); }
+  caption('It finds the land.', u, .8, d);
+}
+
+// S4: prep — survey, clear & till, irrigate
+function prepUgv(u) {
+  const P_ = seg(u, .9, 7.3) * 12; const i = Math.min(11, Math.floor(P_)), f = P_ >= 12 ? 1 : P_ - i, dir = i % 2 ? -1 : 1;
+  const x = dir > 0 ? lerp(120, 1800, f) : lerp(1800, 120, f);
+  const y = i ? lerp(rowY(i - 1), rowY(i), seg(f, 0, .05)) : rowY(0);
+  return { x, y, i, f, dir, done: P_ >= 12 };
+}
+function drawUgv(x, y, ang, s = 1, tool = 'till', glowCol = P.gold) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(ang); ctx.scale(s, s);
+  ctx.fillStyle = 'rgba(0,0,0,.45)'; rrect(-38, -22, 84, 54, 10); ctx.fill();
+  ctx.fillStyle = '#16191a'; [[-30, -27], [14, -27], [-30, 19], [14, 19]].forEach(([a, b]) => { rrect(a, b, 22, 9, 3); ctx.fill(); });
+  const g = ctx.createLinearGradient(0, -20, 0, 20); g.addColorStop(0, '#3a3f42'); g.addColorStop(1, '#1b1e20');
+  rrect(-36, -20, 72, 40, 9); ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 1; ctx.stroke();
+  ctx.fillStyle = glowCol; ctx.fillRect(-30, -2, 60, 4);
+  ctx.fillStyle = '#0c0e0f'; ctx.beginPath(); ctx.arc(8, 0, 8, 0, 7); ctx.fill(); ctx.strokeStyle = P.gold; ctx.stroke();
+  if (tool === 'till') { ctx.fillStyle = '#2a2d2f'; ctx.fillRect(-52, -24, 12, 48); for (let k = -20; k <= 20; k += 8) { ctx.fillStyle = '#555'; ctx.fillRect(-56, k - 2, 6, 4); } }
+  const hl = ctx.createRadialGradient(60, 0, 0, 60, 0, 90); hl.addColorStop(0, 'rgba(255,240,200,.35)'); hl.addColorStop(1, 'rgba(255,240,200,0)');
+  ctx.fillStyle = hl; ctx.beginPath(); ctx.moveTo(36, -12); ctx.lineTo(140, -50); ctx.lineTo(140, 50); ctx.lineTo(36, 12); ctx.fill();
+  ctx.restore();
+}
+function sPrep(u, d) {
+  const zoom = 1 + .05 * u / d; ctx.save(); ctx.translate(960, 540); ctx.scale(zoom, zoom); ctx.translate(-960, -540);
+  ctx.drawImage(WILD, 0, 0);
+  const v = prepUgv(u);
+  ctx.save(); ctx.beginPath();
+  for (let i = 0; i < v.i; i++) ctx.rect(110, rowY(i) - 28, 1700, 56);
+  if (v.done) ctx.rect(110, rowY(11) - 28, 1700, 56); else if (v.dir > 0) ctx.rect(110, rowY(v.i) - 28, v.x - 110 - 40, 56); else ctx.rect(v.x + 40, rowY(v.i) - 28, 1810 - v.x - 40, 56);
+  ctx.clip(); ctx.drawImage(TILLED, 0, 0); ctx.restore();
+  // survey grid
+  const ga = seg(u, 0, 1.6), gfade = lerp(.55, .18, seg(u, 2, 3));
+  ctx.strokeStyle = `rgba(243,222,164,${gfade})`; ctx.lineWidth = 1;
+  for (let x = 120; x <= 1800; x += 120) { ctx.beginPath(); ctx.moveTo(x, 190); ctx.lineTo(x, 190 + 700 * ga); ctx.stroke(); }
+  for (let i = 0; i < 12; i++) { ctx.beginPath(); ctx.moveTo(120, rowY(i)); ctx.lineTo(120 + 1680 * ga, rowY(i)); ctx.stroke(); }
+  if (ga >= 1) for (let x = 120; x <= 1800; x += 120) for (let i = 0; i < 12; i++) { ctx.fillStyle = `rgba(243,222,164,${gfade * 1.6})`; ctx.fillRect(x - 3, rowY(i) - .5, 6, 1); ctx.fillRect(x - .5, rowY(i) - 3, 1, 6); }
+  // irrigation lines
+  for (let i = 0; i < 12; i++) { const q = eio(seg(u, 7.0 + i * .07, 7.9 + i * .07)); if (!q) continue;
+    ctx.save(); ctx.shadowBlur = 12; ctx.shadowColor = P.water; ctx.strokeStyle = 'rgba(120,210,255,.9)'; ctx.lineWidth = 2.4; ctx.beginPath(); ctx.moveTo(120, rowY(i) + 3); ctx.lineTo(lerp(120, 1800, q), rowY(i) + 3); ctx.stroke(); ctx.restore();
+    if (q >= 1) for (let k = 0; k < 6; k++) { const xx = 120 + ((k * 280 + (u - 7.9) * 420 + i * 53) % 1680); glowDot(xx, rowY(i) + 3, 9, '#bff0ff', .9); } }
+  // dust + vehicle
+  if (!v.done) { const R = rng(3); for (let k = 1; k < 26; k++) { const a = k * .035, w = prepUgv(u - a); if (w.i !== v.i) continue; const r = 6 + k * 1.6;
+      softDot(w.x - w.dir * 50 + (R() - .5) * 20, w.y + (R() - .5) * 26, r, '#b89a74', .25 * (1 - k / 26)); } }
+  drawUgv(v.x, v.y, v.dir > 0 ? 0 : Math.PI, 1, 'till');
+  if (v.done) { const pk = seg(u, 7.3, 8.3); ctx.globalAlpha = 1 - pk; drawUgv(120 - pk * 200, rowY(11), Math.PI); ctx.globalAlpha = 1; }
+  ctx.restore(); shade();
+  const ha = fade(u, .6, d);
+  hudRow('RTK POSITIONING', '2.7 cm RMS', 1290, 196, ha, { align: 'left' });
+  hudRow('ROUTE', `${fmt(S.prepM)} m`, 1530, 196, ha);
+  hudRow('PREP TIME', `${S.prepH} h`, 1690, 196, ha);
+  caption('It prepares it.', u, .8, d);
+  const steps = [['CLEARED', 1.2], ['SURVEYED', 1.6], ['TILLED', 7.3], ['IRRIGATED', 8.0]]; let x = 142;
+  steps.forEach(([s, t]) => { const on = seg(u, t, t + .3); ctx.font = MONO(15, 600); ctx.letterSpacing = '3px'; const w = ctx.measureText(s).width;
+    txt(s, x, 922, { font: MONO(15, 600), ls: 3, color: on ? P.gold2 : 'rgba(242,236,223,.3)', alpha: fade(u, .8, d) }); x += w + 40; });
+}
+
+// S5: cultivation — growth, twin tags, drone scouting, laser weeding
+let PLANTS, WEEDS;
+const LANE = i => rowY(i) + 28;
+function weedUgv(k, u) { // two laser UGVs sweeping lanes in serpentine
+  const lanes = k ? [6, 7, 8, 9, 10] : [0, 1, 2, 3, 4, 5], per = 1.9, t = (u + k * .6) / per, n = lanes.length, cyc = t % (2 * n);
+  const li = cyc < n ? Math.floor(cyc) : 2 * n - 1 - Math.floor(cyc), f = cyc % 1, dir = (Math.floor(cyc) % 2) ? -1 : 1;
+  return { x: dir > 0 ? lerp(100, 1820, f) : lerp(1820, 100, f), y: LANE(lanes[li]), dir, lane: lanes[li] };
+}
+function buildField() {
+  const R = rng(91); PLANTS = [];
+  for (let i = 0; i < 12; i++) for (let j = 0; j < 24; j++) PLANTS.push({ x: 178 + j * 68 + (R() - .5) * 6, y: rowY(i) + (R() - .5) * 4, rot: R() * 6.28, s: .85 + R() * .3, leaves: 6 + Math.floor(R() * 3), hue: R(), id: 1000 + i * 24 + j, ripe: 92 + R() * 20 });
+  WEEDS = [];
+  for (let k = 0; k < 60; k++) { const lane = Math.floor(R() * 11), w = { x: 140 + R() * 1640, y: LANE(lane) + (R() - .5) * 14, lane, born: .3 + R() * 9.5, rot: R() * 6, kill: null };
+    for (let t = w.born + .5; t < 12; t += 1 / 60) { for (const k2 of [0, 1]) { const g = weedUgv(k2, t); if (g.lane === lane && Math.abs(g.x + g.dir * 34 - w.x) < 14) { w.kill = t; w.src = k2; break; } } if (w.kill) break; }
+    WEEDS.push(w); }
+}
+function drawPlant(p, r, day) {
+  ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+  for (let k = 0; k < p.leaves; k++) { const a = k / p.leaves * 6.283; ctx.save(); ctx.rotate(a);
+    ctx.fillStyle = `rgb(${Math.round(36 + p.hue * 20 + k * 3)},${Math.round(98 + p.hue * 40 + (k % 2) * 14)},${Math.round(44 + p.hue * 10)})`;
+    ctx.beginPath(); ctx.ellipse(r * .55, 0, r * .55 * p.s, r * .22, 0, 0, 7); ctx.fill(); ctx.restore(); }
+  ctx.fillStyle = 'rgba(20,60,26,.9)'; ctx.beginPath(); ctx.arc(0, 0, r * .18, 0, 7); ctx.fill();
+  if (day > 55) { const fr = clamp((day - 55) / 30); for (let k = 0; k < 4; k++) { const a = p.rot * 3 + k * 1.7; ctx.fillStyle = mix('#5f9a3a', '#d9531f', clamp((day - 80) / 25) * (k % 2 ? 1 : .6)); ctx.beginPath(); ctx.arc(Math.cos(a) * r * .45, Math.sin(a) * r * .45, 2.5 + 3 * fr, 0, 7); ctx.fill(); } }
+  ctx.restore();
+}
+function sCultivate(u, d) {
+  const day = 2 + 82 * seg(u, 0, d), zoom = 1 + .28 * eio(seg(u, 0, d));
+  ctx.save(); ctx.translate(960, 540); ctx.scale(zoom, zoom); ctx.translate(-960, -540);
+  ctx.drawImage(TILLED, 0, 0);
+  ctx.strokeStyle = 'rgba(120,210,255,.55)'; ctx.lineWidth = 2; for (let i = 0; i < 12; i++) { ctx.beginPath(); ctx.moveTo(100, rowY(i) + 3); ctx.lineTo(1820, rowY(i) + 3); ctx.stroke(); }
+  const r = 4 + 17 / (1 + Math.exp(-(day - 34) / 8));
+  for (const p of PLANTS) drawPlant(p, r, day);
+  // weeds
+  for (const w of WEEDS) { if (u < w.born) continue; const gk = seg(u, w.born, w.born + 1.2), dead = w.kill && u > w.kill;
+    if (dead) { const ds = seg(u, w.kill, w.kill + 1.2); if (ds < 1) { softDot(w.x, w.y, 9, '#2a1a10', .8 * (1 - ds)); const R = rng(w.x | 0); for (let k = 0; k < 7; k++) { const a = R() * 6.28, sp = 20 + R() * 40; glowDot(w.x + Math.cos(a) * sp * ds, w.y + Math.sin(a) * sp * ds, 5, '#ffb070', 1 - ds); } }
+      if (u < w.kill + .2) { const g = weedUgv(w.src, w.kill); ctx.save(); ctx.shadowBlur = 26; ctx.shadowColor = '#ff5a2a'; ctx.strokeStyle = 'rgba(255,90,40,.95)'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(g.x + g.dir * 30, g.y); ctx.lineTo(w.x, w.y); ctx.stroke(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore(); glowDot(w.x, w.y, 34, '#ffd0a0', 1); }
+      continue; }
+    ctx.save(); ctx.translate(w.x, w.y); ctx.rotate(w.rot); ctx.fillStyle = '#a8b640'; for (let k = 0; k < 4; k++) { ctx.rotate(1.57); ctx.beginPath(); ctx.ellipse(4 * gk, 0, 6 * gk, 1.6, 0, 0, 7); ctx.fill(); } ctx.restore();
+    const da = seg(u, w.born + .35, w.born + .6); if (da) { brackets(w.x - 13, w.y - 13, 26, 26, 6, `rgba(255,90,60,${da})`, 1.4); } }
+  for (const k of [0, 1]) { const g = weedUgv(k, u); drawUgv(g.x, g.y, g.dir > 0 ? 0 : Math.PI, .72, 'laser', '#ff6a3a'); }
+  // twin tags
+  const tags = [[PLANTS[4 * 24 + 6], 3.6], [PLANTS[7 * 24 + 15], 5.3], [PLANTS[4 * 24 + 17], 7.0], [PLANTS[8 * 24 + 4], 8.7]];
+  for (const [p, t0] of tags) { const a = fade(u, t0, t0 + 3.6, .4, .5); if (!a) continue; const lx = p.x + 40, ly = p.y - 70;
+    ctx.save(); ctx.globalAlpha = a; ctx.strokeStyle = P.cyan; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(p.x, p.y, r + 6, 0, 7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(p.x + r * .7, p.y - r * .7); ctx.lineTo(lx, ly + 10); ctx.lineTo(lx + 20, ly + 10); ctx.stroke();
+    rrect(lx + 20, ly - 38, 238, 66, 8); ctx.fillStyle = 'rgba(4,14,18,.86)'; ctx.fill(); ctx.stroke();
+    txt(`PLANT #${p.id}  ·  TWIN`, lx + 34, ly - 14, { font: MONO(13, 600), color: P.cyan });
+    txt(`ripe in ${Math.max(0, Math.round(p.ripe - day))} d  ·  N ok  ·  ${(2 + day * .018).toFixed(2)} m`, lx + 34, ly + 12, { font: MONO(12), color: P.cream }); ctx.restore(); }
+  // drone
+  const dp = [[.4, 5.6, [-120, 300], [2040, 780]], [6.2, 11.6, [2040, 250], [-120, 800]]];
+  for (const [a, b, A, B] of dp) { const q = seg(u, a, b); if (q <= 0 || q >= 1) continue; const x = lerp(A[0], B[0], q), y = lerp(A[1], B[1], q), ang = Math.atan2(B[1] - A[1], B[0] - A[0]);
+    ctx.save(); ctx.fillStyle = 'rgba(140,230,255,.07)'; ctx.beginPath(); ctx.ellipse(x, y + 10, 190, 150, 0, 0, 7); ctx.fill(); ctx.strokeStyle = 'rgba(140,230,255,.4)'; ctx.setLineDash([6, 8]); ctx.stroke(); ctx.setLineDash([]);
+    const sa = u * 3; ctx.strokeStyle = 'rgba(140,230,255,.6)'; ctx.beginPath(); ctx.moveTo(x, y + 10); ctx.lineTo(x + Math.cos(sa) * 190, y + 10 + Math.sin(sa) * 150); ctx.stroke(); ctx.restore();
+    for (const p of PLANTS) { const dx = (p.x - x) / 190, dy = (p.y - y - 10) / 150; if (dx * dx + dy * dy < 1) { ctx.strokeStyle = 'rgba(140,230,255,.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(p.x, p.y, r * .9, 0, 7); ctx.stroke(); } }
+    softDot(x + 60, y + 90, 40, '#000000', .35);
+    ctx.save(); ctx.translate(x, y); ctx.rotate(ang); ctx.strokeStyle = '#2b2f31'; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(-34, -34); ctx.lineTo(34, 34); ctx.moveTo(-34, 34); ctx.lineTo(34, -34); ctx.stroke();
+    for (const [rx, ry] of [[-34, -34], [34, 34], [-34, 34], [34, -34]]) { ctx.fillStyle = 'rgba(200,210,215,.22)'; ctx.beginPath(); ctx.arc(rx, ry, 24, 0, 7); ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 1; ctx.stroke(); }
+    rrect(-18, -14, 36, 28, 8); ctx.fillStyle = '#1d2123'; ctx.fill(); ctx.fillStyle = P.cyan; ctx.fillRect(10, -3, 8, 6); ctx.restore(); }
+  ctx.restore(); shade();
+  const ha = fade(u, .5, d);
+  txt('DAY', 1290, 210, { font: MONO(13), color: 'rgba(242,236,223,.55)', ls: 2.5, alpha: ha }); txt(String(Math.floor(day)).padStart(3, '0') + ` / ${S.seasonDays}`, 1290, 252, { font: MONO(34, 600), alpha: ha });
+  hudRow('HERBICIDE', '0.0 L', 1530, 210, ha, { color: P.gold2 }); hudRow('WEED CONTROL', `${S.weedControl} %`, 1680, 210, ha);
+  caption('It grows every plant like it’s the only one.', u, .8, 6.0);
+  caption('A digital twin for every plant. A laser for every weed.', u, 6.4, d, { font: SERIF(300, 54) });
+}
+
+// S6: harvest macro — ripeness, precision pick
+function tomato(x, y, r, col, hl = 1) {
+  ctx.save(); ctx.shadowBlur = 30; ctx.shadowColor = 'rgba(0,0,0,.6)';
+  const g = ctx.createRadialGradient(x - r * .35, y - r * .4, r * .1, x, y, r * 1.05); g.addColorStop(0, mix('#ffffff', '#ffffff', 0, .0)); g.addColorStop(0, col); g.addColorStop(1, 'rgba(20,6,4,1)');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(x, y, r * 1.04, r * .94, 0, 0, 7); ctx.fill(); ctx.restore();
+  const s = ctx.createRadialGradient(x - r * .38, y - r * .42, 0, x - r * .38, y - r * .42, r * .5); s.addColorStop(0, `rgba(255,255,255,${.55 * hl})`); s.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = s; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+  ctx.fillStyle = '#2f6b2a'; ctx.save(); ctx.translate(x, y - r * .86); for (let k = 0; k < 5; k++) { ctx.rotate(1.2566); ctx.beginPath(); ctx.ellipse(r * .18, 0, r * .22, r * .06, 0, 0, 7); ctx.fill(); } ctx.restore();
+}
+function solveArm(B, Pt, L1, L2) { const dx = Pt[0] - B[0], dy = Pt[1] - B[1]; let dd = Math.hypot(dx, dy); dd = Math.min(dd, L1 + L2 - 1);
+  const a = Math.atan2(dy, dx) - Math.acos(clamp((L1 * L1 + dd * dd - L2 * L2) / (2 * L1 * dd), -1, 1)); return [B[0] + Math.cos(a) * L1, B[1] + Math.sin(a) * L1]; }
+function link(a, b, w) { ctx.save(); ctx.lineCap = 'round'; ctx.strokeStyle = '#0d0f10'; ctx.lineWidth = w + 6; ctx.beginPath(); ctx.moveTo(...a); ctx.lineTo(...b); ctx.stroke();
+  const g = ctx.createLinearGradient(a[0], a[1] - w, a[0], a[1] + w); g.addColorStop(0, '#5b6266'); g.addColorStop(.5, '#24292c'); g.addColorStop(1, '#141719'); ctx.strokeStyle = g; ctx.lineWidth = w; ctx.stroke();
+  ctx.strokeStyle = 'rgba(214,181,109,.55)'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(a[0], a[1] - w * .3); ctx.lineTo(b[0], b[1] - w * .3); ctx.stroke(); ctx.restore(); }
+function joint(p, r) { ctx.fillStyle = '#1a1d1f'; ctx.beginPath(); ctx.arc(...p, r, 0, 7); ctx.fill(); ctx.strokeStyle = P.gold; ctx.lineWidth = 2.5; ctx.stroke(); ctx.fillStyle = '#3a3f42'; ctx.beginPath(); ctx.arc(...p, r * .45, 0, 7); ctx.fill(); }
+function sHarvest(u, d) {
+  ctx.fillStyle = '#060807'; ctx.fillRect(0, 0, W, H);
+  bokeh(u, 61, 26, ['#3d7a3a', '#2a5a2c', '#e0a050', '#7a9a3a'], 1.6);
+  const cam = 1 + .04 * u / d; ctx.save(); ctx.translate(960, 540); ctx.scale(cam, cam); ctx.translate(-960, -540);
+  // background leaves (defocused)
+  ctx.save(); ctx.filter = 'blur(10px)'; const R = rng(8); for (let i = 0; i < 9; i++) { ctx.fillStyle = `rgba(${30 + R() * 30},${70 + R() * 40},${30 + R() * 20},.7)`; ctx.beginPath(); ctx.ellipse(R() * W, R() * H, 120 + R() * 140, 40 + R() * 40, R() * 3, 0, 7); ctx.fill(); } ctx.restore();
+  const T = [1150, 500], tr = 60;
+  // vine
+  ctx.strokeStyle = '#3f6a2c'; ctx.lineWidth = 9; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(1240, 100); ctx.bezierCurveTo(1200, 260, 1180, 330, 1160, 380); ctx.stroke();
+  ctx.lineWidth = 5; [[1170, 360, 1150, 440], [1180, 340, 1290, 470], [1172, 350, 1040, 600], [1190, 320, 1320, 330]].forEach(([a, b, c, e]) => { ctx.beginPath(); ctx.moveTo(a, b); ctx.quadraticCurveTo((a + c) / 2 + 20, b + 10, c, e - 50); ctx.stroke(); });
+  tomato(1290, 520, 50, mix('#7fae45', '#d9822e', .5)); tomato(1040, 640, 46, '#7fae45'); tomato(1320, 380, 40, '#8cb84b');
+  // timeline
+  const c1 = mix('#6fa43c', '#e08a2e', seg(u, 0, 1.0)), tcol = u < 1 ? c1 : mix('#e08a2e', '#d4301c', seg(u, 1, 2.0));
+  const P0 = [700, 560], ang0 = -.25, angT = 0, Pn = [T[0] - 98, T[1]];
+  let Pp, ang, spread = 80, carry = false, tpos = T.slice();
+  const ap = eio(seg(u, 2.4, 4.4)), pull = eio(seg(u, 4.9, 5.5)), go = eio(seg(u, 5.5, 7.2));
+  const crate = [830, 840];
+  Pp = [lerp(P0[0], Pn[0], ap) + Math.sin(u * 1.3) * 6 * (1 - ap), lerp(P0[1], Pn[1], ap) + Math.cos(u) * 5 * (1 - ap)]; ang = lerp(ang0, angT, ap);
+  if (u > 4.4) spread = lerp(80, 58, eio(seg(u, 4.4, 4.9)));
+  if (u > 4.9) { Pp = [Pn[0] - 46 * pull, Pn[1] + 4 * pull]; ang = angT + .35 * Math.sin(pull * Math.PI); carry = true; }
+  if (u > 5.5) { Pp = [lerp(Pn[0] - 46, crate[0], go), lerp(Pn[1] + 4, crate[1] - 210, go)]; ang = lerp(0, Math.PI / 2, go); }
+  if (u > 7.2) spread = lerp(58, 84, seg(u, 7.2, 7.5));
+  if (carry) tpos = [Pp[0] + Math.cos(ang) * 98, Pp[1] + Math.sin(ang) * 98];
+  const drop = seg(u, 7.3, 7.8); if (drop > 0) tpos = [crate[0] , lerp(crate[1] - 112, crate[1] - 30, drop * drop)];
+  // crate
+  ctx.save(); const cg = ctx.createLinearGradient(0, crate[1] - 40, 0, crate[1] + 120); cg.addColorStop(0, '#2a2420'); cg.addColorStop(1, '#0c0a08'); ctx.fillStyle = cg; rrect(crate[0] - 170, crate[1] - 30, 340, 160, 10); ctx.fill();
+  ctx.strokeStyle = 'rgba(214,181,109,.5)'; ctx.lineWidth = 1.5; ctx.stroke(); for (let k = 0; k < 6; k++) tomato(crate[0] - 120 + k * 48, crate[1] - 22 + (k % 2) * 6, 26, '#c8301c', .6); ctx.restore();
+  // stem snap
+  if (u < 5.3) { ctx.strokeStyle = '#3f6a2c'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(1150, 400); ctx.lineTo(tpos[0], tpos[1] - tr * .85); ctx.stroke(); }
+  else { const sn = seg(u, 5.3, 5.8); ctx.strokeStyle = '#3f6a2c'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(1150, 400); ctx.lineTo(1150 - 6 * sn, 425 + 6 * sn); ctx.stroke(); }
+  tomato(tpos[0], tpos[1], tr, tcol);
+  // watch bezel + detection
+  const ba = fade(u, 1.7, 7.2, .6, .5);
+  if (ba) { ctx.save(); ctx.translate(...T); ctx.globalAlpha = ba;
+    for (let k = 0; k < 60; k++) { const a = k / 60 * 6.283 + u * .05, big = k % 5 === 0; ctx.strokeStyle = big ? P.gold2 : 'rgba(214,181,109,.5)'; ctx.lineWidth = big ? 2.4 : 1;
+      ctx.beginPath(); ctx.moveTo(Math.cos(a) * 128, Math.sin(a) * 128); ctx.lineTo(Math.cos(a) * (big ? 146 : 138), Math.sin(a) * (big ? 146 : 138)); ctx.stroke(); }
+    const sw = seg(u, 2.4, 7.3); ctx.strokeStyle = P.gold2; ctx.lineWidth = 3; ctx.shadowBlur = 14; ctx.shadowColor = P.gold; ctx.beginPath(); ctx.arc(0, 0, 160, -Math.PI / 2, -Math.PI / 2 + sw * 6.283); ctx.stroke();
+    ctx.restore(); }
+  const det = fade(u, 1.9, 4.6, .3, .3); if (det) { brackets(T[0] - 90, T[1] - 90, 180, 180, 22, '#ff8a6a', 2, det);
+    txt('RIPE 0.97', T[0] + 180, T[1] - 70, { font: MONO(16, 600), color: '#ff8a6a', alpha: det }); txt('TWIN FORECAST: TODAY ✓', T[0] + 180, T[1] - 44, { font: MONO(13), color: P.cream, alpha: det }); }
+  // arm
+  const B = [330, 1080], L1 = 470, L2 = 430; const E = solveArm(B, Pp, L1, L2);
+  link(B, E, 46); link(E, Pp, 36); joint(B, 40); joint(E, 30);
+  ctx.save(); ctx.translate(...Pp); ctx.rotate(ang); joint([0, 0], 24);
+  const gg = ctx.createLinearGradient(0, -30, 0, 30); gg.addColorStop(0, '#4a5054'); gg.addColorStop(1, '#16191b'); rrect(10, -34, 50, 68, 10); ctx.fillStyle = gg; ctx.fill(); ctx.strokeStyle = P.gold; ctx.lineWidth = 1.5; ctx.stroke();
+  for (const s of [-1, 1]) { ctx.save(); ctx.translate(56, s * spread * .55); ctx.fillStyle = '#1e2224'; ctx.beginPath(); ctx.moveTo(0, -8 * s); ctx.quadraticCurveTo(50, -s * 4, 86, s * spread * -.22); ctx.lineTo(86, s * spread * -.22 + 12 * s); ctx.quadraticCurveTo(46, s * 14, 0, 10 * s); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = 'rgba(139,230,255,.8)'; for (let k = 0; k < 3; k++) { ctx.beginPath(); ctx.arc(30 + k * 18, s * 4 - s * k * 3, 2, 0, 7); ctx.fill(); } ctx.restore(); }
+  ctx.restore();
+  ctx.restore();
+  // foreground leaf for depth
+  ctx.save(); ctx.filter = 'blur(16px)'; ctx.fillStyle = 'rgba(20,46,22,.9)'; ctx.beginPath(); ctx.ellipse(1800, 920, 380, 120, -.5, 0, 7); ctx.fill(); ctx.beginPath(); ctx.ellipse(80, 200, 260, 80, .6, 0, 7); ctx.fill(); ctx.restore();
+  // readouts
+  const ta = fade(u, 2.4, d, .4);
+  txt('CYCLE TIME', 1500, 650, { font: MONO(13), color: 'rgba(242,236,223,.55)', ls: 2.5, alpha: ta });
+  const cyc = Math.min(S.secondsPerFruit, S.secondsPerFruit * seg(u, 2.4, 7.3));
+  txt(cyc.toFixed(1) + ' s', 1500, 730, { font: SERIF(500, 86), color: P.gold2, alpha: ta });
+  txt('per fruit', 1500, 764, { font: MONO(15), color: 'rgba(242,236,223,.6)', alpha: ta });
+  const sa = fade(u, 7.6, d, .5);
+  txt(`${fmt(S.fruitPicked)} fruit picked  ·  ${S.bruise} % bruised`, 1500, 812, { font: MONO(15), alpha: sa });
+  txt(`${S.secondsPerFruitNoTwin} s → ${S.secondsPerFruit} s with the plant twin`, 1500, 840, { font: MONO(15), color: P.gold, alpha: sa });
+  caption('It picks with a watchmaker’s precision.', u, .8, d);
+}
+
+// S7: grade, pack, sell
+function sMarket(u, d) {
+  ctx.fillStyle = '#060908'; ctx.fillRect(0, 0, W, H); bokeh(u, 77, 14, ['#1f5a40', '#d6b56d'], .7);
+  // conveyor
+  const by = 560, x0 = 130, x1 = 930;
+  ctx.fillStyle = '#121516'; rrect(x0 - 20, by, x1 - x0 + 40, 40, 20); ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,.08)'; ctx.stroke();
+  for (let x = x0 + ((u * 160) % 40); x < x1; x += 40) { ctx.fillStyle = 'rgba(255,255,255,.06)'; ctx.fillRect(x, by + 4, 2, 32); }
+  const sx = 520;
+  // tomatoes
+  for (let k = -2; k < 12; k++) { const x = x0 + ((k * 96 + u * 160) % (96 * 9)); const id = Math.floor((k * 96 + u * 160) / (96 * 9)) * 100 + k; const R = rng(id * 13 + 5); const gA = R() < .922; const col = gA ? '#cf2f1c' : '#d9762e';
+    if (x < x0 - 10 || x > x1 + 30) continue; const lift = seg(x, x1 - 60, x1 + 30);
+    tomato(x, by - 24 - lift * 30, 26, col, .7);
+    if (x > sx + 30) { const ta = seg(x, sx + 30, sx + 80); ctx.save(); ctx.globalAlpha = ta * (1 - lift); rrect(x - 16, by - 92, 32, 26, 6); ctx.fillStyle = gA ? P.gold : '#5a5f62'; ctx.fill(); txt(gA ? 'A' : 'B', x, by - 73, { font: MONO(15, 600), color: '#0b0b0b', align: 'center' }); ctx.restore(); } }
+  // scanner arch + spectrum band
+  ctx.fillStyle = '#1b1f21'; ctx.fillRect(sx - 60, by - 170, 14, 220); ctx.fillRect(sx + 46, by - 170, 14, 220); rrect(sx - 66, by - 190, 132, 30, 8); ctx.fill(); ctx.strokeStyle = P.gold; ctx.lineWidth = 1; ctx.stroke();
+  txt('HSI', sx, by - 169, { font: MONO(12, 600), color: P.gold2, align: 'center', ls: 2 });
+  const band = ctx.createLinearGradient(0, by - 160, 0, by); ['#6a00ff', '#0040ff', '#00c8ff', '#00ff80', '#ffee00', '#ff7a00', '#ff1a1a'].forEach((c, i) => band.addColorStop(i / 6, c));
+  ctx.save(); ctx.globalAlpha = .28 + .1 * Math.sin(u * 12); ctx.fillStyle = band; ctx.fillRect(sx - 44, by - 160, 88, 160); ctx.restore();
+  // reflectance plot
+  ctx.save(); rrect(sx - 160, by - 400, 320, 170, 12); ctx.fillStyle = 'rgba(6,12,10,.85)'; ctx.fill(); ctx.strokeStyle = 'rgba(214,181,109,.35)'; ctx.stroke();
+  txt('REFLECTANCE  400–1000 nm', sx - 140, by - 372, { font: MONO(11), color: 'rgba(242,236,223,.55)', ls: 1.5 });
+  ctx.beginPath(); for (let i = 0; i <= 60; i++) { const w = i / 60; const yv = .15 + .1 * Math.exp(-Math.pow((w - .45) / .08, 2)) + .55 / (1 + Math.exp(-(w - .55) * 18)) + .03 * Math.sin(i * .7 + u * 6);
+      const X = sx - 140 + w * 280, Y = by - 250 - yv * 100; i ? ctx.lineTo(X, Y) : ctx.moveTo(X, Y); }
+  ctx.strokeStyle = P.gold2; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
+  // cold-chain boxes
+  for (let k = 0; k < 3; k++) { const a = seg(u, 1 + k * 1.6, 1.6 + k * 1.6); if (!a) continue; const bx = 960 + (k % 2) * 6, byy = by + 20 - k * 74;
+    ctx.save(); ctx.globalAlpha = a; rrect(bx - 10, byy - 70, 100, 66, 6); ctx.fillStyle = '#d9cfb8'; ctx.fill(); ctx.fillStyle = '#1d1a14'; txt('A · 12.5°C', bx + 40, byy - 32, { font: MONO(11, 600), color: '#1d1a14', align: 'center' }); ctx.restore(); }
+  hudRow('GRADE A', `${S.gradeA} %`, 140, 760, fade(u, .8, d)); hudRow('PICK TO COLD', `${S.pickToCool} h`, 360, 760, fade(u, 1.1, d)); hudRow('SPOILAGE', '0 kg', 610, 760, fade(u, 1.4, d));
+  // market terminal
+  const mx = 1080, my = 180, mw = 710, mh = 700, ma = seg(u, .2, .9);
+  ctx.save(); ctx.globalAlpha = ma; rrect(mx, my + (1 - eout(ma)) * 30, mw, mh, 18); ctx.fillStyle = 'rgba(6,12,10,.9)'; ctx.fill(); ctx.strokeStyle = 'rgba(214,181,109,.4)'; ctx.stroke();
+  txt('AGROBO MARKET', mx + 32, my + 48, { font: MONO(15, 600), color: P.gold, ls: 3 }); glowDot(mx + mw - 92, my + 43, 12, '#5aff9a', .6 + .4 * Math.sin(u * 6)); txt('LIVE', mx + mw - 32, my + 48, { font: MONO(13, 600), color: '#8fe0b0', align: 'right', ls: 2 });
+  const cx0 = mx + 32, cy0 = my + 80, cw = mw - 64, chh = 190, n = SPOT.length, shown = Math.max(2, Math.floor(n * eio(seg(u, .6, 7.5))));
+  ctx.strokeStyle = 'rgba(255,255,255,.06)'; ctx.lineWidth = 1; for (let k = 0; k <= 4; k++) { ctx.beginPath(); ctx.moveTo(cx0, cy0 + k * chh / 4); ctx.lineTo(cx0 + cw, cy0 + k * chh / 4); ctx.stroke(); }
+  const ymin = 1.0, ymax = 2.1, Y = v => cy0 + chh - (v - ymin) / (ymax - ymin) * chh, X = i => cx0 + i / (n - 1) * cw;
+  const area = ctx.createLinearGradient(0, cy0, 0, cy0 + chh); area.addColorStop(0, 'rgba(214,181,109,.25)'); area.addColorStop(1, 'rgba(214,181,109,0)');
+  ctx.beginPath(); ctx.moveTo(X(0), cy0 + chh); for (let i = 0; i < shown; i++) ctx.lineTo(X(i), Y(SPOT[i])); ctx.lineTo(X(shown - 1), cy0 + chh); ctx.fillStyle = area; ctx.fill();
+  ctx.beginPath(); for (let i = 0; i < shown; i++) i ? ctx.lineTo(X(i), Y(SPOT[i])) : ctx.moveTo(X(i), Y(SPOT[i])); ctx.strokeStyle = P.gold2; ctx.lineWidth = 2; ctx.stroke();
+  glowDot(X(shown - 1), Y(SPOT[shown - 1]), 14, '#f3dea4', 1);
+  txt(`SPOT $${SPOT[shown - 1].toFixed(2)}/kg  ·  day ${Math.min(S.seasonDays, shown)}`, cx0, cy0 + chh + 28, { font: MONO(13), color: 'rgba(242,236,223,.6)' });
+  const buyers = [['Retail contract', 'forward', S.buyersTPerHa.retail_contract], ['Foodservice', 'spot', S.buyersTPerHa.foodservice_spot], ['Processor', 'grade B', S.buyersTPerHa.processor]];
+  buyers.forEach(([b, k, t], i) => { const yy = cy0 + chh + 82 + i * 54, a = seg(u, 1.4 + i * .5, 1.8 + i * .5); if (!a) return; const filled = u > 3.2 + i * 1.1;
+    ctx.fillStyle = 'rgba(255,255,255,.04)'; ctx.fillRect(cx0, yy - 30, cw, 44);
+    txt(b, cx0 + 14, yy, { font: SANS(18, 500), alpha: a }); txt(k, cx0 + 220, yy, { font: MONO(13), color: 'rgba(242,236,223,.55)', alpha: a });
+    txt(`${t} t/ha`, cx0 + 400, yy, { font: MONO(16), alpha: a });
+    txt(filled ? 'FILLED ✓' : 'MATCHING…', cx0 + cw - 14, yy, { font: MONO(14, 600), color: filled ? '#8fe0b0' : P.gold, align: 'right', alpha: a * (filled ? 1 : .5 + .5 * Math.sin(u * 10)) }); });
+  const rv = Math.max(0, S.revenuePerHa * S.cumRevenueNorm[shown - 1]);
+  txt('SEASON REVENUE / HECTARE', cx0, my + mh - 92, { font: MONO(13), color: 'rgba(242,236,223,.55)', ls: 2.5 });
+  txt('$' + fmt(rv), cx0, my + mh - 30, { font: SERIF(500, 72), color: P.gold2 });
+  txt(`+${S.uplift} % vs ungraded wholesale`, cx0 + cw, my + mh - 40, { font: MONO(14), color: '#8fe0b0', align: 'right' });
+  ctx.restore();
+  caption('It sells to the best buyer.', u, .8, 5.6);
+  caption('Then it pays you.', u, 6.0, d, { color: P.gold2, font: SERIF(300, 64, 1) });
+}
+
+// S8: payout at dinner
+function sPayout(u, d) {
+  const g = ctx.createRadialGradient(960, 700, 50, 960, 600, 1200); g.addColorStop(0, '#3a220f'); g.addColorStop(.6, '#140b06'); g.addColorStop(1, '#050302'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  bokeh(u, 33, 24, ['#ffb35a', '#ff8a3a', '#f3dea4', '#c06a2a'], 1.5);
+  const dim = 1 - .75 * seg(u, 6.4, 7.2);
+  const notif = eback(seg(u, .8, 1.3)), shake = u > .8 && u < 1.3 ? Math.sin(u * 140) * 4 * (1 - seg(u, .8, 1.3)) : 0;
+  ctx.save(); ctx.globalAlpha = dim * seg(u, 0, .6); ctx.translate(1270 + shake, 540); ctx.rotate(-.07);
+  ctx.save(); ctx.shadowBlur = 80; ctx.shadowColor = 'rgba(0,0,0,.8)'; rrect(-190, -380, 380, 760, 56); ctx.fillStyle = '#1b1814'; ctx.fill(); ctx.restore();
+  rrect(-178, -368, 356, 736, 46); const sg = ctx.createLinearGradient(0, -368, 0, 368); sg.addColorStop(0, u > .5 ? '#1a2a22' : '#000'); sg.addColorStop(1, u > .5 ? '#08100c' : '#000'); ctx.fillStyle = sg; ctx.fill();
+  const on = seg(u, .4, .8); ctx.globalAlpha *= on;
+  txt('7:42', 0, -230, { font: SANS(84, 300), align: 'center' }); txt('Harvest day', 0, -190, { font: SANS(17), align: 'center', color: 'rgba(242,236,223,.6)' });
+  if (u > .8) { ctx.save(); ctx.translate(0, -120 + (1 - notif) * -80); ctx.globalAlpha *= seg(u, .8, 1.0);
+    rrect(-160, -10, 320, 168, 22); ctx.fillStyle = 'rgba(40,36,30,.92)'; ctx.fill(); ctx.strokeStyle = 'rgba(214,181,109,.35)'; ctx.stroke();
+    rrect(-140, 10, 34, 34, 9); const ig = ctx.createLinearGradient(-140, 10, -106, 44); ig.addColorStop(0, '#f3dea4'); ig.addColorStop(1, '#a8843f'); ctx.fillStyle = ig; ctx.fill();
+    txt('A', -123, 35, { font: SERIF(500, 24), color: '#1a1408', align: 'center' });
+    txt('AGROBO', -94, 33, { font: SANS(13, 600), color: 'rgba(242,236,223,.7)', ls: 1.5 }); txt('now', 140, 33, { font: SANS(13), color: 'rgba(242,236,223,.5)', align: 'right' });
+    txt('Your harvest is sold.', -140, 76, { font: SANS(18, 600) });
+    txt(`Season revenue: $${fmt(S.revenuePerHa)} per hectare.`, -140, 104, { font: SANS(15), color: 'rgba(242,236,223,.85)' });
+    txt('Payout on its way.', -140, 128, { font: SANS(15), color: 'rgba(242,236,223,.85)' });
+    txt('SIMULATED', 140, 146, { font: MONO(10, 600), color: P.gold, align: 'right', ls: 1.5 }); ctx.restore(); }
+  ctx.restore();
+  // phone glow on table
+  glowDot(1270, 540, 520, '#8fd4b0', .06 * on * dim);
+  ctx.globalAlpha = 1 - seg(u, 6.3, 6.9);
+  reveal(`${S.seasonDays} days.`, 160, 400, u, 2.0, d, { font: SERIF(300, 84) });
+  reveal('Zero human interventions.', 160, 500, u, 3.2, d, { font: SERIF(300, 64) });
+  reveal('Zero hours of your time.', 160, 590, u, 4.4, d, { font: SERIF(300, 64, 1), color: P.gold2 });
+  ctx.globalAlpha = 1;
+  reveal('You were home for dinner.', 960, 560, u, 7.0, d, { align: 'center', font: SERIF(300, 96, 1), color: P.cream, glow: 40, glowColor: 'rgba(255,170,90,.35)' });
+}
+
+// S9: close
+function sClose(u, d) {
+  ctx.fillStyle = '#030403'; ctx.fillRect(0, 0, W, H);
+  glowDot(960, 470, 700, '#d6b56d', .10 * seg(u, 0, 2));
+  const la = seg(u, .3, 1.6);
+  ctx.save(); ctx.globalAlpha = la; const lw = 520 * eio(seg(u, .2, 1.4)); ctx.fillStyle = P.gold; ctx.fillRect(960 - lw / 2, 520, lw, 1.5); ctx.restore();
+  // wordmark with light sweep
+  const wm = WORDMARK.getContext('2d'); wm.clearRect(0, 0, 1400, 240); wm.globalCompositeOperation = 'source-over';
+  wm.font = SERIF(500, 150); wm.letterSpacing = '46px'; wm.textAlign = 'center'; wm.fillStyle = P.gold; wm.fillText('AGROBO', 723, 170);
+  wm.globalCompositeOperation = 'source-atop'; const sx = lerp(-300, 1700, seg(u, 1.0, 3.2)); const sg = wm.createLinearGradient(sx - 160, 0, sx + 160, 0);
+  sg.addColorStop(0, 'rgba(255,250,235,0)'); sg.addColorStop(.5, 'rgba(255,250,235,.95)'); sg.addColorStop(1, 'rgba(255,250,235,0)'); wm.fillStyle = sg; wm.fillRect(0, 0, 1400, 240);
+  ctx.save(); ctx.globalAlpha = seg(u, .5, 1.8); const k = 1.04 - .04 * eout(seg(u, .5, 3)); ctx.translate(960, 400); ctx.scale(k, k); ctx.drawImage(WORDMARK, -700, -120); ctx.restore();
+  reveal('Own the farm. Not the work.', 960, 620, u, 1.9, d + 5, { align: 'center', font: SERIF(300, 64, 1), color: P.cream });
+  reveal('LAND  ·  PREP  ·  GROW  ·  HARVEST  ·  SELL  ·  PAYOUT', 960, 700, u, 3.2, d + 5, { align: 'center', font: MONO(17, 600), color: P.gold, ls: 4 });
+  reveal('One monthly subscription. The future of farming runs itself.', 960, 746, u, 3.9, d + 5, { align: 'center', font: SANS(20, 300), color: 'rgba(242,236,223,.75)' });
+}
+
+const SCENES = [
+  { a: 0, b: 7, f: sDawn }, { a: 7, b: 15, f: sSubscribe }, { a: 15, b: 25, f: sSourcing, ph: 1, name: 'SOURCING & STRATEGY' },
+  { a: 25, b: 34, f: sPrep, ph: 2, name: 'INFRASTRUCTURE & PREP' }, { a: 34, b: 46, f: sCultivate, ph: 3, name: 'CULTIVATION & MAINTENANCE' },
+  { a: 46, b: 56, f: sHarvest, ph: 4, name: 'ROBOTIC HARVESTING' }, { a: 56, b: 66, f: sMarket, ph: 5, name: 'POST-HARVEST & MARKET' },
+  { a: 66, b: 76, f: sPayout, sim: 1 }, { a: 76, b: 86, f: sClose },
+];
+
+function render(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.filter = 'none'; ctx.shadowBlur = 0;
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+  const sc = SCENES.find(s => t >= s.a && t < s.b) || SCENES[SCENES.length - 1];
+  const u = t - sc.a, d = sc.b - sc.a;
+  ctx.save(); sc.f(u, d); ctx.restore();
+  ctx.globalAlpha = 1; ctx.filter = 'none'; ctx.shadowBlur = 0; ctx.letterSpacing = '0px';
+  // vignette
+  const v = ctx.createRadialGradient(960, 540, 420, 960, 540, 1200); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.62)'); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
+  // scene transitions (dip to black)
+  const fin = sc === SCENES[0] ? 1.4 : .45, fout = sc === SCENES[SCENES.length - 1] ? 1.6 : .4;
+  const vis = Math.min(seg(u, 0, fin), 1 - seg(u, d - fout, d));
+  if (vis < 1) { ctx.fillStyle = `rgba(0,0,0,${1 - vis})`; ctx.fillRect(0, 0, W, H); }
+  // grain
+  ctx.save(); ctx.globalCompositeOperation = 'overlay'; ctx.globalAlpha = .07; const gi = Math.floor(t * 30);
+  ctx.drawImage(GRAIN[gi % 4], -(gi * 37 % 200), -(gi * 53 % 120), W + 200, H + 120); ctx.restore();
+  // letterbox + HUD in the bars
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, LB); ctx.fillRect(0, H - LB, W, LB);
+  const ba = Math.min(seg(u, .2, .9), 1 - seg(u, d - .5, d));
+  if (sc.ph) {
+    txt(`0${sc.ph} / 05`, 140, 76, { font: MONO(14, 600), color: P.gold, ls: 3, alpha: ba });
+    txt(sc.name, 250, 76, { font: MONO(14), color: 'rgba(242,236,223,.8)', ls: 3, alpha: ba });
+    for (let k = 1; k <= 5; k++) { ctx.fillStyle = k < sc.ph ? `rgba(214,181,109,${.8 * ba})` : `rgba(255,255,255,${.12 * ba})`; ctx.fillRect(1500 + (k - 1) * 58, 70, 50, 3);
+      if (k === sc.ph) { ctx.fillStyle = `rgba(243,222,164,${ba})`; ctx.fillRect(1500 + (k - 1) * 58, 70, 50 * seg(u, 0, d), 3); } }
+  }
+  if (sc.ph || sc.sim) {
+    glowDot(146, H - 70, 9, '#d6b56d', ba); txt('SIMULATED', 162, H - 65, { font: MONO(13, 600), color: P.gold, ls: 3, alpha: ba });
+    txt(`Agrobo 125-day season model · 3 seeds · modeled, not field data`, 1780, H - 65, { font: MONO(13), color: 'rgba(242,236,223,.5)', align: 'right', alpha: ba });
+  }
+  if (sc.f === sClose) txt('All figures shown are from Agrobo’s 125-day season simulation (3 seeds). Modeled, not field data.', 960, H - 62, { font: MONO(13), color: 'rgba(242,236,223,.45)', align: 'center', alpha: seg(u, 2, 3) * (1 - seg(u, d - 1.6, d)) });
+}
+
+window.ready = (async () => {
+  await Promise.all(['300 20px Corm', 'italic 300 20px Corm', '500 20px Corm', '400 20px JBM', '600 20px JBM', '300 20px Int', '400 20px Int', '500 20px Int', '600 20px Int'].map(f => document.fonts.load(f)));
+  buildTextures(); buildParcels(); buildField(); WORDMARK = makeCanvas(1400, 240);
+  const q = new URLSearchParams(location.search); render(parseFloat(q.get('t') || '0'));
+  return true;
+})();
+</script></body></html>

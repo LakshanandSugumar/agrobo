@@ -1,0 +1,16 @@
+part_no,subsystem,description,manufacturer,model_mpn,qty,unit_usd,ext_usd,price_basis,vol100_factor,ext_usd_at_100_units,notes
+EE1-001,Mechanical,"ISO 9409-1-50-4-M6 flange adapter, 6061 CNC",Xometry,cad/step/EE1-001,1,85,85,est,0.4,34,
+EE1-002,Mechanical,"Sealed housing, MJF PA12 + O-ring grooves (IP65 target)",Xometry / HP MJF,cad/stl/EE1-002,1,120,120,est,0.3,36,injection mould at volume
+EE1-003,Mechanical,"Front plate with 3 finger clevises, MJF PA12",Xometry,cad/stl/EE1-003,1,45,45,est,0.3,14,
+EE1-004,Mechanical,Fin-Ray finger TPU 95A (3 fitted + 3 spare),in-house FDM / Shore 95A,cad/stl/EE1-004,6,8,48,est,0.5,24,"food-contact TPU; consumable, swap weekly"
+EE1-005,Mechanical,"D405 bracket, 6061",Xometry,cad/step/EE1-005,1,45,45,est,0.4,18,
+EE1-006,Mechanical,"Lead-screw cam ring, bearings, lip seal, O-rings, pins",McMaster-Carr,assorted,1,60,60,est,0.6,36,
+EE1-101,Actuation,"Smart servo, current-based force control, RS485",ROBOTIS,DYNAMIXEL XM430-W350-R,1,290,290,est,0.8,232,grip force via current limit
+EE1-102,Actuation,"Bellows suction cup 40 mm, 1.5 folds, food-grade silicone",Piab,BX40P-class,1,35,35,est,0.8,28,
+EE1-103,Actuation,"Micro linear actuator 100 mm (used 65 mm), position feedback, 12 V",Actuonix,L16-100-63-12-P,1,90,90,est,0.7,63,retracts the suction cup 65 mm to seat the fruit
+EE1-104,Actuation,Cup rod guide: linear bushing + PTFE wiper seal,Misumi / igus,assorted,1,30,30,est,0.7,21,
+EE1-201,Sensing,"Short-range stereo depth camera (7-50 cm), global shutter",RealSense,D405,1,272,272,est,0.85,231,+ rugged 3 m USB-C
+EE1-202,Sensing,ToF proximity sensor in palm (fruit contact distance),ST,VL53L4CD,1,15,15,est,0.8,12,
+EE1-203,Lighting,"LED ring light 24 V, diffused, IP65",Advanced Illumination / generic,,1,60,60,est,0.6,36,constant lighting day + night
+EE1-301,Electrical,"M12 8-pin tool connector, RS485 interface, wiring",Lumberg / ROBOTIS,U2D2-class,1,90,90,est,0.6,54,
+EE1-302,Electrical,"Active USB3 cable 3 m, rugged",Newnex / generic,,1,45,45,est,0.8,36,

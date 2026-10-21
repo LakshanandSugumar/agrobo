@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="weed_seedling">
+    <static>true</static>
+    <plugin filename="gz-sim-label-system" name="gz::sim::systems::Label"><label>4</label></plugin>
+    <link name="link">
+      <visual name="visual"><geometry><mesh><uri>model://weed_seedling/meshes/weed_seedling_2s.obj</uri></mesh></geometry></visual>
+      
+    </link>
+  </model>
+</sdf>

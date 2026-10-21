@@ -1,0 +1,44 @@
+part_no,subsystem,description,manufacturer,model_mpn,qty,unit_usd,ext_usd,price_basis,vol100_factor,ext_usd_at_100_units,notes
+AB1-101,Frame,"T-slot profile 1.5 in square, cut to length (see cut list)",80/20 Inc.,1515 (or 1515-LITE for cross members),1,980,980,est,0.6,588,~21 m total incl. mast; welded 6061 frame at volume
+AB1-102,Frame,"Fastener kit: T-nuts, anchors, 90 deg gussets, M8 SS hardware",80/20 Inc. / McMaster-Carr,assorted,1,650,650,est,0.5,325,"stainless or zinc-nickel, coastal FL"
+AB1-201,Frame,"Deck plate 3 mm 5052-H32, laser cut",SendCutSend,cad/dxf/AB1-201,1,260,260,est,0.5,130,DXF provided
+AB1-202,Frame,"Axle plate 10 mm 6061-T6, laser cut + shaft clamp slot",SendCutSend,cad/dxf/AB1-202,4,55,220,est,0.5,110,DXF provided
+AB1-203,Frame,Leg gusset plate 10 mm 6061-T6,SendCutSend,cad/step (from frame),4,35,140,est,0.5,70,
+AB1-204,Frame,"Shaft clamp block, 6061 CNC, 30 mm bore",Xometry,cad/step,4,70,280,est,0.4,112,confirm hub motor shaft dia + flats
+AB1-205,Frame,Powder coat / hard anodise frame parts,local,,1,400,400,est,0.6,240,salt air + fertiliser exposure
+AB1-301,Drive,"Brushless hub motor 3 kW, 48 V, 130 N m nom / 200 N m peak, IP65",OZO Electric,ref 000500,4,465,1860,quote,0.8,1488,EUR 399 incl. tax https://ozo-electric.com/en/agricultural-construction-wheel-motors/558692-brushless-electric-hub-motor-3000w-130nm-45kmh-48v-to-72v.html
+AB1-302,Drive,"Turf tyre 20x8.00-10 on 10 in steel rim, 4x100",Carlisle / Kenda,Turf Saver 20x8.00-10,4,95,380,est,0.8,304,flotation on sand
+AB1-303,Drive,"FOC motor controller 75 V 100 A, CAN, hall + sensorless",Flipsky,FSESC 75100 (VESC 6 fw),4,165,660,est,0.7,462,potted in AB1-403 box; ros2 vesc driver
+AB1-401,Power,"LFP prismatic cell 3.2 V 105 Ah (16S2P = 51.2 V 210 Ah, 10.75 kWh)",EVE Energy,LF105,32,52,1664,est,0.7,1165,"grade A, matched; UN38.3 for shipping"
+AB1-402,Power,"BMS 16S with CAN, contactor + precharge control",Orion / Ewert Energy,Orion BMS 2 (24-cell),1,950,950,est,0.6,570,
+AB1-403,Power,"Keel pack enclosure 5052 sheet, IP67 gasket, cell compression plates",local sheet-metal,cad/step keel,1,650,650,est,0.5,325,
+AB1-404,Power,"Busbars, cell fuses, thermistors, sense harness",assorted,,1,250,250,est,0.6,150,
+AB1-405,Power,"Main contactor 500 A, 12 V coil, sealed",TE Kilovac,EV200AAANA,1,165,165,est,0.8,132,
+AB1-406,Power,Precharge relay + 50 ohm 50 W resistor,assorted,,1,60,60,est,0.8,48,
+AB1-407,Power,Main fuse 200 A Class T + holder,Littelfuse / Blue Sea,JLLN200 + 5502,1,95,95,est,0.8,76,
+AB1-408,Power,Manual battery disconnect (lockout),Blue Sea,9003e,1,70,70,est,0.8,56,LOTO point for service
+AB1-409,Power,"Battery connector 8 mm, 200 A, IP67, keyed pair",Amphenol,SurLok Plus,1,90,90,est,0.8,72,
+AB1-410,Power,DC-DC 48->24 V 480 W DIN rail,MEAN WELL,DDR-480C-24,1,120,120,est,0.8,96,33.6-67.2 V input
+AB1-411,Power,DC-DC 48->12 V 240 W DIN rail,MEAN WELL,DDR-240C-12,1,80,80,est,0.8,64,Jetson + router
+AB1-412,Power,"Fused distribution: DIN fuse blocks, breakers, terminals",Phoenix Contact,assorted,1,260,260,est,0.7,182,
+AB1-413,Power,Charge inlet: spring dock contacts 2x 150 A + pilot pin,Staubli / REMA,MC / DIN 160A,1,380,380,est,0.6,228,dock side in DK-1
+AB1-501,Safety,"Safety relay, dual-channel E-stop + reset, PL d",Pilz,PNOZ s4 24VDC (750104),1,310,310,est,0.9,279,
+AB1-502,Safety,"E-stop mushroom, IP69K, 2NC, yellow housing",IDEC / Schneider,XW1E / XB4,4,45,180,est,0.8,144,4 corners
+AB1-503,Safety,"Wireless E-stop transmitter + receiver, 1 km",Humanistic Robotics,HRI Wireless Emergency Stop,1,1950,1950,est,0.8,1560,one handheld per field tech
+AB1-504,Safety,Pressure-sensitive safety edge bumper + controller,Mayser / ASO,SENTIR edge + SG-EFS,2,480,960,est,0.8,768,front + rear
+AB1-505,Safety,Safety contactors (drive bus + arm bus cut),Schneider,TeSys D LC1D25BD,2,120,240,est,0.9,216,
+AB1-506,Safety,"Stack light / beacon IP67, RGB + buzzer",Banner,TL50 Pro,1,180,180,est,0.8,144,
+AB1-601,Compute,"Edge computer 275 TOPS, 64 GB",NVIDIA,Jetson AGX Orin 64GB Developer Kit,1,3499,3499,quote,0.85,2974,post-July-2026 price https://www.cnx-software.com/2026/07/22/nvidia-increases-the-price-of-jetson-modules-and-devkits-by-up-to-101/; rugged carrier at volume
+AB1-602,Compute,"NVMe SSD 2 TB industrial (logging, Field Ledger cache)",Innodisk / Samsung,PM9A3-class,1,220,220,est,0.8,176,
+AB1-603,Compute,Real-time I/O MCU + 3x CAN-FD (micro-ROS),PJRC + SK Pang,Teensy 4.1 + triple CAN board,1,95,95,est,0.6,57,"motors, BMS, safety status"
+AB1-606,Comms,"Industrial unmanaged Ethernet switch 8x GbE, 12-48 VDC",Moxa,EDS-208A-T,1,220,220,est,0.8,176,"lidar, 2 arms, router, Teensy"
+AB1-607,Compute,"Powered industrial USB3 hub, 4 port, locking",StarTech / Advantech,ST4300USB3GB-class,1,160,160,est,0.8,128,"2x D405, GNSS, IMU"
+AB1-604,Comms,"5G/LTE industrial router, dual SIM, Wi-Fi 6",Teltonika,RUTX50,1,520,520,est,0.8,416,
+AB1-605,Comms,"Roof antennas 5G MIMO + Wi-Fi, IP67",Taoglas / Poynting,MA1508 / OMNI-402,1,160,160,est,0.8,128,
+AB1-701,Sensing,"3D lidar 360x59 deg, 70 m, IP67",Livox,Mid-360,1,749,749,quote,0.8,599,https://www.livoxtech.com/news/mid360_launch
+AB1-702,Sensing,Dual-antenna RTK GNSS heading kit (2x ZED-F9P + 2 antennas),ArduSimple,simpleRTK2B Heading kit,1,650,650,est,0.8,520,FDOT FPRN NTRIP corrections (free in FL)
+AB1-703,Sensing,Tactical-grade AHRS IMU,HBK MicroStrain,3DM-CV7-AHRS,1,1000,1000,est,0.8,800,
+AB1-801,Enclosure,"IP66 enclosure ~600x300x150, polycarbonate, under deck",Fibox / Hammond,ARCA / 1414 series,1,260,260,est,0.7,182,
+AB1-802,Enclosure,"Thermoelectric enclosure cooler 24 V, ~120 W cooling",EIC Solutions,ThermoTEC AAC-141-4XT (24 VDC),1,1100,1100,est,0.7,770,Florida summer: 35 C ambient + sun
+AB1-803,Harness,"Wire, Deutsch DT/DTM connectors, M12, glands, loom, labels",TE / Amphenol / Lapp,see electrical/harness.csv,1,650,650,est,0.6,390,
+AB1-804,Lighting,LED work/flood light 24 V 40 W IP68,Rigid Industries,D-Series Pro flood,4,180,720,est,0.6,432,night picking (18 h/day)

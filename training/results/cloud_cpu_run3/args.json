@@ -1,0 +1,13 @@
+{
+  "steps": 1000000,
+  "envs": 4,
+  "name": "cloud_cpu_run3",
+  "seed": 0,
+  "bc_episodes": 200,
+  "min_clearance": 0.0,
+  "eval_every": 150000,
+  "eval_episodes": 40,
+  "critic_warmup": 300000,
+  "device": "cpu",
+  "resume": null
+}

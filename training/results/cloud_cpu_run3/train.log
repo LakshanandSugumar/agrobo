@@ -1,0 +1,17 @@
+BC demos: 75/200 successful expert episodes, 6806 steps
+  BC epoch 0: mse 0.2422
+  BC epoch 10: mse 0.0365
+  BC epoch 20: mse 0.0242
+  BC epoch 30: mse 0.0193
+  BC epoch 39: mse 0.0162
+critic warm-up: 300000 steps with the actor frozen
+[        0 steps,     53s] success=0.00 clean_success=0.00 knocked=0.12 dropped=0.10 bruised=0.07 cycle_s=None
+[   303108 steps,    107s] success=0.00 clean_success=0.00 knocked=0.12 dropped=0.10 bruised=0.05 cycle_s=None
+[   303112 steps,    158s] success=0.00 clean_success=0.00 knocked=0.12 dropped=0.10 bruised=0.03 cycle_s=None
+[   450000 steps,    901s] success=0.00 clean_success=0.00 knocked=0.05 dropped=0.03 bruised=0.03 cycle_s=None
+[   600000 steps,   1641s] success=0.00 clean_success=0.00 knocked=0.07 dropped=0.03 bruised=0.00 cycle_s=None
+[   750000 steps,   2387s] success=0.00 clean_success=0.00 knocked=0.03 dropped=0.00 bruised=0.00 cycle_s=None
+[   900000 steps,   3122s] success=0.00 clean_success=0.00 knocked=0.00 dropped=0.00 bruised=0.00 cycle_s=None
+[  1050000 steps,   3865s] success=0.00 clean_success=0.00 knocked=0.00 dropped=0.03 bruised=0.00 cycle_s=None
+[  1200000 steps,   4594s] success=0.00 clean_success=0.00 knocked=0.00 dropped=0.05 bruised=0.03 cycle_s=None
+done -> runs/pick/cloud_cpu_run3

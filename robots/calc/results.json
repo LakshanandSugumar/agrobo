@@ -1,0 +1,19 @@
+{
+ "mass_gross_kg": 434,
+ "cog_z_m": 0.556,
+ "lat_tip_deg": 27.5,
+ "lat_tip_worst_deg": 25.9,
+ "long_tip_deg": 44.7,
+ "T_cont_Nm": 54,
+ "T_peak_Nm": 162,
+ "P_harvest_W": 1094,
+ "runtime_h": 8.8,
+ "charge_h": 2.9,
+ "duty_h_day": 17.8,
+ "pack_kWh": 10.75,
+ "reach_coverage_pct": 99.8,
+ "cycle_s_per_arm": 9.0,
+ "fruit_per_h": 680,
+ "robot_s_per_fruit": 5.3,
+ "ground_pressure_kPa": 55
+}

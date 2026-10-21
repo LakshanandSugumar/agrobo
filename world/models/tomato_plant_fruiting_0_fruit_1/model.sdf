@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <model name="tomato_plant_fruiting_0_fruit_1">
+    <static>true</static>
+    <link name="link">
+      <visual name="visual"><geometry><mesh><uri>model://tomato_plant_fruiting_0_fruit_1/meshes/tomato_plant_fruiting_0_fruit_1.obj</uri></mesh></geometry>
+        <plugin filename="gz-sim-label-system" name="gz::sim::systems::Label"><label>1</label></plugin></visual>
+    </link>
+  </model>
+</sdf>

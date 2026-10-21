@@ -1,0 +1,52 @@
+[
+ {
+  "model": "tomato_plant_fruiting_1_fruit_0",
+  "class": "ripe",
+  "label": 1,
+  "xyz": [
+   -0.0125,
+   0.0986,
+   0.2978
+  ]
+ },
+ {
+  "model": "tomato_plant_fruiting_1_fruit_1",
+  "class": "turning",
+  "label": 2,
+  "xyz": [
+   0.1114,
+   0.0184,
+   0.2976
+  ]
+ },
+ {
+  "model": "tomato_plant_fruiting_1_fruit_2",
+  "class": "unripe",
+  "label": 3,
+  "xyz": [
+   -0.0366,
+   0.0708,
+   0.5452
+  ]
+ },
+ {
+  "model": "tomato_plant_fruiting_1_fruit_3",
+  "class": "turning",
+  "label": 2,
+  "xyz": [
+   0.0527,
+   0.0706,
+   0.2723
+  ]
+ },
+ {
+  "model": "tomato_plant_fruiting_1_fruit_4",
+  "class": "turning",
+  "label": 2,
+  "xyz": [
+   0.1044,
+   0.0515,
+   0.3052
+  ]
+ }
+]

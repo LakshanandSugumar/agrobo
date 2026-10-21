@@ -1,0 +1,61 @@
+{
+ "Prototype model": {
+  "ugv_per_ha": 1.23,
+  "parts": {
+   "ugv": 67650,
+   "uav": 60,
+   "hauler": 3750,
+   "hub": 3750,
+   "prep": 1500
+  },
+  "total": 76710
+ },
+ "Real BOM, pilot prices, sim cycle time, mechanical weeder": {
+  "ugv_per_ha": 1.243820224719101,
+  "per_ugv": 59524,
+  "parts": {
+   "ugv": 74037,
+   "uav": 55,
+   "hauler": 3711,
+   "hub": 3750,
+   "prep": 0
+  },
+  "total": 81553
+ },
+ "Real BOM, pilot prices, sim cycle time, laser weeder": {
+  "ugv_per_ha": 1.243820224719101,
+  "per_ugv": 72874,
+  "parts": {
+   "ugv": 90642,
+   "uav": 55,
+   "hauler": 3711,
+   "hub": 3750,
+   "prep": 0
+  },
+  "total": 98158
+ },
+ "Real BOM, 100-unit prices, sim cycle time, mechanical weeder": {
+  "ugv_per_ha": 1.243820224719101,
+  "per_ugv": 43580,
+  "parts": {
+   "ugv": 54206,
+   "uav": 41,
+   "hauler": 2783,
+   "hub": 3750,
+   "prep": 0
+  },
+  "total": 60781
+ },
+ "Real BOM, 100-unit prices, design-target cycle time, mechanical weeder": {
+  "ugv_per_ha": 0.8240308988764045,
+  "per_ugv": 43580,
+  "parts": {
+   "ugv": 35912,
+   "uav": 41,
+   "hauler": 2783,
+   "hub": 3750,
+   "prep": 0
+  },
+  "total": 42486
+ }
+}

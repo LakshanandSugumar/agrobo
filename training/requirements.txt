@@ -1,0 +1,15 @@
+# Agrobo training stack. PyTorch is installed separately by the setup scripts (CUDA 12.8 build, needed for RTX 50-series).
+ultralytics>=8.3
+mujoco>=3.2
+gymnasium>=1.0
+stable-baselines3>=2.4
+scipy
+numpy
+pillow
+opencv-python
+imageio
+imageio-ffmpeg
+tensorboard
+bpy>=4.4          # Blender as a Python module (photoreal dataset generator); needs the Python version bpy targets (3.13 for bpy 5.x)
+onnx
+onnxslim

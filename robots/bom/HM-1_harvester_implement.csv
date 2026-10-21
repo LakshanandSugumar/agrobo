@@ -1,0 +1,14 @@
+part_no,subsystem,description,manufacturer,model_mpn,qty,unit_usd,ext_usd,price_basis,vol100_factor,ext_usd_at_100_units,notes
+HM1-001,Arms,"6-axis cobot 5 kg / 922 mm, IP54 arm, DC MINI controller 30-60 VDC",FAIRINO,FR5 (DC controller),2,6999,13998,quote,0.85,11898,https://top3dshop.com/product/fairino-fr5-robotic-arm; confirm DC controller price + IP65 option
+HM1-002,Arms,"Arm dress pack + cable carrier (vacuum, RS485, 24 V, USB3)",igus,triflex R TRE.40,2,250,500,est,0.7,350,
+HM1-003,Arms,"Arm rain/dust cover, breathable PTFE fabric",RoboSuits / Roboworld,custom FR5,2,450,900,est,0.6,540,keeps the IP54 arm usable in FL rain
+HM1-101,Mast,"Arm mount plate 20 mm 6061, machined",Xometry,cad/dxf/HM1-101,2,140,280,est,0.5,140,verify FR5 base bolt pattern from vendor drawing
+HM1-102,Mast,1530 profile posts + beams (in AB1-101 cut list) + gussets,80/20 Inc.,1530,1,520,520,est,0.6,312,
+HM1-201,Perception,"Stereo camera, global shutter, GMSL2, IP67, wide lens",Stereolabs,ZED X (ZED-311110),2,599,1198,quote,0.85,1018,https://stereolabs.com/store/products/zed-x-stereo-camera
+HM1-202,Perception,"GMSL2 capture card, 2 ports, for AGX Orin",Stereolabs,ZED Link Duo,1,379,379,quote,0.85,322,https://stereolabs.com/store/products/zed-x-stereo-camera
+HM1-203,Perception,GMSL2 Fakra cable 5 m,Stereolabs,,2,45,90,quote,0.8,72,
+HM1-301,Vacuum,"Diaphragm vacuum pump 24 V, -75 kPa, 10 L/min",Parker / Thomas,BTC-IIS / 2002 series,2,220,440,est,0.7,308,one per arm
+HM1-302,Vacuum,3/2 solenoid valve 24 V + blow-off,SMC,VQ110 / SYJ3000,2,60,120,est,0.8,96,
+HM1-303,Vacuum,Digital vacuum switch (seal / contact detect),SMC,ZSE20A,2,110,220,est,0.8,176,
+HM1-401,Logistics,"Stacking tote 600x500x350, food-grade, foam liner",ORBIS,Stak-N-Nest equiv.,2,75,150,est,0.8,120,35 kg fruit each
+HM1-402,Logistics,Tote transfer deck: 24 V MDR roller zone + driver card,Interroll,EC5000 + DriveControl 20,2,1200,2400,est,0.6,1440,rolls totes sideways to the hauler at the headland

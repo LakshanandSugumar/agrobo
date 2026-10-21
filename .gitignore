@@ -10,3 +10,20 @@ simulation/ros2_ws/log/
 node_modules/
 .env
 .env.local
+
+# Monorepo: regenerable and oversized outputs stay out of git
+*.zip
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.pkl
+film/out/
+film/v*/frames/
+film/v*/segs/
+film/**/finish.log
+training/results/**/best_model*
+training/runs/
+world/synth/out/
+.env.*
+!.env.example

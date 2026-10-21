@@ -1,0 +1,10 @@
+assembly,length_mm,qty,ends,note
+AB-1 base frame + legs,153,12,tap 5/16-18 both ends,"80/20 1515, clear anodised"
+AB-1 base frame + legs,302,6,tap 5/16-18 both ends,"80/20 1515, clear anodised"
+AB-1 base frame + legs,362,4,tap 5/16-18 both ends,"80/20 1515, clear anodised"
+AB-1 base frame + legs,1500,4,anchor holes per drawing,"80/20 1515, clear anodised"
+HM-1 mast (1530 = 2x 1515),340,2,tap 5/16-18 both ends,"80/20 1515, clear anodised"
+HM-1 mast (1530 = 2x 1515),410,4,tap 5/16-18 both ends,"80/20 1515, clear anodised"
+HM-1 mast (1530 = 2x 1515),660,1,tap 5/16-18 both ends,"80/20 1515, clear anodised"
+HM-1 mast (1530 = 2x 1515),1190,4,anchor holes per drawing,"80/20 1515, clear anodised"
+TOTAL,18836,37,,18.8 m of profile

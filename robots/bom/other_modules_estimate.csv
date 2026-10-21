@@ -1,0 +1,22 @@
+module,line,qty,unit_usd,ext_usd
+LW-1 laser weeder implement (2 heads),"Sealed RF CO2 laser 100 W, air-cooled",2,9000,18000
+LW-1 laser weeder implement (2 heads),10.6 um galvo scan head + F-theta,2,3500,7000
+LW-1 laser weeder implement (2 heads),Light-tight hood with brush skirt + interlocks (Class 4),1,1500,1500
+LW-1 laser weeder implement (2 heads),Global-shutter RGB cameras + strobe,2,800,1600
+LW-1 laser weeder implement (2 heads),"Cooling, frame, auto-coupler, harness",1,2600,2600
+LW-1M mechanical aisle cultivator (alternative),"Electric rotary hoe 0.7 m (aisle between plastic beds), 48 V 1.5 kW",1,2600,2600
+LW-1M mechanical aisle cultivator (alternative),"Depth wheels, guard, coupler, harness",1,1400,1400
+SP-1 spot sprayer implement (replaces micro-doser),"100 L tank, 48 V pump, 12 PWM nozzles with per-plant targeting",1,3800,3800
+SP-1 spot sprayer implement (replaces micro-doser),Cameras + frame + coupler,1,1600,1600
+"HL-1 hauler (AB-1 base + tote rack, no arms)","AB-1 base (see AB-1 sheet, less nothing)",1,24487,24487
+"HL-1 hauler (AB-1 base + tote rack, no arms)",8-tote rack with 4 MDR roller zones,1,5200,5200
+"SU-1 scout UAV (ArduPilot quad, multispectral)",Holybro X650 frame + motors + ESCs,1,900,900
+"SU-1 scout UAV (ArduPilot quad, multispectral)",Pixhawk 6X + power module,1,450,450
+"SU-1 scout UAV (ArduPilot quad, multispectral)",Holybro H-RTK F9P (rover),1,600,600
+"SU-1 scout UAV (ArduPilot quad, multispectral)",Multispectral camera (MicaSense RedEdge-P class),1,7500,7500
+"SU-1 scout UAV (ArduPilot quad, multispectral)",6S 10 Ah batteries x4 + charger,1,1100,1100
+"SU-1 scout UAV (ArduPilot quad, multispectral)",Telemetry + LTE companion (Pi 5),1,450,450
+DK-1 dock/charger (serves ~2 UGVs),"LFP charger 3.5 kW 48 V, CAN (Delta-Q IC3500 class)",1,1800,1800
+DK-1 dock/charger (serves ~2 UGVs),"Dock contacts, guide rails, concrete pad",1,1500,1500
+DK-1 dock/charger (serves ~2 UGVs),Shade/rain shelter (steel carport kit),1,2500,2500
+DK-1 dock/charger (serves ~2 UGVs),Implement-swap stand with locating cones,2,900,1800

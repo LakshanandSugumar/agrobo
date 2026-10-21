@@ -1,0 +1,27 @@
+wire_id,from,to,signal,cable,awg,fuse,connector_from,connector_to,length_m
+W001,BT1 +,F1,BAT+,single core,2,200 A,SurLok Plus 8 mm,M8 lug,0.4
+W002,F1,S1 disconnect,BAT+,single core,2,,M8 lug,M10 lug,0.3
+W003,S1,K0 main contactor,BAT+,single core,2,,M10 lug,M8 lug,0.4
+W004,K0,+48 V busbar,BUS+,single core,2,,M8 lug,M8 lug,0.3
+W005,BT1 -,shunt -> -48 V busbar,BUS-,single core,2,,SurLok Plus 8 mm,M8 lug,0.6
+W010-013,busbar F2-F5 via K1,VESC 1-4 B+/B-,DRIVE,2-core,8,40 A each,M6 lug,XT90 / lug,1.4
+W014-017,VESC 1-4,hub motor 1-4,3-phase,3x single + hall,10 + 24,,MR60 / Deutsch DT06-6S,motor leads,1.2
+W020-021,busbar F6/F7 via K2,FR5 DC controller L/R,ARM PWR,2-core,10,30 A each,M6 lug,controller terminal,2.0
+W030,busbar F8,PS1 48->24 V,48 V,2-core,12,20 A,ferrule,ferrule,0.4
+W031,busbar F9,PS2 48->12 V,48 V,2-core,14,10 A,ferrule,ferrule,0.4
+W040,PS1 24 V block F11,SR1 PNOZ s4 A1/A2,24 V,2-core,18,3 A,ferrule,ferrule,0.3
+W041,SR1 13-14,K1 coil,SAFE OUT 1,2-core,18,,ferrule,ferrule,0.4
+W042,SR1 23-24,K2 coil,SAFE OUT 2,2-core,18,,ferrule,ferrule,0.4
+W043,SR1 S11-S12 chain,"ES1..ES4, WES1, SE1/SE2",ESTOP CH1,4-core shielded,20,,M12 A-coded 4p,M12 A-coded 4p,7.0
+W044,SR1 S21-S22 chain,"ES1..ES4, WES1, SE1/SE2",ESTOP CH2,(same cable),20,,,,0.0
+W050,PS2 12 V F18,Jetson DC in,12 V,2-core,16,8 A,ferrule,5.5x2.5 barrel (locking),0.5
+W051,PS2 12 V F19,RUTX50,12 V,2-core,20,3 A,ferrule,4-pin Molex,0.5
+W060,ETH SW1,Livox Mid-360,GbE + 24 V,M12 X-coded + power,Cat6A,2 A,M12 X 8p,Livox M12 aviation,2.5
+W061-062,ETH SW1,FR5 L/R controller,GbE,Cat6A outdoor,,,RJ45 IP67,RJ45,2.0
+W070-071,ZED Link Duo,ZED X L/R,GMSL2 + PoC,Fakra coax 5 m,,,Fakra Z,Fakra Z,5.0
+W080-081,Jetson USB3,D405 L/R (through arm dress pack),USB3,"active USB3, 3 m",,,USB-A locking,USB-C screw lock,3.0
+W082-083,PS1 24 V F15 + RS485,EE L/R tool connector,24 V + RS485 + ring light,"8-core shielded, hi-flex",24,3 A,M12 A 8p,M12 A 8p,3.0
+W084-085,vacuum pump L/R,EE suction cup,vacuum,PU tube 6/4 mm,,,push-in,push-in,3.0
+W090,Teensy CAN1,VESC 1-4 CAN,CAN-FD,"2x2 twisted shielded, 120 ohm ends",22,,Deutsch DTM-4,JST-PH,2.5
+W091,Teensy CAN2,Orion BMS + dock charger,CAN,2x2 twisted shielded,22,,Deutsch DTM-4,Molex,1.5
+W100,J1 dock contacts,F21 -> K3 charge contactor,CHG+,single core,4,125 A,M8 lug,M8 lug,1.2

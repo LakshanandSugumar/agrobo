@@ -1,0 +1,18 @@
+{
+ "base_pilot": 24487,
+ "base_vol100": 17852,
+ "hm1_pilot": 21195,
+ "hm1_vol100": 16793,
+ "ee1_pilot": 1330,
+ "ee1_vol100": 875,
+ "harvester_robot_pilot": 48342,
+ "harvester_robot_vol100": 36394,
+ "other_modules_pilot": {
+  "LW-1 laser weeder implement (2 heads)": 30700,
+  "LW-1M mechanical aisle cultivator (alternative)": 4000,
+  "SP-1 spot sprayer implement (replaces micro-doser)": 5400,
+  "HL-1 hauler (AB-1 base + tote rack, no arms)": 29687,
+  "SU-1 scout UAV (ArduPilot quad, multispectral)": 11000,
+  "DK-1 dock/charger (serves ~2 UGVs)": 7600
+ }
+}

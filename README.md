@@ -4,12 +4,17 @@
 
 ![Agrobo landing page](screenshots/home.png)
 
-This repository holds both halves of the November milestone:
+This repository holds everything built for the November milestone:
 
 | Folder | What it is |
 |---|---|
 | [`web/`](web/) | The company website and live platform demo. Next.js 16 + TypeScript, deployable to Vercel. Its APIs run the simulation's models ported to TypeScript. |
 | [`simulation/`](simulation/) | The ROS 2 Jazzy + Gazebo Harmonic simulation of a full 125-day tomato season across all five lifecycle phases, with the twin-vs-no-twin ablation and KPI report. |
+| [`robots/`](robots/) | Hardware rev A: harvester UGV and common base. CAD (STEP/DXF/STL), BOM, schematics, URDF, build plan. `cad/src/params.py` is the source of truth. |
+| [`training/`](training/) | Perception and picking-RL training pipelines (CPU smoke tests in cloud, real runs on a local GPU). |
+| [`world/`](world/) | ROS 2 + Gazebo robot training world with auto-labelled tomatoes and weeds, randomized fields and a Blender image generator. |
+| [`land/`](land/) | SW Florida farmland shortlist. The parcel analyzer lives in `simulation/tools/land_analyzer.py`. |
+| [`film/`](film/) | Source for the product film (scene scripts, overlays, score). Rendered frames and MP4s are not in git. |
 
 > All performance numbers (cost per kg, picker speed, fleet size, revenue uplift) come from the simulation. Perception, manipulation, prices and costs are calibrated models, not field data. The website labels them as simulated.
 

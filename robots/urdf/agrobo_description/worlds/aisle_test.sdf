@@ -1,0 +1,342 @@
+<?xml version="1.0"?>
+<!-- Minimal Florida bed/aisle test world for the harvester: two plastic-mulched beds on 1.83 m centres, stakes, tomato spheres.
+     For the full photoreal training field use /mnt/project-files/agrobo-world. -->
+<sdf version="1.9"><world name="aisle_test">
+<physics name="1ms" type="ignored"><max_step_size>0.002</max_step_size><real_time_factor>1.0</real_time_factor></physics>
+<plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+<plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+<plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+<spherical_coordinates><surface_model>EARTH_WGS84</surface_model><world_frame_orientation>ENU</world_frame_orientation>
+<latitude_deg>26.64</latitude_deg><longitude_deg>-81.87</longitude_deg><elevation>5</elevation><heading_deg>0</heading_deg></spherical_coordinates>
+<light type="directional" name="sun"><cast_shadows>true</cast_shadows><pose>0 0 10 0 0 0</pose><diffuse>1 0.96 0.9 1</diffuse><direction>-0.4 0.3 -0.9</direction></light>
+<model name="ground"><static>true</static><link name="l"><collision name="c"><geometry><plane><normal>0 0 1</normal><size>60 60</size></plane></geometry>
+<surface><friction><ode><mu>0.8</mu><mu2>0.8</mu2></ode></friction></surface></collision>
+<visual name="v"><geometry><plane><normal>0 0 1</normal><size>60 60</size></plane></geometry><material><diffuse>0.76 0.68 0.52 1</diffuse></material></visual></link></model>
+<model name="bed_0"><static>true</static><pose>0 0.915 0.1 0 0 0</pose><link name="l">
+<collision name="c"><geometry><box><size>12 0.81 0.2</size></box></geometry></collision>
+<visual name="v"><geometry><box><size>12 0.81 0.2</size></box></geometry><material><diffuse>0.05 0.05 0.05 1</diffuse></material></visual></link></model>
+<model name="stake_0_0"><static>true</static><pose>-5.00 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_1"><static>true</static><pose>-4.49 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_2"><static>true</static><pose>-3.98 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_3"><static>true</static><pose>-3.47 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_4"><static>true</static><pose>-2.96 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_5"><static>true</static><pose>-2.45 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_6"><static>true</static><pose>-1.94 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_7"><static>true</static><pose>-1.43 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_8"><static>true</static><pose>-0.92 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_9"><static>true</static><pose>-0.41 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_10"><static>true</static><pose>0.10 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_11"><static>true</static><pose>0.61 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_12"><static>true</static><pose>1.12 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_13"><static>true</static><pose>1.63 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_14"><static>true</static><pose>2.14 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_15"><static>true</static><pose>2.65 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_16"><static>true</static><pose>3.16 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_17"><static>true</static><pose>3.67 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_18"><static>true</static><pose>4.18 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_0_19"><static>true</static><pose>4.69 0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="bed_1"><static>true</static><pose>0 -0.915 0.1 0 0 0</pose><link name="l">
+<collision name="c"><geometry><box><size>12 0.81 0.2</size></box></geometry></collision>
+<visual name="v"><geometry><box><size>12 0.81 0.2</size></box></geometry><material><diffuse>0.05 0.05 0.05 1</diffuse></material></visual></link></model>
+<model name="stake_1_0"><static>true</static><pose>-5.00 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_1"><static>true</static><pose>-4.49 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_2"><static>true</static><pose>-3.98 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_3"><static>true</static><pose>-3.47 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_4"><static>true</static><pose>-2.96 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_5"><static>true</static><pose>-2.45 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_6"><static>true</static><pose>-1.94 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_7"><static>true</static><pose>-1.43 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_8"><static>true</static><pose>-0.92 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_9"><static>true</static><pose>-0.41 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_10"><static>true</static><pose>0.10 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_11"><static>true</static><pose>0.61 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_12"><static>true</static><pose>1.12 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_13"><static>true</static><pose>1.63 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_14"><static>true</static><pose>2.14 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_15"><static>true</static><pose>2.65 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_16"><static>true</static><pose>3.16 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_17"><static>true</static><pose>3.67 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_18"><static>true</static><pose>4.18 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="stake_1_19"><static>true</static><pose>4.69 -0.915 0.85 0 0 0</pose><link name="l">
+<visual name="v"><geometry><box><size>0.025 0.025 1.3</size></box></geometry><material><diffuse>0.5 0.37 0.22 1</diffuse></material></visual></link></model>
+<model name="fruit_0_0_0"><static>true</static><pose>-4.987 0.760 0.676 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_0_1"><static>true</static><pose>-5.130 0.813 1.044 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_0_2"><static>true</static><pose>-5.080 0.666 0.696 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_1_0"><static>true</static><pose>-4.497 0.719 1.245 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_1_1"><static>true</static><pose>-4.380 0.737 1.053 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_1_2"><static>true</static><pose>-4.621 0.701 1.088 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_2_0"><static>true</static><pose>-4.121 0.685 0.736 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_2_1"><static>true</static><pose>-3.866 0.708 1.133 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_2_2"><static>true</static><pose>-3.890 0.748 0.825 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_3_0"><static>true</static><pose>-3.591 0.795 1.285 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_3_1"><static>true</static><pose>-3.489 0.721 1.367 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_3_2"><static>true</static><pose>-3.504 0.762 0.932 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_4_0"><static>true</static><pose>-2.839 0.713 1.005 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_4_1"><static>true</static><pose>-2.813 0.714 1.264 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_4_2"><static>true</static><pose>-2.821 0.679 1.268 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_5_0"><static>true</static><pose>-2.537 0.690 1.128 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_5_1"><static>true</static><pose>-2.581 0.687 0.721 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_5_2"><static>true</static><pose>-2.360 0.753 0.534 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_6_0"><static>true</static><pose>-1.859 0.684 0.729 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_6_1"><static>true</static><pose>-2.077 0.707 1.034 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_6_2"><static>true</static><pose>-1.796 0.739 1.287 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_7_0"><static>true</static><pose>-1.557 0.725 0.744 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_7_1"><static>true</static><pose>-1.458 0.723 0.638 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_7_2"><static>true</static><pose>-1.320 0.768 0.490 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_8_0"><static>true</static><pose>-0.957 0.746 1.302 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_8_1"><static>true</static><pose>-0.891 0.731 1.062 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_8_2"><static>true</static><pose>-0.918 0.750 1.344 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_9_0"><static>true</static><pose>-0.470 0.668 0.676 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_9_1"><static>true</static><pose>-0.557 0.753 0.971 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_9_2"><static>true</static><pose>-0.375 0.720 0.469 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_10_0"><static>true</static><pose>0.090 0.713 1.046 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_10_1"><static>true</static><pose>0.171 0.812 1.122 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_10_2"><static>true</static><pose>0.239 0.777 1.092 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_11_0"><static>true</static><pose>0.556 0.760 1.013 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_11_1"><static>true</static><pose>0.639 0.770 0.801 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_11_2"><static>true</static><pose>0.468 0.730 1.184 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_12_0"><static>true</static><pose>1.037 0.694 0.745 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_12_1"><static>true</static><pose>1.101 0.710 0.628 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_12_2"><static>true</static><pose>1.070 0.690 0.756 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_13_0"><static>true</static><pose>1.531 0.764 1.263 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_13_1"><static>true</static><pose>1.615 0.781 1.291 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_13_2"><static>true</static><pose>1.537 0.694 0.953 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_14_0"><static>true</static><pose>2.074 0.694 0.624 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_14_1"><static>true</static><pose>2.094 0.796 1.216 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_14_2"><static>true</static><pose>2.071 0.763 1.204 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_15_0"><static>true</static><pose>2.623 0.677 0.849 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_15_1"><static>true</static><pose>2.783 0.683 0.454 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_15_2"><static>true</static><pose>2.785 0.676 0.863 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_16_0"><static>true</static><pose>3.261 0.716 1.158 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_16_1"><static>true</static><pose>3.112 0.781 0.725 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_16_2"><static>true</static><pose>3.096 0.693 1.009 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_0_17_0"><static>true</static><pose>3.728 0.676 1.308 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_17_1"><static>true</static><pose>3.693 0.813 1.305 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_17_2"><static>true</static><pose>3.610 0.716 0.613 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_18_0"><static>true</static><pose>4.312 0.723 0.843 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_18_1"><static>true</static><pose>4.288 0.743 0.690 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_18_2"><static>true</static><pose>4.089 0.735 0.784 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_19_0"><static>true</static><pose>4.778 0.677 0.613 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_19_1"><static>true</static><pose>4.542 0.721 1.232 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_0_19_2"><static>true</static><pose>4.621 0.775 0.497 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_0_0"><static>true</static><pose>-5.008 -0.699 0.852 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_0_1"><static>true</static><pose>-5.112 -0.796 0.502 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_0_2"><static>true</static><pose>-4.894 -0.802 1.376 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_1_0"><static>true</static><pose>-4.546 -0.762 0.750 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_1_1"><static>true</static><pose>-4.532 -0.786 1.007 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_1_2"><static>true</static><pose>-4.473 -0.708 0.568 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_2_0"><static>true</static><pose>-4.076 -0.759 0.526 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_2_1"><static>true</static><pose>-4.016 -0.695 1.193 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_2_2"><static>true</static><pose>-4.018 -0.741 0.860 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_3_0"><static>true</static><pose>-3.412 -0.746 0.849 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_3_1"><static>true</static><pose>-3.411 -0.804 0.959 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_3_2"><static>true</static><pose>-3.356 -0.675 0.855 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_4_0"><static>true</static><pose>-2.873 -0.776 1.303 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_4_1"><static>true</static><pose>-2.866 -0.716 0.567 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_4_2"><static>true</static><pose>-2.910 -0.705 1.203 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_5_0"><static>true</static><pose>-2.424 -0.814 0.548 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_5_1"><static>true</static><pose>-2.587 -0.801 1.186 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_5_2"><static>true</static><pose>-2.546 -0.811 1.286 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_6_0"><static>true</static><pose>-1.837 -0.714 0.565 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_6_1"><static>true</static><pose>-1.916 -0.695 1.355 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_6_2"><static>true</static><pose>-1.937 -0.708 1.179 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_7_0"><static>true</static><pose>-1.300 -0.806 1.162 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_7_1"><static>true</static><pose>-1.332 -0.779 0.986 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_7_2"><static>true</static><pose>-1.395 -0.702 0.687 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_8_0"><static>true</static><pose>-0.951 -0.762 0.799 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_8_1"><static>true</static><pose>-0.920 -0.669 0.529 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_8_2"><static>true</static><pose>-1.022 -0.711 1.160 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_9_0"><static>true</static><pose>-0.405 -0.742 1.090 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_9_1"><static>true</static><pose>-0.515 -0.801 1.303 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_9_2"><static>true</static><pose>-0.405 -0.749 1.321 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_10_0"><static>true</static><pose>0.030 -0.785 0.627 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_10_1"><static>true</static><pose>0.020 -0.711 0.749 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_10_2"><static>true</static><pose>0.162 -0.753 0.731 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_11_0"><static>true</static><pose>0.540 -0.782 1.005 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_11_1"><static>true</static><pose>0.575 -0.789 0.906 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_11_2"><static>true</static><pose>0.692 -0.793 0.756 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_12_0"><static>true</static><pose>1.150 -0.745 0.906 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_12_1"><static>true</static><pose>1.137 -0.743 1.231 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_12_2"><static>true</static><pose>1.090 -0.705 1.264 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_13_0"><static>true</static><pose>1.549 -0.780 0.894 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_13_1"><static>true</static><pose>1.768 -0.687 1.092 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_13_2"><static>true</static><pose>1.558 -0.787 0.630 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_14_0"><static>true</static><pose>2.260 -0.777 1.266 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_14_1"><static>true</static><pose>2.117 -0.706 0.748 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_14_2"><static>true</static><pose>2.240 -0.771 0.538 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_15_0"><static>true</static><pose>2.703 -0.814 1.001 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_15_1"><static>true</static><pose>2.646 -0.783 0.864 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_15_2"><static>true</static><pose>2.617 -0.733 1.358 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_16_0"><static>true</static><pose>3.210 -0.798 0.711 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_16_1"><static>true</static><pose>3.039 -0.674 1.313 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_16_2"><static>true</static><pose>3.237 -0.771 1.184 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_17_0"><static>true</static><pose>3.762 -0.775 1.071 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_17_1"><static>true</static><pose>3.722 -0.735 1.363 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_17_2"><static>true</static><pose>3.626 -0.707 0.919 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_18_0"><static>true</static><pose>4.085 -0.718 0.988 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_18_1"><static>true</static><pose>4.297 -0.717 0.620 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+<model name="fruit_1_18_2"><static>true</static><pose>4.072 -0.765 1.335 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_19_0"><static>true</static><pose>4.706 -0.718 1.018 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_19_1"><static>true</static><pose>4.593 -0.805 0.747 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="fruit_1_19_2"><static>true</static><pose>4.703 -0.704 1.167 0 0 0</pose><link name="l">
+<visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.55 0.72 0.25 1</diffuse></material></visual></link></model>
+<model name="target_fruit"><static>true</static><pose>0.15 0.76 0.98 0 0 0</pose><link name="l"><visual name="v"><geometry><sphere><radius>0.036</radius></sphere></geometry><material><diffuse>0.8 0.15 0.08 1</diffuse></material></visual></link></model>
+</world></sdf>

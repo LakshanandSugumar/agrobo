@@ -1,0 +1,9 @@
+{
+  "success": 0.175,
+  "clean_success": 0.15,
+  "knocked": 0.0,
+  "dropped": 0.025,
+  "bruised": 0.075,
+  "cycle_s": 7.785714285714286,
+  "steps": 400000
+}
