@@ -57,14 +57,23 @@ Classes: 0 immature green (leave), 1 **mature green** (the main Florida pick tar
 | `train_ppo.py` | Behaviour-clones the expert's successful episodes, then runs PPO (SB3) on parallel sims with VecNormalize. It evaluates on held-out plants every 250 k steps and keeps the best model by clean picks minus knock-offs. |
 | `evaluate.py` | Runs the learnt policy and the scripted picker on the same 200 held-out plants, writes `pick_kpis.json` and films `picks.mp4`. |
 
-### Results so far (cloud CPU)
+### Results so far (cloud CPU, 4 sims, 1.3 M steps each)
+
+Scored on the same 200 held-out plants:
 
 | | success | clean (no bruise) | knocked neighbour | dropped | cycle |
 |---|---|---|---|---|---|
-| scripted picker, 50 held-out plants | 42% | 14% | 12% | 18% | 4.2 s |
-| PPO, 120 k-step smoke run (4 CPU sims) | 0-5% | 0-5% | 15-30% | 0-10% | ~9 s |
+| scripted picker | 37% | 16.5% | 19.5% | n/a | 4.2 s |
+| run 4: BC + PPO, frozen obs normalisation (best at 750 k) | 29% | **22%** | 25.5% | 23% | 4.1 s |
+| run 5: same + BC loss kept during PPO (best at 900 k) | 27% | 17.5% | 22.5% | 22% | 4.1 s |
 
-The smoke run only proves the loop works: 120 k steps is about 0.6% of a real run. The scripted numbers are what the learnt policy has to beat. The biggest gap is bruising: the scripted picker grips at one fixed level, so half its picks squeeze past the bruise limit. Learning a gentler, ripeness-aware grip is where PPO should win first. The sim runs at about 210 steps/s per CPU thread.
+What we learnt:
+- Runs 1-3 collapsed to 0% because VecNormalize kept re-estimating the observation scaling during PPO, so the behaviour-cloned actor saw shifted inputs. `train_ppo.py` now freezes the scaling at the demo statistics. With that fix the policy holds its starting skill through the critic warm-up.
+- The learnt policy already beats the scripted picker on clean picks (22% vs 16.5%), because it bruises less. It does not yet beat it on total picks. 1.3 M steps is about 6% of the 20 M-step real run.
+- Keeping a BC loss during PPO (`--bc-reg 1`) did not help at this length, so it is off by default.
+- Evals on 40 plants are noisy (about ±8 points). Trust the 200-plant `evaluate.py` scores.
+
+Results, logs and videos are in `results/cloud_cpu_run*`. The sim runs at about 210 steps/s per CPU thread.
 
 ## Honest limits
 

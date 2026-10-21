@@ -115,7 +115,7 @@ if __name__ == '__main__':
     ap.add_argument('--min-clearance', type=float, default=0., help='lower = more cluttered trusses (try -0.01 after a first run)')
     ap.add_argument('--eval-every', type=int, default=250_000); ap.add_argument('--eval-episodes', type=int, default=50)
     ap.add_argument('--critic-warmup', type=int, default=300_000, help='steps that fit only the value function after BC')
-    ap.add_argument('--bc-reg', type=float, default=1., help='weight of the BC loss kept during PPO (0 = off)')
+    ap.add_argument('--bc-reg', type=float, default=0., help='weight of a BC loss kept during PPO (0 = off; 1.0 did not help in cloud run 5)')
     ap.add_argument('--device', default='cpu'); ap.add_argument('--resume')
     a = ap.parse_args()
     out = os.path.join('runs', 'pick', a.name); os.makedirs(out, exist_ok=True)

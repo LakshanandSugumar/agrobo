@@ -1,0 +1,49 @@
+BC demos: 75/200 successful expert episodes, 6806 steps
+  BC epoch 0: mse 0.2422
+  BC epoch 10: mse 0.0365
+  BC epoch 20: mse 0.0242
+  BC epoch 30: mse 0.0193
+  BC epoch 39: mse 0.0162
+critic warm-up: 300000 steps with the actor frozen
+[        0 steps,     36s] success=0.30 clean_success=0.20 knocked=0.28 dropped=0.28 bruised=0.23 cycle_s=4.25
+[   303108 steps,     73s] success=0.30 clean_success=0.20 knocked=0.28 dropped=0.28 bruised=0.23 cycle_s=4.25
+[   303112 steps,    107s] success=0.30 clean_success=0.20 knocked=0.28 dropped=0.28 bruised=0.23 cycle_s=4.25
+[   450000 steps,    980s] success=0.28 clean_success=0.17 knocked=0.35 dropped=0.25 bruised=0.25 cycle_s=4.50
+[   600000 steps,   1892s] success=0.17 clean_success=0.10 knocked=0.35 dropped=0.30 bruised=0.30 cycle_s=3.92
+[   750000 steps,   2961s] success=0.42 clean_success=0.25 knocked=0.23 dropped=0.23 bruised=0.25 cycle_s=4.06
+Process SpawnProcess-1:
+Process SpawnProcess-2:
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "/usr/lib/python3.13/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/venv/lib/python3.13/site-packages/stable_baselines3/common/vec_env/subproc_vec_env.py", line 33, in _worker
+    cmd, data = remote.recv()
+                ~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 255, in recv
+    buf = self._recv_bytes()
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 435, in _recv_bytes
+    buf = self._recv(4)
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 400, in _recv
+    chunk = read(handle, remaining)
+ConnectionResetError: [Errno 104] Connection reset by peer
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
+    self.run()
+    ~~~~~~~~^^
+  File "/usr/lib/python3.13/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/venv/lib/python3.13/site-packages/stable_baselines3/common/vec_env/subproc_vec_env.py", line 33, in _worker
+    cmd, data = remote.recv()
+                ~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 255, in recv
+    buf = self._recv_bytes()
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 435, in _recv_bytes
+    buf = self._recv(4)
+  File "/usr/lib/python3.13/multiprocessing/connection.py", line 400, in _recv
+    chunk = read(handle, remaining)
+ConnectionResetError: [Errno 104] Connection reset by peer
