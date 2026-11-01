@@ -1,0 +1,95 @@
+{
+  "method": "Robot cost per hour = capex x (capital recovery at 10% over 5 years + 10% maintenance) + $12k/yr fixed, over hours per year. Robot kg/h = 3600 / cycle_s x kg per fruit x pick success. Break-even is the pick success where robot $/kg equals the price per kg (crew $/kg, less any pilot discount). None = not reachable even at 100%. All inputs are assumptions, not field data.",
+  "assumptions": {
+    "crew_usd_h": 22.0,
+    "crew_kg_h": 85.0,
+    "cycle_s": 5.3,
+    "kg_per_fruit": 0.2,
+    "hours_per_year": 1500,
+    "life_years": 5,
+    "rate": 0.1,
+    "maint_frac": 0.1,
+    "fixed_usd_year": 12000,
+    "price_discount": 0.0
+  },
+  "crew_usd_per_kg": 0.259,
+  "robots": [
+    {
+      "robot": "Rev A.1 at 100 units (imported parts)",
+      "robot_usd": 36400,
+      "at_100pct": {
+        "robot_usd_per_kg": 0.124,
+        "crew_equivalents": 1.6
+      },
+      "break_even": {
+        "Base: 85 kg/h crews, 1,500 h/yr": 0.48,
+        "Pilot price 15% below crew cost": 0.56,
+        "Two seasons or regions: 3,000 h/yr": 0.24,
+        "Fast mature-green crews: 150 kg/h": 0.84,
+        "Faster robot: 3.0 s/fruit": 0.27
+      }
+    },
+    {
+      "robot": "Rev A.1 pilot BOM (imported parts)",
+      "robot_usd": 48342,
+      "at_100pct": {
+        "robot_usd_per_kg": 0.145,
+        "crew_equivalents": 1.6
+      },
+      "break_even": {
+        "Base: 85 kg/h crews, 1,500 h/yr": 0.56,
+        "Pilot price 15% below crew cost": 0.66,
+        "Two seasons or regions: 3,000 h/yr": 0.28,
+        "Fast mature-green crews: 150 kg/h": 0.99,
+        "Faster robot: 3.0 s/fruit": 0.32
+      }
+    },
+    {
+      "robot": "Rev A.1 built (BOM + assembly)",
+      "robot_usd": 51942,
+      "at_100pct": {
+        "robot_usd_per_kg": 0.152,
+        "crew_equivalents": 1.6
+      },
+      "break_even": {
+        "Base: 85 kg/h crews, 1,500 h/yr": 0.59,
+        "Pilot price 15% below crew cost": 0.69,
+        "Two seasons or regions: 3,000 h/yr": 0.29,
+        "Fast mature-green crews: 150 kg/h": null,
+        "Faster robot: 3.0 s/fruit": 0.33
+      }
+    },
+    {
+      "robot": "Rev B US-sourced, pilot BOM",
+      "robot_usd": 125395,
+      "at_100pct": {
+        "robot_usd_per_kg": 0.283,
+        "crew_equivalents": 1.6
+      },
+      "break_even": {
+        "Base: 85 kg/h crews, 1,500 h/yr": null,
+        "Pilot price 15% below crew cost": null,
+        "Two seasons or regions: 3,000 h/yr": 0.55,
+        "Fast mature-green crews: 150 kg/h": null,
+        "Faster robot: 3.0 s/fruit": 0.62
+      }
+    },
+    {
+      "robot": "Rev B US-sourced, built",
+      "robot_usd": 129895,
+      "at_100pct": {
+        "robot_usd_per_kg": 0.291,
+        "crew_equivalents": 1.6
+      },
+      "break_even": {
+        "Base: 85 kg/h crews, 1,500 h/yr": null,
+        "Pilot price 15% below crew cost": null,
+        "Two seasons or regions: 3,000 h/yr": 0.56,
+        "Fast mature-green crews: 150 kg/h": null,
+        "Faster robot: 3.0 s/fruit": 0.64
+      }
+    }
+  ],
+  "max_robot_usd_at_55pct": 46800.0,
+  "max_robot_usd_at_55pct_3000h": 126500.0
+}
