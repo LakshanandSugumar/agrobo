@@ -39,7 +39,7 @@ export default function Home() {
               The farm that <span className="font-serif font-normal italic text-lime">runs itself.</span>
             </h1>
             <p className="mt-6 max-w-xl text-[18px] leading-relaxed text-[#b7c4bd] md:text-[20px]">
-              Agrobo is an autonomous farm operator. We automate the dirty work of farming, from buying the land to selling
+              Agrobo is an autonomous farm operator. We automate the dirty work of farming, from choosing the land to selling
               the crop. Software makes the decisions, a small modular fleet does the field work, and one plant-level digital
               twin runs it all.
             </p>
@@ -55,7 +55,7 @@ export default function Home() {
               <span className="h-1 w-1 rounded-full bg-[#3b5246]" />
               <span>16 nodes, 5 lifecycle phases</span>
               <span className="h-1 w-1 rounded-full bg-[#3b5246]" />
-              <span>0 human interventions</span>
+              <span>0 interventions in simulation</span>
             </div>
           </div>
           <LedgerConsole days={days} />
@@ -66,7 +66,7 @@ export default function Home() {
       <section className="border-b border-line bg-card">
         <div className="container-x py-12">
           <div className="mb-8 flex items-center justify-between gap-4">
-            <p className="text-[14px] text-muted">One simulated tomato season, mean of 3 seeds, versus a conventional fresh-market baseline.</p>
+            <p className="text-[14px] text-muted">One simulated tomato season (360 m² plot, scaled per hectare), mean of 3 seeds, versus a conventional fresh-market baseline. Assumes a 95% pick success rate; our learnt picker is at 29% today (<Link href="/results#pick-success" className="underline">see sensitivity</Link>).</p>
             <Modeled />
           </div>
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">

@@ -4,6 +4,7 @@ import { PageHead } from "@/components/PageHead";
 import { Card } from "@/components/ui";
 import { kpi, kpiSummary } from "@/lib/data";
 import { C } from "@/lib/palette";
+import pick from "@/data/pick_sensitivity.json";
 
 export const metadata: Metadata = { title: "Simulation results" };
 
@@ -59,6 +60,32 @@ export default function Page() {
               rows={[
                 { label: "Twin on", value: capex.twin.mean, display: `$${(capex.twin.mean / 1000).toFixed(0)}k`, color: C.agrobo },
                 { label: "Twin off", value: capex.no_twin.mean, display: `$${(capex.no_twin.mean / 1000).toFixed(0)}k`, color: C.blue },
+              ]}
+            />
+          </div>
+        </Card>
+      </section>
+
+      <section id="pick-success" className="container-x scroll-mt-24 pb-12">
+        <Card className="p-6">
+          <div className="text-[15px] font-semibold">Pick-success sensitivity</div>
+          <p className="mt-2 max-w-3xl text-[14px] leading-relaxed text-ink-2">
+            The season sim assumes a 95% pick success rate. Our learnt picker is at 29% today, after about 6% of its planned
+            training. Re-scaling harvest robot-hours, maintenance and the UGV fleet to lower pick rates (ignoring dropped
+            and bruised fruit, which flatters us) gives break-even with hand crews at about{" "}
+            {(pick.break_even_pick_success * 100).toFixed(0)}% and $0.30/kg at about {(pick.pick_success_for_usd_0_30 * 100).toFixed(0)}%.
+            An estimate on the runs above, not a new simulation run.
+          </p>
+          <div className="mt-5">
+            <HBars
+              rows={[
+                ...pick.points.map((pt) => ({
+                  label: `${pt.label}, ${(pt.pick_success * 100).toFixed(0)}%`,
+                  value: pt.agrobo_usd_per_kg,
+                  display: `$${pt.agrobo_usd_per_kg.toFixed(3)}/kg`,
+                  color: pt.agrobo_usd_per_kg > pick.conventional_usd_per_kg ? C.muted : C.agrobo,
+                })),
+                { label: "Conventional hand crew", value: pick.conventional_usd_per_kg, display: `$${pick.conventional_usd_per_kg.toFixed(3)}/kg`, color: C.conventional },
               ]}
             />
           </div>

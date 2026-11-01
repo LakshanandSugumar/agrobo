@@ -1,6 +1,6 @@
 # Agrobo
 
-**The autonomous farm operator.** Agrobo automates farming end to end, from buying the land to selling the crop. Software makes the decisions, a small modular robot fleet does the physical work, and one plant-level digital twin (the *Field Ledger*) runs it all.
+**The autonomous farm operator.** Agrobo automates farming end to end, from choosing the land to selling the crop. Software makes the decisions, a small modular robot fleet does the physical work, and one plant-level digital twin (the *Field Ledger*) runs it all.
 
 ![Agrobo landing page](screenshots/home.png)
 
@@ -15,6 +15,8 @@ This repository holds everything built for the November milestone:
 | [`world/`](world/) | ROS 2 + Gazebo robot training world with auto-labelled tomatoes and weeds, randomized fields and a Blender image generator. |
 | [`land/`](land/) | SW Florida farmland shortlist. The parcel analyzer lives in `simulation/tools/land_analyzer.py`. |
 | [`film/`](film/) | Source for the product film (scene scripts, overlays, score). Rendered frames and MP4s are not in git. |
+
+> The season sim assumes a 95% pick success rate; the learnt picker in `training/` is at 29% today. `simulation/tools/pick_sensitivity.py` re-scales OpEx for lower pick rates: break-even with hand crews is about 32%, and $0.30/kg needs about 55% ([results](simulation/results/REPORT.md#pick-success-sensitivity)).
 
 > All performance numbers (cost per kg, picker speed, fleet size, revenue uplift) come from the simulation. Perception, manipulation, prices and costs are calibrated models, not field data. The website labels them as simulated.
 
