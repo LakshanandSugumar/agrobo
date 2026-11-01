@@ -1,0 +1,28 @@
+{
+  "method": "This re-scales each twin-guided run's harvest robot-hours, maintenance and UGV fleet by 0.95 / p, holding energy, supervision and inputs fixed. It ignores fruit dropped or bruised by failed picks, so it flatters Agrobo. It is a back-of-envelope estimate on existing run outputs, not a new simulation run.",
+  "seeds": [
+    "twin_s11",
+    "twin_s23",
+    "twin_s7"
+  ],
+  "conventional_usd_per_kg": 0.491,
+  "points": [
+    {
+      "label": "Assumed in the season sim",
+      "pick_success": 0.95,
+      "agrobo_usd_per_kg": 0.185
+    },
+    {
+      "label": "Scripted picker today",
+      "pick_success": 0.42,
+      "agrobo_usd_per_kg": 0.381
+    },
+    {
+      "label": "Learnt picker today (run 4)",
+      "pick_success": 0.29,
+      "agrobo_usd_per_kg": 0.538
+    }
+  ],
+  "break_even_pick_success": 0.32,
+  "pick_success_for_usd_0_30": 0.55
+}
