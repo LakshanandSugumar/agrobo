@@ -60,3 +60,24 @@ EE = dict(
     tcp_z=0.205,          # flange to grasp centre
     cam_x=0.080, cam_z=0.065,   # D405 optical centre, aimed at the TCP (keeps fingers in the lower image edge)
 )
+
+# ================================================================ REV B: made-in-USA sourcing (Laksh, 2026-11-01)
+# Rev B swaps parts for US sources. Values below are what the new parts force; items marked TODO need the vendor
+# drawing before CAD/URDF are regenerated (build.py and generate_urdf.py still model rev A.1 geometry).
+REV = "B"
+ARM_REVB = dict(
+    model="Standard Bots Spark (designed and assembled in Glen Cove, NY)",
+    payload=7.0, reach=0.95, mass=21.0, ip="IP65 (design)", power="AC mains controller; no DC input stated -> 48 V to 120 VAC inverter",
+    peak_w=1500, typical_w=200, base_dia=0.200,
+    kinematics="TODO: vendor URDF; joint ranges not published. FR5 DH kept as placeholder in ARM.",
+)
+DRIVE_REVB = dict(   # no confirmed US-made hub motor: inboard motor + right-angle reducer per wheel
+    type="inboard BLDC + Winsmith RD right-angle reducer, 12:1, wheel on reducer output shaft",
+    ratio=12.0, motor_cont_Nm=4.6, motor_peak_Nm=13.8, motor_rpm_at_1p5ms=680,
+    reducer_envelope=(0.20, 0.16, 0.18),   # TODO confirm from Winsmith RD catalogue (x, y, z) m
+    mass_per_wheel=12.5 + 7.0 + 4.0,      # motor + reducer + tyre/rim; +4 kg vs hub motor (estimate)
+    note="Reducer sits inboard of each wheel at the leg: axle plate becomes a reducer mount; keel width (0.29 m) still clears.",
+)
+LIDAR_REVB = dict(model="Ouster OS0-64 (made in US and Thailand; specify US-built units)", dia=0.087, height=0.074, mass=0.45, vfov_deg=90)
+STEREO_REVB = dict(model="Carnegie Robotics MultiSense S27 (built in USA)", interface="GbE", baseline=0.27,
+                   note="27 cm baseline vs 12 cm ZED X: wider camera bar at sensor_bar_z; TODO dims from datasheet")

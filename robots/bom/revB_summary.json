@@ -1,0 +1,20 @@
+{
+ "revB_robot_pilot": 125395,
+ "revB_assembly": 4500,
+ "revB_robot_pilot_incl_assembly": 129895,
+ "by_origin_usd": {
+  "US?": 35468,
+  "US": 10840,
+  "NONE": 8087,
+  "US-ASSY": 71000
+ },
+ "by_origin_share": {
+  "US?": 0.283,
+  "US": 0.086,
+  "NONE": 0.064,
+  "US-ASSY": 0.566
+ },
+ "revA1_robot_pilot": 48342,
+ "revA1_robot_pilot_incl_assembly": 51942,
+ "delta_vs_revA1_pct": 150
+}

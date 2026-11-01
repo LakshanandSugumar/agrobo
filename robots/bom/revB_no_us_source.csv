@@ -1,0 +1,11 @@
+part_no,rev_a_part,rev_b_description,supplier,model,origin,qty,unit_usd,ext_usd,price_basis,lead_time,mechanical_change,notes
+AB1-302,Carlisle Turf Saver,Turf tyre 20x8.00-10 on steel rim,"US tyre maker TBD (Titan, Quincy IL?)",20x8.00-10,NONE,4,120,480,est,2 wk,,no confirmed US-built small turf tyre; get COO
+AB1-401,EVE LF105 (China),LFP cell 3.2 V 105 Ah (16S2P),imported (no US small-volume source),EVE LF105,NONE,32,52,1664,est,6-10 wk,,"US LFP plants (Tesla NV, LGES Lansing H2 2027) sell to OEM/ESS only, https://www.teslarati.com/tesla-us-lfp-battery-supply-lg-deal-report/"
+AB1-601,Jetson AGX Orin,Edge AI computer 64 GB,NVIDIA (made in Asia),Jetson AGX Orin 64GB,NONE,1,3499,3499,quote,2-4 wk,,no US-made AI compute module exists at this class
+AB1-602,NVMe SSD,Industrial NVMe 2 TB,imported,,NONE,1,220,220,est,1 wk,,
+AB1-604,Teltonika RUTX50 (LT),5G industrial router,Digi International (MN),IX25 (TAA compliant),NONE,1,1100,1100,est,2-4 wk,,"TAA-compliant is not US-made; no US-built 5G router found, https://www.digi.com/products/networking/cellular-routers/industrial"
+AB1-607,USB hub,Powered USB3 hub (D405s only),imported,,NONE,1,160,160,est,1 wk,,
+HM1-303,SMC ZSE20,Vacuum switch,US maker TBD,,NONE,2,150,300,est,2 wk,,no confirmed US-made digital vacuum switch
+EE1-201,RealSense D405,Short-range depth camera 7-50 cm,RealSense (imported),D405,NONE,2,272,544,est,2 wk,,no US-made depth camera works at 0.1 m (Carnegie MultiSense starts ~0.5 m)
+EE1-202,ST VL53L4CD,ToF proximity sensor,imported,,NONE,2,15,30,est,1 wk,,
+EE1-302,USB3 cable,Active USB3 cable 3 m,imported,,NONE,2,45,90,est,1 wk,,

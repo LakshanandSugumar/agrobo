@@ -1,4 +1,6 @@
-# Agrobo robots: hardware design package (rev A.1, 2026-10-21)
+# Agrobo robots: hardware design package (rev B BOM, 2026-11-01; geometry rev A.1)
+
+**Rev B (2026-11-01): US-sourced BOM.** Every part with a US-made or US-assembled option is swapped, e.g. the Standard Bots Spark arms (NY), Ouster lidar, MultiSense S27 stereo, and inboard motors with Winsmith reducers. The cost is **$125.4k per robot at pilot quantity, or $129.9k with assembly**, against $51.9k for rev A.1 (+150 %). The arms account for most of the increase. Rev B qualifies for "Assembled in USA" but not an unqualified FTC "Made in USA" claim: cells, Jetson and the D405 still have no US source, which is 6.4 % of the value. See [docs/05_REVB_MADE_IN_USA.md](docs/05_REVB_MADE_IN_USA.md) and `bom/Agrobo_BOM_revB.xlsx`. The CAD, URDF and calcs below still describe the rev A.1 geometry.
 
 Rev A.1: suction-cup stroke 30 → 65 mm (linear actuator), FR5 datasheet joint ranges in URDF/IK, side-mount approach notes. Found by the training sim.
 
