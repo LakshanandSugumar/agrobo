@@ -150,6 +150,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "harvester":
         out = harvester_report()
         dest = Path(sys.argv[2] if len(sys.argv) > 2 else "results", "harvester_break_even.json")
+        dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(json.dumps(out, indent=2) + "\n")
         print(json.dumps(out, indent=2))
     else:
