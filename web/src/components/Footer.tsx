@@ -8,7 +8,7 @@ export function Footer() {
         <div>
           <Logo dark className="text-white" />
           <p className="mt-4 max-w-xs text-[14px] leading-relaxed text-[#8fa197]">
-            The autonomous farm operator. We automate farming&apos;s dirty work, from the land deal to the last sale.
+            AI tomato-picking robots for Florida growers. Designed and assembled in the USA.
           </p>
         </div>
         <FooterCol

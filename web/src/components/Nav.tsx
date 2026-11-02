@@ -6,7 +6,8 @@ import { useState } from "react";
 import { Logo } from "./Logo";
 
 const LINKS = [
-  { href: "/#lifecycle", label: "How it works" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#economics", label: "Numbers" },
   { href: "/platform", label: "Platform" },
   { href: "/technology", label: "Technology" },
   { href: "/results", label: "Results" },
@@ -26,7 +27,7 @@ export function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              className={`transition-colors hover:text-ink ${path.startsWith(l.href) && l.href !== "/#lifecycle" ? "text-ink font-medium" : ""}`}
+              className={`transition-colors hover:text-ink ${path.startsWith(l.href) && !l.href.startsWith("/#") ? "text-ink font-medium" : ""}`}
             >
               {l.label}
             </Link>
@@ -40,7 +41,7 @@ export function Nav() {
             href="/early-access"
             className="rounded-full bg-ink px-4 py-2 text-[14px] font-medium text-paper transition hover:bg-brand-ink"
           >
-            Get early access
+            Become a pilot grower
           </Link>
         </div>
         <button
@@ -67,7 +68,7 @@ export function Nav() {
               onClick={() => setOpen(false)}
               className="mt-2 rounded-full bg-ink px-4 py-3 text-center font-medium text-paper"
             >
-              Get early access
+              Become a pilot grower
             </Link>
           </div>
         </nav>

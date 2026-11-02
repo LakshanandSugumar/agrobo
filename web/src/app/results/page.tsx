@@ -4,6 +4,7 @@ import { PageHead } from "@/components/PageHead";
 import { Card } from "@/components/ui";
 import { kpi, kpiSummary } from "@/lib/data";
 import { C } from "@/lib/palette";
+import harvest from "@/data/harvester_break_even.json";
 import pick from "@/data/pick_sensitivity.json";
 
 export const metadata: Metadata = { title: "Simulation results" };
@@ -70,11 +71,13 @@ export default function Page() {
         <Card className="p-6">
           <div className="text-[15px] font-semibold">Pick-success sensitivity</div>
           <p className="mt-2 max-w-3xl text-[14px] leading-relaxed text-ink-2">
-            The season sim assumes a 95% pick success rate. Our learnt picker is at 29% today, after about 6% of its planned
-            training. Re-scaling harvest robot-hours, maintenance and the UGV fleet to lower pick rates (ignoring dropped
-            and bruised fruit, which flatters us) gives break-even with hand crews at about{" "}
-            {(pick.break_even_pick_success * 100).toFixed(0)}% and $0.30/kg at about {(pick.pick_success_for_usd_0_30 * 100).toFixed(0)}%.
-            An estimate on the runs above, not a new simulation run.
+            The season sim assumes a 95% pick success rate. Our learnt picker gets 29% of fruit off today (22% cleanly, with
+            no bruise and no neighbour knocked off), after about 6% of its planned training. Re-scaling harvest robot-hours,
+            maintenance and the UGV fleet to lower pick rates (ignoring dropped and bruised fruit, which flatters us) gives
+            whole-farm break-even with a conventional farm at about {(pick.break_even_pick_success * 100).toFixed(0)}% and
+            $0.30/kg at about {(pick.pick_success_for_usd_0_30 * 100).toFixed(0)}%. That spreads the robot&apos;s cost over
+            weeding and hauling too. The harvester on its own, below, needs more. An estimate on the runs above, not a new
+            simulation run.
           </p>
           <div className="mt-5">
             <HBars
@@ -89,6 +92,51 @@ export default function Page() {
               ]}
             />
           </div>
+        </Card>
+      </section>
+
+      <section id="harvester" className="container-x scroll-mt-24 pb-12">
+        <Card className="p-6">
+          <div className="text-[15px] font-semibold">Harvester on its own: pick success needed to match a hand crew</div>
+          <p className="mt-2 max-w-3xl text-[14px] leading-relaxed text-ink-2">
+            Robot cost per hour is capital recovered at 10% over 5 years, 10% maintenance and $12k a year of fixed costs, over
+            the hours it works. Robot output is 3,600 / {harvest.assumptions.cycle_s} s per fruit × {harvest.assumptions.kg_per_fruit} kg
+            × pick success. A hand crew costs ${harvest.crew_usd_per_kg.toFixed(3)}/kg (${harvest.assumptions.crew_usd_h}/h at{" "}
+            {harvest.assumptions.crew_kg_h} kg/h, our assumption until grower calls). &ldquo;Not reachable&rdquo; means the robot
+            costs more per kg than the crew even at 100%.
+          </p>
+          <div className="mt-5 overflow-x-auto">
+            <table className="w-full min-w-[720px] text-[14px]">
+              <thead className="text-left font-mono text-[11px] uppercase tracking-wider text-muted">
+                <tr>
+                  <th className="py-2 pr-3 font-normal">Robot</th>
+                  {Object.keys(harvest.robots[0].break_even).map((k) => (
+                    <th key={k} className="py-2 pr-3 text-right font-normal">{k}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-line border-t border-line">
+                {harvest.robots.map((r) => (
+                  <tr key={r.robot}>
+                    <td className="py-3 pr-3">
+                      <div className="font-medium">{r.robot}</div>
+                      <div className="text-[12px] text-muted">${r.robot_usd.toLocaleString("en-US")}</div>
+                    </td>
+                    {Object.values(r.break_even as Record<string, number | null>).map((v, i) => (
+                      <td key={i} className={`tabular py-3 pr-3 text-right ${v === null ? "text-tomato" : "font-semibold"}`}>
+                        {v === null ? "Not reachable" : `${Math.round(v * 100)}%`}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-[12px] text-muted">
+            The US-built robot needs a robot price of about ${(harvest.max_robot_usd_at_55pct / 1000).toFixed(1)}k to break
+            even at 55% in one 1,500-hour season, or up to ${(harvest.max_robot_usd_at_55pct_3000h / 1000).toFixed(1)}k if it
+            works 3,000 hours a year. Source: <code>simulation/tools/pick_sensitivity.py harvester</code>.
+          </p>
         </Card>
       </section>
 

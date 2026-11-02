@@ -35,9 +35,12 @@ export function EarlyAccessForm() {
       <label className="text-[13px] text-ink-2">Company or farm<input name="company" className={input} autoComplete="organization" /></label>
       <label className="text-[13px] text-ink-2">
         I am a…
-        <select name="role" className={input} defaultValue="Landowner">
+        <select name="role" className={input} defaultValue="Tomato grower">
+          <option>Tomato grower</option>
+          <option>Grower, other crop</option>
+          <option>Packer or shipper</option>
+          <option>Robot maker (gripper or parts)</option>
           <option>Landowner</option>
-          <option>Grower</option>
           <option>Produce buyer</option>
           <option>Investor</option>
           <option>Engineer</option>

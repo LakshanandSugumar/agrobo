@@ -11,14 +11,14 @@ const serif = Instrument_Serif({ variable: "--font-serif", subsets: ["latin"], w
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: {
-    default: "Agrobo · The autonomous farm operator",
+    default: "Agrobo · The tomato picker, built in America",
     template: "%s · Agrobo",
   },
   description:
-    "Agrobo automates farming end to end: land selection, field prep, crop care, harvest and B2B selling, run by one plant-level digital twin.",
+    "Agrobo builds AI tomato-harvesting robots for Florida fresh-market growers: our own gripper, a per-plant digital twin, designed and assembled in the USA, paid per bucket below crew cost.",
   openGraph: {
-    title: "Agrobo · The autonomous farm operator",
-    description: "From the land deal to the last sale. Farming's dirty work, automated.",
+    title: "Agrobo · The tomato picker, built in America",
+    description: "AI harvesting robots for Florida tomato growers, paid per bucket below crew cost.",
     type: "website",
   },
 };
