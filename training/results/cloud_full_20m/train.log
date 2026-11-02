@@ -1,0 +1,23 @@
+BC demos: 139/400 successful expert episodes, 12595 steps
+  BC epoch 0: mse 0.1862
+  BC epoch 10: mse 0.0330
+  BC epoch 20: mse 0.0234
+  BC epoch 30: mse 0.0193
+  BC epoch 39: mse 0.0167
+critic warm-up: 300000 steps with the actor frozen
+[        0 steps,     33s] success=0.26 clean_success=0.22 knocked=0.28 dropped=0.26 bruised=0.24 cycle_s=4.26
+[   303108 steps,     67s] success=0.26 clean_success=0.22 knocked=0.28 dropped=0.26 bruised=0.24 cycle_s=4.26
+[   500000 steps,   1077s] success=0.24 clean_success=0.12 knocked=0.34 dropped=0.28 bruised=0.22 cycle_s=4.70
+[   750000 steps,   2370s] success=0.28 clean_success=0.26 knocked=0.30 dropped=0.26 bruised=0.10 cycle_s=4.30
+[  1000000 steps,   3693s] success=0.34 clean_success=0.26 knocked=0.30 dropped=0.28 bruised=0.18 cycle_s=4.28
+[  1250000 steps,   5011s] success=0.44 clean_success=0.36 knocked=0.26 dropped=0.18 bruised=0.28 cycle_s=4.46
+[  1500000 steps,   6315s] success=0.44 clean_success=0.36 knocked=0.16 dropped=0.28 bruised=0.20 cycle_s=4.75
+[  1750000 steps,   7663s] success=0.34 clean_success=0.32 knocked=0.26 dropped=0.26 bruised=0.12 cycle_s=4.71
+[  2000000 steps,   8997s] success=0.38 clean_success=0.34 knocked=0.24 dropped=0.20 bruised=0.18 cycle_s=4.98
+[  2250000 steps,  10259s] success=0.42 clean_success=0.32 knocked=0.24 dropped=0.12 bruised=0.22 cycle_s=7.53
+[  2500000 steps,  11520s] success=0.24 clean_success=0.20 knocked=0.24 dropped=0.14 bruised=0.14 cycle_s=7.47
+[  2750000 steps,  12723s] success=0.20 clean_success=0.20 knocked=0.22 dropped=0.20 bruised=0.16 cycle_s=8.66
+[  3000000 steps,  13923s] success=0.14 clean_success=0.12 knocked=0.22 dropped=0.24 bruised=0.26 cycle_s=8.20
+[  3250000 steps,  15138s] success=0.16 clean_success=0.14 knocked=0.26 dropped=0.20 bruised=0.18 cycle_s=8.16
+[  3500000 steps,  16313s] success=0.12 clean_success=0.10 knocked=0.26 dropped=0.16 bruised=0.22 cycle_s=8.71
+[  3750000 steps,  17489s] success=0.06 clean_success=0.04 knocked=0.26 dropped=0.14 bruised=0.28 cycle_s=8.43
