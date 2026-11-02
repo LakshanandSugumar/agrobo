@@ -67,7 +67,7 @@ export default function Home() {
           <div>
             <Link href="/results#pick-success" className="inline-flex items-center gap-2 rounded-full border border-night-line bg-night-2 px-3 py-1 text-[13px] text-[#c9d3cd] hover:border-[#5d7266]">
               <span className="rounded-full bg-lime px-1.5 py-px text-[11px] font-semibold text-ink">SIM</span>
-              Picker training: 22% clean picks today, 55% is the goal →
+              Picker training: 37.5% clean picks in sim, about 56% is the goal →
             </Link>
             <h1 className="mt-6 text-[44px] font-semibold leading-[1.02] tracking-[-0.035em] md:text-[68px]">
               The tomato picker, <span className="font-serif font-normal italic text-lime">built in America.</span>
@@ -107,7 +107,7 @@ export default function Home() {
             <Modeled />
           </div>
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            <Stat value="22%" label="Clean picks in sim today" sub="Learnt picker, after 1.3M of 20M training steps" />
+            <Stat value="37.5%" label="Clean picks in sim today" sub="Best learnt picker, 200 test plants (46.5% picked)" />
             <Stat value={pct(be(revB, TWO_SEASONS))} label="Needed to beat a crew" sub={`US-built robot working ${fmt.num(3000)} h a year`} />
             <Stat value={`${spf.twin.mean.toFixed(1)} s`} label="Per fruit with the twin" sub={`vs ${spf.no_twin.mean.toFixed(1)} s searching without it`} />
             <Stat value="93.6%" label="Of rev B parts value US-sourced" sub="Made or assembled in the US" />
@@ -417,9 +417,9 @@ export default function Home() {
           <SectionHead eyebrow="Where we are" title="Simulation and design done. Now the bench, then the field." />
           <ol className="mt-10 grid gap-4 md:grid-cols-4">
             {[
-              ["Done", "Picker in simulation", "MuJoCo picking environment and RL training: 22% clean picks after 1.3M of 20M steps. Full-season ROS 2 sim with the per-plant twin."],
+              ["Done", "Picker in simulation", "MuJoCo picking environment and RL training: 46.5% picked, 37.5% clean on 200 test plants, against 16.5% clean for a scripted picker. Full-season ROS 2 sim with the per-plant twin."],
               ["Done", "Harvester designed", "CAD, BOM, schematics and build plan for the imported-parts rev A.1 and the US-sourced rev B."],
-              ["Next", "Full training run + gripper bench test", "Finish the 20M-step run, then test EE-1 on real mature-green fruit and replace modelled cycle times with measured ones."],
+              ["Next", "Break-even in sim + gripper bench test", "Retrain with fixed reward shaping toward 56% and up, then test EE-1 on real mature-green fruit and replace modelled cycle times with measured ones."],
               ["Then", "Spring 2027 pilot", "One Southwest Florida grower, 2 to 5 acres, paid per bucket from day one. After that, US-built grippers for other robot makers."],
             ].map(([k, t, d]) => (
               <li key={t} className={`rounded-2xl border p-5 ${k === "Done" ? "border-brand bg-card" : "border-line bg-paper"}`}>
@@ -437,7 +437,7 @@ export default function Home() {
         <SectionHead eyebrow="FAQ" title="Questions we get." />
         <Faq
           items={[
-            ["Are these numbers from a real farm?", "Not yet, and the robot has not been built. Pick rates and cycle times come from our simulations: the learnt picker gets 22% of fruit off cleanly today, after 1.3M of a planned 20M training steps. Crew rates and costs are our assumptions until grower calls replace them. Every simulated figure on this site is labelled."],
+            ["Are these numbers from a real farm?", "Not yet, and the robot has not been built. Pick rates and cycle times come from our simulations: our best learnt picker gets 37.5% of fruit off cleanly (46.5% picked) on 200 simulated test plants, still below the roughly 56% it needs to beat a crew. Crew rates and costs are our assumptions until grower calls replace them. Every simulated figure on this site is labelled."],
             ["Why Florida tomatoes?", "Fresh-market tomatoes are still picked by hand, several passes a season, mostly by H-2A crews that are costly and hard to book. Southwest Florida grows them through the winter, so the robot works while most US fields are idle, and can follow the harvest north in summer."],
             ["Why build in the USA if it costs more?", `Our US-sourced rev B costs ${fmt.usdK(revB.robot_usd)} per robot against ${fmt.usdK(revABuilt.robot_usd)} with imported parts. Tariffs and export rules make imported robot parts a moving target, and we want to own the hardest parts, the hand and the joints. Rev B still beats a crew at about ${pct(be(revB, TWO_SEASONS))} pick success if it works two harvests a year, and every dollar we take out of the arm and gripper goes into the grower's price.`],
             ["What if the robot misses fruit?", "The twin knows which ripe fruit the robot skipped or dropped on each pass. A hand crew follows through the grower's labour contractor at our cost, so the grower never pays more for picking than their crew would have cost."],

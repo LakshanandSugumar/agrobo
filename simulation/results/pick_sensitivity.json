@@ -13,14 +13,14 @@
       "agrobo_usd_per_kg": 0.185
     },
     {
-      "label": "Scripted picker today",
-      "pick_success": 0.42,
-      "agrobo_usd_per_kg": 0.381
+      "label": "Learnt picker today",
+      "pick_success": 0.465,
+      "agrobo_usd_per_kg": 0.347
     },
     {
-      "label": "Learnt picker today (run 4)",
-      "pick_success": 0.29,
-      "agrobo_usd_per_kg": 0.538
+      "label": "Scripted picker today",
+      "pick_success": 0.37,
+      "agrobo_usd_per_kg": 0.428
     }
   ],
   "break_even_pick_success": 0.32,

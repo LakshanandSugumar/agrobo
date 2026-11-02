@@ -66,6 +66,7 @@ Scored on the same 200 held-out plants:
 | scripted picker | 37% | 16.5% | 19.5% | n/a | 4.2 s |
 | run 4: BC + PPO, frozen obs normalisation (best at 750 k) | 29% | **22%** | 25.5% | 23% | 4.1 s |
 | run 5: same + BC loss kept during PPO (best at 900 k) | 27% | 17.5% | 22.5% | 22% | 4.1 s |
+| cloud_full_20m: long run, same setup (best at 1.5 M, run stopped near 4 M) | **46.5%** | **37.5%** | 23.5% | 16% | 5.3 s |
 
 What we learnt:
 - Runs 1-3 collapsed to 0% because VecNormalize kept re-estimating the observation scaling during PPO, so the behaviour-cloned actor saw shifted inputs. `train_ppo.py` now freezes the scaling at the demo statistics. With that fix the policy holds its starting skill through the critic warm-up.
@@ -73,7 +74,9 @@ What we learnt:
 - Keeping a BC loss during PPO (`--bc-reg 1`) did not help at this length, so it is off by default.
 - Evals on 40 plants are noisy (about ±8 points). Trust the 200-plant `evaluate.py` scores.
 
-Results, logs and videos are in `results/cloud_cpu_run*`. The sim runs at about 210 steps/s per CPU thread.
+- The long cloud run (`cloud_full_20m`) peaked at 1.5 M steps: 46.5% picked and 37.5% clean, the first learnt policy to beat the scripted picker on both. After the peak it slid to about 5%, because the per-step shaping paid the arm for hovering near the fruit. The fix is potential-based shaping, and a rerun with it is in progress; this folder gets the updated code when that run is scored.
+
+Results, logs and videos are in `results/cloud_cpu_run*` and `results/cloud_full_20m`. The sim runs at about 210 steps/s per CPU thread.
 
 ## Honest limits
 

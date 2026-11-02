@@ -71,8 +71,8 @@ export default function Page() {
         <Card className="p-6">
           <div className="text-[15px] font-semibold">Pick-success sensitivity</div>
           <p className="mt-2 max-w-3xl text-[14px] leading-relaxed text-ink-2">
-            The season sim assumes a 95% pick success rate. Our learnt picker gets 29% of fruit off today (22% cleanly, with
-            no bruise and no neighbour knocked off), after about 6% of its planned training. Re-scaling harvest robot-hours,
+            The season sim assumes a 95% pick success rate. Our best learnt picker gets 46.5% of fruit off on 200 test plants
+            (37.5% cleanly, with no bruise and no neighbour knocked off), and a scripted picker 37%. Re-scaling harvest robot-hours,
             maintenance and the UGV fleet to lower pick rates (ignoring dropped and bruised fruit, which flatters us) gives
             whole-farm break-even with a conventional farm at about {(pick.break_even_pick_success * 100).toFixed(0)}% and
             $0.30/kg at about {(pick.pick_success_for_usd_0_30 * 100).toFixed(0)}%. That spreads the robot&apos;s cost over

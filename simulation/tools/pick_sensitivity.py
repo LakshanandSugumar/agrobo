@@ -2,8 +2,9 @@
 """Pick-success sensitivity of Agrobo OpEx per kg.
 
 The season sim (core/agronomy.py, FieldModel.pick) assumes a 95% pick success
-rate (80% when the fruit is occluded). The learnt picker in training/ reaches
-29% (22% clean) after ~6% of its planned training, and the scripted baseline 42%.
+rate (80% when the fruit is occluded). The best learnt picker in training/
+(cloud_full_20m, peaked at 1.5M steps) picks 46.5% (37.5% clean) on 200 test
+plants, and the scripted baseline 37% (16.5% clean).
 
 This re-scales each twin-guided run's harvest robot-hours, maintenance and UGV
 fleet by 0.95 / p, holding energy, supervision and inputs fixed. It ignores fruit
@@ -18,8 +19,8 @@ import sys
 from pathlib import Path
 
 SIM_P = 0.95
-POINTS = [("Assumed in the season sim", 0.95), ("Scripted picker today", 0.42),
-          ("Learnt picker today (run 4)", 0.29)]
+POINTS = [("Assumed in the season sim", 0.95), ("Learnt picker today", 0.465),
+          ("Scripted picker today", 0.37)]
 
 
 def run_opex(k):

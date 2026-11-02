@@ -10,8 +10,8 @@ Designed and assembled in the USA. We do not say "Made in USA": the FTC reserves
 
 | | Today | Source |
 |---|---|---|
-| Learnt picker, simulation | 29% of fruit picked, 22% clean (no bruise, no neighbour knocked off), after 1.3M of 20M training steps | [`training/`](training/) |
-| Scripted picker baseline | 42% picked | [`training/`](training/) |
+| Learnt picker, simulation | 46.5% of fruit picked, 37.5% clean (no bruise, no neighbour knocked off) on 200 test plants; best policy of the long cloud run, which peaked at 1.5M steps | [`training/`](training/) |
+| Scripted picker baseline | 37% picked, 16.5% clean | [`training/`](training/) |
 | Twin vs no twin, season sim | 8.0 vs 13.2 s per fruit, 1.23 vs 1.93 robots per ha (assumes 95% pick success) | [`simulation/results/REPORT.md`](simulation/results/REPORT.md) |
 | Robot, imported parts (rev A.1) | $51.9k built, $36.4k per robot at 100 units | [`robots/`](robots/) |
 | Robot, US-sourced (rev B) | $129.9k built; 93.6% of parts value made or assembled in the US | `robots/docs/05_REVB_MADE_IN_USA.md` (PR #2) |
@@ -27,7 +27,7 @@ Designed and assembled in the USA. We do not say "Made in USA": the FTC reserves
 | Imported parts, first build ($51.9k) | 59% | 29% | 69% |
 | US-built rev B, first build ($129.9k) | not reachable | 56% | not reachable |
 
-The US-built robot can't beat a crew in one Florida season even at 100% pick success. It does at about 55% if it works a second harvest further north in summer, or once the robot price falls to about $46.8k. Fast mature-green crews (150 kg/h) push every row much higher, so crew rates are the first thing grower calls measure. Full output: [`simulation/results/harvester_break_even.json`](simulation/results/harvester_break_even.json).
+The US-built robot can't beat a crew in one Florida season even at 100% pick success. It does at about 56% if it works a second harvest further north in summer, or once the robot price falls to about $46.8k. Fast mature-green crews (150 kg/h) push every row much higher, so crew rates are the first thing grower calls measure. Full output: [`simulation/results/harvester_break_even.json`](simulation/results/harvester_break_even.json).
 
 > The season sim assumes a 95% pick success rate. `simulation/tools/pick_sensitivity.py` (no argument) re-scales the whole-farm OpEx for lower pick rates: whole-farm break-even with a conventional farm is about 32%, because it spreads robot cost over weeding and hauling too. The harvester alone needs the numbers above.
 

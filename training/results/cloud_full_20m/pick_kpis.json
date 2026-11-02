@@ -1,0 +1,22 @@
+{
+  "learnt_policy": {
+    "episodes": 200,
+    "success": 0.465,
+    "clean_success": 0.375,
+    "knocked_neighbour": 0.235,
+    "dropped": 0.16,
+    "bruised": 0.22,
+    "mean_cycle_s": 5.325268817204301,
+    "detach_modes": {
+      "pull": 53,
+      "bend": 95,
+      "twist": 0
+    }
+  },
+  "scripted_baseline": {
+    "success": 0.37,
+    "clean_success": 0.165,
+    "knocked_neighbour": 0.195,
+    "mean_cycle_s": 4.237837837837838
+  }
+}

@@ -63,13 +63,13 @@ Skid-steer slip makes odometry-only navigation unusable within one turn (the rob
 
 ## Pick-success sensitivity
 
-The season sim assumes a 95% pick success rate (80% when the fruit is occluded, `core/agronomy.py`, `FieldModel.pick`). The learnt picker in `training/` reaches 29% success (22% clean) after about 6% of its planned training, and the scripted baseline 42%. `tools/pick_sensitivity.py` re-scales each twin run's harvest robot-hours, maintenance and UGV fleet by 0.95 / p. It ignores fruit dropped or bruised by failed picks, so it flatters Agrobo. It is an estimate on these run outputs, not a new simulation run.
+The season sim assumes a 95% pick success rate (80% when the fruit is occluded, `core/agronomy.py`, `FieldModel.pick`). The best learnt picker in `training/` (run `cloud_full_20m`, peaked at 1.5M steps) picks 46.5% of fruit on 200 test plants (37.5% clean), and the scripted baseline 37% (16.5% clean). `tools/pick_sensitivity.py` re-scales each twin run's harvest robot-hours, maintenance and UGV fleet by 0.95 / p. It ignores fruit dropped or bruised by failed picks, so it flatters Agrobo. It is an estimate on these run outputs, not a new simulation run.
 
 | Pick success | Agrobo OpEx ($/kg) | vs conventional ($0.49/kg) |
 |---|---|---|
 | 95% (assumed in the season sim) | 0.185 | 62% lower |
-| 42% (scripted picker today) | 0.381 | 22% lower |
+| 46.5% (learnt picker today) | 0.347 | 29% lower |
+| 37% (scripted picker today) | 0.428 | 13% lower |
 | 32% | 0.49 | break-even |
-| 29% (learnt picker today) | 0.538 | 10% higher |
 
 Reaching $0.30/kg (about 40% below conventional) needs about 55% pick success. That is the picker milestone the business depends on. Output: `results/pick_sensitivity.json`.
