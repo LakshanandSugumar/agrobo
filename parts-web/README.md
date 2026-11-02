@@ -32,4 +32,3 @@ Set `INQUIRY_WEBHOOK_URL` (Slack, Zapier, Formspree, a CRM) at deploy. Without i
 
 ## Not done
 - Not deployed. Needs Laksh's OK.
-- `COMPANY.email` is a placeholder.

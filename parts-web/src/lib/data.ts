@@ -7,7 +7,6 @@ export const COMPANY = {
   name: "Forgeline",
   legal: "Forgeline (working name, not incorporated)",
   tagline: "US-built robot hands and joints",
-  email: "hello@example.com", // placeholder until a domain exists
 };
 
 export type Line = {
