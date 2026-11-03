@@ -67,7 +67,7 @@ def evaluate(model, vn_stats, n, seed, min_clearance):
             if te or tr: break
         S.append(info)
     m = lambda f: float(np.mean([s[f] for s in S]))
-    clean = float(np.mean([s['success'] and not s['bruised'] for s in S]))
+    clean = float(np.mean([s['success'] and not s['bruised'] and not s['knocked'] for s in S]))   # a clean pick also leaves the neighbours on
     return dict(success=m('success'), clean_success=clean, knocked=m('knocked'), dropped=m('dropped'), bruised=m('bruised'),
                 cycle_s=float(np.mean([s['t'] for s in S if s['success']])) if m('success') else None)
 
@@ -75,6 +75,8 @@ class EvalCB(BaseCallback):
     def __init__(self, out, every, n_eval, min_clearance):
         super().__init__(); self.out, self.every, self.n_eval, self.mc = out, every, n_eval, min_clearance
         self.best = -1; self.next = 0; self.t0 = time.time()
+        if os.path.exists(os.path.join(out, 'best_eval.json')):   # resuming: only replace the best with something better
+            b = json.load(open(os.path.join(out, 'best_eval.json'))); self.best = b['clean_success'] - .5 * b['knocked']
         self.f = open(os.path.join(out, 'eval_log.csv'), 'a', newline=''); self.w = csv.writer(self.f)
     def _on_step(self):
         if self.num_timesteps >= self.next:
@@ -83,6 +85,7 @@ class EvalCB(BaseCallback):
             r = evaluate(self.model, vn.obs_rms, self.n_eval, 50_000, self.mc)
             self.w.writerow([self.num_timesteps, round(time.time() - self.t0)] + [r[k] for k in ('success', 'clean_success', 'knocked', 'dropped', 'bruised', 'cycle_s')]); self.f.flush()
             print(f'[{self.num_timesteps:>9} steps, {time.time() - self.t0:6.0f}s] ' + ' '.join(f'{k}={v:.2f}' if isinstance(v, float) else f'{k}={v}' for k, v in r.items()), flush=True)
+            self.model.save(os.path.join(self.out, 'last_model')); vn.save(os.path.join(self.out, 'last_vecnormalize.pkl'))   # resume point
             score = r['clean_success'] - .5 * r['knocked']
             if score > self.best:
                 self.best = score; self.model.save(os.path.join(self.out, 'best_model')); vn.save(os.path.join(self.out, 'vecnormalize.pkl'))
@@ -125,7 +128,8 @@ if __name__ == '__main__':
     venv = VecNormalize(venv, norm_obs=True, norm_reward=True, clip_obs=10., gamma=.99)
     if a.resume:
         model = PPO.load(a.resume, env=venv, device=a.device)
-        venv.obs_rms = VecNormalize.load(os.path.join(os.path.dirname(a.resume), 'vecnormalize.pkl'), venv).obs_rms
+        vn_file = 'last_vecnormalize.pkl' if os.path.basename(a.resume).startswith('last_model') else 'vecnormalize.pkl'
+        venv.obs_rms = VecNormalize.load(os.path.join(os.path.dirname(a.resume), vn_file), venv).obs_rms
     else:
         model = PPO('MlpPolicy', venv, n_steps=max(64, 4096 // a.envs), batch_size=1024, n_epochs=8, learning_rate=1e-4,
                     gamma=.99, gae_lambda=.95, clip_range=.1, ent_coef=.0, vf_coef=.5, max_grad_norm=.5, target_kl=.03,
@@ -144,8 +148,9 @@ if __name__ == '__main__':
         model.learn(total_timesteps=a.critic_warmup, reset_num_timesteps=True)
         for p_ in actor: p_.requires_grad_(True)
     cb = EvalCB(out, a.eval_every, a.eval_episodes, a.min_clearance)
-    cb.model = model; cb._on_step()          # eval the starting point (BC policy) before PPO touches it
+    if a.resume: cb.next = model.num_timesteps + a.eval_every
+    if not a.resume: cb.model = model; cb._on_step()          # eval the starting point (BC policy) before PPO touches it
     cbs = [cb] + ([BCRegCB(O, A, a.steps, a.bc_reg)] if a.bc_episodes and not a.resume and a.bc_reg else [])
-    model.learn(total_timesteps=a.steps, callback=cbs, reset_num_timesteps=False)
+    model.learn(total_timesteps=max(0, a.steps - model.num_timesteps), callback=cbs, reset_num_timesteps=False)   # --steps is the run total, also on resume
     model.save(os.path.join(out, 'final_model')); venv.save(os.path.join(out, 'vecnormalize_final.pkl'))
     print('done ->', out)

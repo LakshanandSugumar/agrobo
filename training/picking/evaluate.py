@@ -22,7 +22,7 @@ def run(policy, n, seed, video_eps, frames):
         S.append(info)
     m = lambda f: float(np.mean([s[f] for s in S]))
     ok = [s for s in S if s['success']]
-    return dict(episodes=n, success=m('success'), clean_success=float(np.mean([s['success'] and not s['bruised'] for s in S])),
+    return dict(episodes=n, success=m('success'), clean_success=float(np.mean([s['success'] and not s['bruised'] and not s['knocked'] for s in S])),
                 knocked_neighbour=m('knocked'), dropped=m('dropped'), bruised=m('bruised'),
                 mean_cycle_s=float(np.mean([s['t'] for s in ok])) if ok else None,
                 detach_modes={md: sum(1 for s in S if s['detach_mode'] == md) for md in ('pull', 'bend', 'twist')})
@@ -43,7 +43,7 @@ if __name__ == '__main__':
             if te or tr: break
         S.append(info)
     rep['scripted_baseline'] = dict(success=float(np.mean([s['success'] for s in S])),
-                                    clean_success=float(np.mean([s['success'] and not s['bruised'] for s in S])),
+                                    clean_success=float(np.mean([s['success'] and not s['bruised'] and not s['knocked'] for s in S])),
                                     knocked_neighbour=float(np.mean([s['knocked'] for s in S])),
                                     mean_cycle_s=float(np.mean([s['t'] for s in S if s['success']] or [np.nan])))
     json.dump(rep, open(os.path.join(a.run, 'pick_kpis.json'), 'w'), indent=2); print(json.dumps(rep, indent=2))

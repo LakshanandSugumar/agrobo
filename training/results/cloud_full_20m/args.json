@@ -1,0 +1,14 @@
+{
+  "steps": 20000000,
+  "envs": 4,
+  "name": "cloud_full_20m",
+  "seed": 0,
+  "bc_episodes": 400,
+  "min_clearance": 0.0,
+  "eval_every": 250000,
+  "eval_episodes": 50,
+  "critic_warmup": 300000,
+  "bc_reg": 0.0,
+  "device": "cpu",
+  "resume": null
+}

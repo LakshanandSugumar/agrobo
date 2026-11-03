@@ -45,6 +45,7 @@ def load_params():
     return FALLBACK, None
 
 N_NEIGH = 4                    # neighbour slots (unused ones are parked far away)
+GAMMA = .99     # must match PPO's gamma for the shaping to leave the optimal policy unchanged
 EXTRACT = .15   # success = fruit detached, still in the hand, and pulled 15 cm clear (8 cm of it back toward the aisle).
                 # Dropping it into the catch chute is a fixed scripted move on the real robot, so it is not learnt.
 CTRL_DT, SUBSTEPS = 0.05, 25
@@ -457,6 +458,7 @@ class TomatoPickEnv(gym.Env):
         self.p_t, self.R_t = self._tcp_pose()
         self.steps = 0; self.detached = np.zeros(N_NEIGH + 1, bool); self.prev = None
         self.sealed = False; self.cup_contact = False; self.f_filt = np.zeros(3)
+        self.phi = .6 * (1 - math.tanh(6 * np.linalg.norm(self.data.site_xpos[self.grasp] - self.data.xpos[self.fb[0]])))
         self.info_acc = dict(max_finger_force=0., max_stem_force=0., bruised=False, detach_mode=None, twine_contact=0)
         return self._obs(), {}
 
@@ -550,10 +552,14 @@ class TomatoPickEnv(gym.Env):
         dist = np.linalg.norm(tcp - fruit)
         # 3. reward
         r = -.02 - .002 * float(a @ a)
+        # potential-based shaping (gamma*phi' - phi): it guides the approach but sums to at most a few points per
+        # episode. Paying phi itself every step let PPO earn more by hovering on the fruit for 12 s than by
+        # picking it (cloud 20M run peaked at 1.5M steps, then learnt to stall).
         if not self.detached[0]:
-            r += .6 * (1 - math.tanh(6 * dist)) + .3 * (cup and suction) + .15 * len(fingers)
+            phi = .6 * (1 - math.tanh(6 * dist)) + .3 * (cup and suction) + .15 * len(fingers)
         else:
-            r += 1. + (2. * min(1., self._extracted(fruit)) if held else 0)
+            phi = 1. + (2. * min(1., self._extracted(fruit)) if held else 0)
+        r += GAMMA * phi - self.phi; self.phi = phi
         for s, mode in newly:
             if s == 0:
                 r += 8. if held else 2.

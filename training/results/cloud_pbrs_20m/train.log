@@ -1,0 +1,89 @@
+BC demos: 139/400 successful expert episodes, 12595 steps
+  BC epoch 0: mse 0.1862
+  BC epoch 10: mse 0.0330
+  BC epoch 20: mse 0.0234
+  BC epoch 30: mse 0.0193
+  BC epoch 39: mse 0.0167
+critic warm-up: 300000 steps with the actor frozen
+[        0 steps,     32s] success=0.26 clean_success=0.22 knocked=0.28 dropped=0.26 bruised=0.24 cycle_s=4.26
+[   303108 steps,     66s] success=0.26 clean_success=0.22 knocked=0.28 dropped=0.26 bruised=0.24 cycle_s=4.26
+[   500000 steps,   1072s] success=0.20 clean_success=0.12 knocked=0.26 dropped=0.34 bruised=0.22 cycle_s=3.81
+[   750000 steps,   2322s] success=0.28 clean_success=0.22 knocked=0.20 dropped=0.24 bruised=0.20 cycle_s=4.36
+[  1000000 steps,   3600s] success=0.22 clean_success=0.22 knocked=0.24 dropped=0.30 bruised=0.14 cycle_s=3.20
+[  1250000 steps,   4849s] success=0.36 clean_success=0.32 knocked=0.24 dropped=0.28 bruised=0.22 cycle_s=3.08
+[  1500000 steps,   6113s] success=0.48 clean_success=0.42 knocked=0.14 dropped=0.24 bruised=0.16 cycle_s=3.13
+[  1750000 steps,   7377s] success=0.28 clean_success=0.22 knocked=0.36 dropped=0.26 bruised=0.20 cycle_s=3.23
+[  2000000 steps,   8657s] success=0.46 clean_success=0.40 knocked=0.18 dropped=0.30 bruised=0.14 cycle_s=3.47
+[  2250000 steps,   9911s] success=0.42 clean_success=0.34 knocked=0.20 dropped=0.22 bruised=0.24 cycle_s=3.35
+[  2500000 steps,  11186s] success=0.42 clean_success=0.30 knocked=0.20 dropped=0.20 bruised=0.22 cycle_s=3.02
+[  2750000 steps,  12501s] success=0.30 clean_success=0.24 knocked=0.26 dropped=0.22 bruised=0.18 cycle_s=3.24
+[  3000000 steps,   1050s] success=0.42 clean_success=0.36 knocked=0.18 dropped=0.18 bruised=0.24 cycle_s=3.27
+[  3250000 steps,   2084s] success=0.52 clean_success=0.48 knocked=0.20 dropped=0.18 bruised=0.12 cycle_s=3.06
+[  3500000 steps,   3103s] success=0.60 clean_success=0.54 knocked=0.12 dropped=0.14 bruised=0.12 cycle_s=3.14
+[  3750000 steps,   4106s] success=0.56 clean_success=0.46 knocked=0.10 dropped=0.16 bruised=0.16 cycle_s=3.21
+[  4000000 steps,   5100s] success=0.66 clean_success=0.56 knocked=0.10 dropped=0.10 bruised=0.14 cycle_s=3.12
+[  4250000 steps,   6096s] success=0.58 clean_success=0.54 knocked=0.18 dropped=0.10 bruised=0.10 cycle_s=3.29
+[  4500000 steps,   7118s] success=0.58 clean_success=0.50 knocked=0.20 dropped=0.10 bruised=0.08 cycle_s=3.09
+[  4750000 steps,   8141s] success=0.66 clean_success=0.58 knocked=0.12 dropped=0.08 bruised=0.12 cycle_s=2.93
+[  5000000 steps,   9136s] success=0.58 clean_success=0.56 knocked=0.12 dropped=0.14 bruised=0.06 cycle_s=3.14
+[  5250000 steps,  10152s] success=0.58 clean_success=0.52 knocked=0.20 dropped=0.12 bruised=0.12 cycle_s=2.93
+[  5500000 steps,  11184s] success=0.62 clean_success=0.58 knocked=0.10 dropped=0.10 bruised=0.06 cycle_s=2.80
+[  5750000 steps,  12227s] success=0.56 clean_success=0.48 knocked=0.10 dropped=0.12 bruised=0.12 cycle_s=2.87
+[  6000000 steps,  13292s] success=0.64 clean_success=0.58 knocked=0.04 dropped=0.18 bruised=0.18 cycle_s=2.79
+[  6250000 steps,  14346s] success=0.72 clean_success=0.58 knocked=0.12 dropped=0.06 bruised=0.18 cycle_s=3.07
+[  6500000 steps,  15423s] success=0.60 clean_success=0.52 knocked=0.14 dropped=0.12 bruised=0.16 cycle_s=2.91
+[  6750000 steps,  16491s] success=0.58 clean_success=0.50 knocked=0.12 dropped=0.16 bruised=0.14 cycle_s=2.87
+[  7000000 steps,  17548s] success=0.64 clean_success=0.54 knocked=0.12 dropped=0.12 bruised=0.18 cycle_s=2.91
+[  7250000 steps,  18621s] success=0.62 clean_success=0.58 knocked=0.14 dropped=0.10 bruised=0.14 cycle_s=2.73
+[  7500000 steps,  19708s] success=0.72 clean_success=0.62 knocked=0.10 dropped=0.06 bruised=0.10 cycle_s=2.79
+[  7750000 steps,  20806s] success=0.68 clean_success=0.58 knocked=0.10 dropped=0.06 bruised=0.10 cycle_s=2.69
+[  8000000 steps,  21883s] success=0.58 clean_success=0.50 knocked=0.12 dropped=0.06 bruised=0.10 cycle_s=2.65
+[  8250000 steps,  22966s] success=0.68 clean_success=0.56 knocked=0.08 dropped=0.02 bruised=0.14 cycle_s=2.64
+[  8500000 steps,  24034s] success=0.64 clean_success=0.56 knocked=0.10 dropped=0.06 bruised=0.12 cycle_s=2.60
+[  8750000 steps,  25108s] success=0.64 clean_success=0.58 knocked=0.14 dropped=0.10 bruised=0.16 cycle_s=2.67
+[  9000000 steps,  26225s] success=0.66 clean_success=0.62 knocked=0.10 dropped=0.06 bruised=0.08 cycle_s=2.65
+[  9250000 steps,  27340s] success=0.64 clean_success=0.58 knocked=0.12 dropped=0.10 bruised=0.08 cycle_s=2.82
+[  9500000 steps,  28423s] success=0.64 clean_success=0.54 knocked=0.14 dropped=0.12 bruised=0.16 cycle_s=2.70
+[  9750000 steps,  29525s] success=0.72 clean_success=0.60 knocked=0.06 dropped=0.06 bruised=0.16 cycle_s=2.94
+[ 10000000 steps,  30656s] success=0.78 clean_success=0.64 knocked=0.10 dropped=0.08 bruised=0.20 cycle_s=2.94
+[ 10250000 steps,  31796s] success=0.78 clean_success=0.66 knocked=0.06 dropped=0.08 bruised=0.18 cycle_s=2.98
+[ 10500000 steps,  32929s] success=0.74 clean_success=0.60 knocked=0.06 dropped=0.06 bruised=0.24 cycle_s=2.79
+[ 10750000 steps,  34046s] success=0.78 clean_success=0.70 knocked=0.08 dropped=0.08 bruised=0.18 cycle_s=2.72
+[ 11000000 steps,  35139s] success=0.76 clean_success=0.66 knocked=0.04 dropped=0.14 bruised=0.14 cycle_s=2.67
+[ 11250000 steps,  36241s] success=0.78 clean_success=0.58 knocked=0.08 dropped=0.04 bruised=0.20 cycle_s=2.58
+[ 11500000 steps,  37361s] success=0.78 clean_success=0.60 knocked=0.06 dropped=0.06 bruised=0.24 cycle_s=2.63
+[ 11750000 steps,  38450s] success=0.84 clean_success=0.62 knocked=0.04 dropped=0.04 bruised=0.22 cycle_s=2.81
+[ 12000000 steps,  39562s] success=0.72 clean_success=0.56 knocked=0.12 dropped=0.06 bruised=0.18 cycle_s=2.75
+[ 12250000 steps,  40694s] success=0.76 clean_success=0.58 knocked=0.12 dropped=0.04 bruised=0.20 cycle_s=2.75
+[ 12500000 steps,  41842s] success=0.70 clean_success=0.58 knocked=0.14 dropped=0.06 bruised=0.16 cycle_s=2.62
+[ 12750000 steps,  42982s] success=0.80 clean_success=0.62 knocked=0.10 dropped=0.04 bruised=0.22 cycle_s=2.79
+[ 13000000 steps,  44118s] success=0.68 clean_success=0.50 knocked=0.18 dropped=0.06 bruised=0.24 cycle_s=2.74
+[ 13250000 steps,  45262s] success=0.74 clean_success=0.54 knocked=0.16 dropped=0.00 bruised=0.22 cycle_s=2.87
+[ 13500000 steps,  46395s] success=0.70 clean_success=0.56 knocked=0.18 dropped=0.06 bruised=0.18 cycle_s=2.67
+[ 13750000 steps,  47541s] success=0.78 clean_success=0.58 knocked=0.18 dropped=0.00 bruised=0.22 cycle_s=2.65
+[ 14000000 steps,  48691s] success=0.74 clean_success=0.60 knocked=0.14 dropped=0.04 bruised=0.20 cycle_s=3.03
+[ 14250000 steps,  49840s] success=0.74 clean_success=0.60 knocked=0.10 dropped=0.08 bruised=0.20 cycle_s=2.82
+[ 14500000 steps,  50962s] success=0.74 clean_success=0.64 knocked=0.12 dropped=0.04 bruised=0.16 cycle_s=2.87
+[ 14750000 steps,  52094s] success=0.74 clean_success=0.62 knocked=0.12 dropped=0.06 bruised=0.14 cycle_s=2.83
+[ 15000000 steps,  53202s] success=0.74 clean_success=0.60 knocked=0.06 dropped=0.12 bruised=0.16 cycle_s=2.65
+[ 15250000 steps,  54336s] success=0.74 clean_success=0.56 knocked=0.12 dropped=0.06 bruised=0.18 cycle_s=2.82
+[ 15500000 steps,  55461s] success=0.68 clean_success=0.56 knocked=0.10 dropped=0.12 bruised=0.14 cycle_s=2.75
+[ 15750000 steps,  56587s] success=0.62 clean_success=0.50 knocked=0.14 dropped=0.14 bruised=0.16 cycle_s=2.85
+[ 16000000 steps,  57705s] success=0.66 clean_success=0.52 knocked=0.10 dropped=0.14 bruised=0.18 cycle_s=2.80
+[ 16250000 steps,  58821s] success=0.72 clean_success=0.58 knocked=0.06 dropped=0.12 bruised=0.18 cycle_s=2.76
+[ 16500000 steps,  59942s] success=0.74 clean_success=0.62 knocked=0.06 dropped=0.14 bruised=0.16 cycle_s=2.75
+[ 16750000 steps,  61064s] success=0.70 clean_success=0.60 knocked=0.14 dropped=0.06 bruised=0.10 cycle_s=2.72
+[ 17000000 steps,  62179s] success=0.74 clean_success=0.62 knocked=0.08 dropped=0.08 bruised=0.18 cycle_s=2.91
+[ 17250000 steps,  63304s] success=0.76 clean_success=0.72 knocked=0.10 dropped=0.04 bruised=0.04 cycle_s=2.80
+[ 17500000 steps,  64450s] success=0.78 clean_success=0.74 knocked=0.06 dropped=0.06 bruised=0.06 cycle_s=2.78
+[ 17750000 steps,  65602s] success=0.72 clean_success=0.64 knocked=0.10 dropped=0.06 bruised=0.08 cycle_s=2.75
+[ 18000000 steps,  66731s] success=0.80 clean_success=0.72 knocked=0.06 dropped=0.08 bruised=0.08 cycle_s=2.79
+[ 18250000 steps,  67844s] success=0.82 clean_success=0.74 knocked=0.04 dropped=0.06 bruised=0.10 cycle_s=2.77
+[ 18500000 steps,  68948s] success=0.76 clean_success=0.68 knocked=0.06 dropped=0.08 bruised=0.14 cycle_s=2.67
+[ 18750000 steps,  70051s] success=0.78 clean_success=0.68 knocked=0.04 dropped=0.02 bruised=0.12 cycle_s=2.81
+[ 19000000 steps,  71165s] success=0.72 clean_success=0.62 knocked=0.04 dropped=0.08 bruised=0.18 cycle_s=2.72
+[ 19250000 steps,  72291s] success=0.72 clean_success=0.60 knocked=0.06 dropped=0.12 bruised=0.14 cycle_s=2.74
+[ 19500000 steps,  73395s] success=0.78 clean_success=0.74 knocked=0.02 dropped=0.12 bruised=0.12 cycle_s=2.93
+[ 19750000 steps,  74504s] success=0.78 clean_success=0.68 knocked=0.02 dropped=0.08 bruised=0.10 cycle_s=2.75
+[ 20000000 steps,  75614s] success=0.82 clean_success=0.70 knocked=0.02 dropped=0.06 bruised=0.14 cycle_s=2.72
+done -> runs/pick/cloud_pbrs_20m

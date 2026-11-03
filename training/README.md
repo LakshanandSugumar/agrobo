@@ -57,23 +57,25 @@ Classes: 0 immature green (leave), 1 **mature green** (the main Florida pick tar
 | `train_ppo.py` | Behaviour-clones the expert's successful episodes, then runs PPO (SB3) on parallel sims with VecNormalize. It evaluates on held-out plants every 250 k steps and keeps the best model by clean picks minus knock-offs. |
 | `evaluate.py` | Runs the learnt policy and the scripted picker on the same 200 held-out plants, writes `pick_kpis.json` and films `picks.mp4`. |
 
-### Results so far (cloud CPU, 4 sims, 1.3 M steps each)
+### Results so far (cloud CPU, 4 sims)
 
-Scored on the same 200 held-out plants:
+Scored with `evaluate.py` on the same 200 held-out plants. A clean pick means the fruit came out unbruised and no neighbouring fruit fell.
 
-| | success | clean (no bruise) | knocked neighbour | dropped | cycle |
+| | success | clean | knocked neighbour | dropped | cycle |
 |---|---|---|---|---|---|
 | scripted picker | 37% | 16.5% | 19.5% | n/a | 4.2 s |
-| run 4: BC + PPO, frozen obs normalisation (best at 750 k) | 29% | **22%** | 25.5% | 23% | 4.1 s |
-| run 5: same + BC loss kept during PPO (best at 900 k) | 27% | 17.5% | 22.5% | 22% | 4.1 s |
+| run 4: BC + PPO, 1.3 M steps | 29% | 22% | 25.5% | 23% | 4.1 s |
+| first 20 M run, best at 1.5 M (old reward) | 46.5% | 37.5% | 23.5% | 16% | 5.3 s |
+| **20 M run with potential-based shaping, best at 19.5 M** | **69.5%** | **65%** | **11%** | **5.5%** | **2.5 s** |
+
+The current policy is `results/cloud_pbrs_20m/best_model.zip` + `vecnormalize.pkl`, and `picks.mp4` shows it working. The full 20 M steps took 21 h on 4 CPU threads.
 
 What we learnt:
-- Runs 1-3 collapsed to 0% because VecNormalize kept re-estimating the observation scaling during PPO, so the behaviour-cloned actor saw shifted inputs. `train_ppo.py` now freezes the scaling at the demo statistics. With that fix the policy holds its starting skill through the critic warm-up.
-- The learnt policy already beats the scripted picker on clean picks (22% vs 16.5%), because it bruises less. It does not yet beat it on total picks. 1.3 M steps is about 6% of the 20 M-step real run.
-- Keeping a BC loss during PPO (`--bc-reg 1`) did not help at this length, so it is off by default.
-- Evals on 40 plants are noisy (about ±8 points). Trust the 200-plant `evaluate.py` scores.
-
-Results, logs and videos are in `results/cloud_cpu_run*`. The sim runs at about 210 steps/s per CPU thread.
+- **Freeze the observation normaliser after BC.** VecNormalize kept re-estimating the input scaling during PPO, so the cloned actor saw shifted inputs and went to 0% (runs 1-3).
+- **Shape with potentials, not per-step payouts.** The approach reward was paid every step, so hovering on the fruit for 12 s beat picking it. The first 20 M run peaked at 1.5 M steps and then fell to about 5%. `env.py` now pays `gamma*phi(s') - phi(s)`, which can't be farmed. With that change the policy kept improving to 20 M steps and picks faster than the scripted one.
+- Keeping a BC loss during PPO (`--bc-reg 1`) didn't help, so it is off.
+- Evals on 50 plants are noisy (about ±7 points). Trust the 200-plant `evaluate.py` scores.
+- `train_ppo.py --resume runs/pick/<name>/last_model.zip` continues a run, and `--steps` counts the total for the run.
 
 ## Honest limits
 
